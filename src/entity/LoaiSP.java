@@ -21,6 +21,12 @@ public class LoaiSP {
 		LoaiSP other = (LoaiSP) obj;
 		return Objects.equals(maLoai, other.maLoai);
 	}
+	
+	
+	
+	public LoaiSP(String maLoai) {
+		this.maLoai = maLoai;
+	}
 	public LoaiSP(String maLoai, String tenLoai, boolean isDoTT) {
 		this.maLoai = maLoai;
 		this.setTenLoai(tenLoai);
