@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class ConnectDB {
 	private static final String url = "jdbc:sqlserver://localhost:1433;"
-            + "databaseName=QLyCHAM;";
+            + "databaseName= ;";
 	private static String USER_NAME = "sa";
     private static String PASSWORD = "123456";
 	public static Connection getConection() {
