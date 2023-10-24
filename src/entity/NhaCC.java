@@ -57,7 +57,7 @@ public class NhaCC {
 	public void setQuocGia(String quocGia) {
 		try {
 			Connection con = ConnectDB.getConection();
-			String query = "Select * in Countries where Iso = ?";
+			String query = "Select * from Countries where Iso = ?";
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, quocGia);
 			ResultSet rs =  statement.executeQuery();
