@@ -1,6 +1,12 @@
 package entity;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
+
+import connectDB.ConnectDB;
 
 public class NhaCC {
 	private String maNCC;
@@ -24,7 +30,12 @@ public class NhaCC {
 	}
 	public NhaCC(String maNCC, String tenNCC, String diaChi, String quocGia) {
 		this.maNCC = maNCC;
-		this.setTenNCC(tenNCC);
+		try {
+			this.setTenNCC(tenNCC);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setDiaChi(diaChi);
 		this.setQuocGia(quocGia);
 	}
@@ -34,14 +45,31 @@ public class NhaCC {
 	public String getTenNCC() {
 		return tenNCC;
 	}
-	public void setTenNCC(String tenNCC) {
+	public void setTenNCC(String tenNCC) throws Exception {
+		if(tenNCC.length() > 100) {
+			throw new Exception("Tên nhà cung cấp lớn hơn 100");
+		}
 		this.tenNCC = tenNCC;
 	}
 	public String getQuocGia() {
 		return quocGia;
 	}
 	public void setQuocGia(String quocGia) {
-		this.quocGia = quocGia;
+		try {
+			Connection con = ConnectDB.getConection();
+			String query = "Select * in Countries where Iso = ?";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, quocGia);
+			ResultSet rs =  statement.executeQuery();
+			if(rs.next()) {
+				this.quocGia = quocGia;
+			}
+			else throw new Exception("khong tim thay quoc gia");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	public String getDiaChi() {
 		return diaChi;
