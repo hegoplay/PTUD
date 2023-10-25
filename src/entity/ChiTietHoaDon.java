@@ -3,9 +3,9 @@ package entity;
 public class ChiTietHoaDon {
 	private SanPham sanPham;
 	private int soLuong;
-	public ChiTietHoaDon(SanPham sanPham, int soLuong) {
+	public ChiTietHoaDon(SanPham sanPham, int soLuong) throws Exception {
 		this.sanPham = sanPham;
-		this.soLuong = soLuong;
+		setSoLuong(soLuong);
 	}
 	public SanPham getSanPham() {
 		return sanPham;
@@ -14,11 +14,19 @@ public class ChiTietHoaDon {
 		return soLuong;
 	}
 	
+	
+	
+	private void setSoLuong(int soLuong) throws Exception {
+		if (soLuong <=0) {
+			throw new Exception("số lượng chi tiết hóa đơn phải lớn hơn 0");
+		}
+		this.soLuong = soLuong;
+	}
 	public double TinhThanhTien() {
-		return 0;
+		return sanPham.TinhGiaBan()*soLuong;
 	}
 	
 	public double TinhTongThue() {
-		return 0;
+		return sanPham.TinhThue()*soLuong;
 	}
 }
