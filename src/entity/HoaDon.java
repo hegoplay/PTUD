@@ -66,7 +66,7 @@ public class HoaDon {
 	}
 	public void setNgayLapHD(LocalDateTime ngayLapHD) throws Exception {
 		if(ngayLapHD.isAfter(LocalDateTime.now())) {
-			throw new Exception("Ngay lap khong the lon hon ngay hien tai");
+			throw new Exception("Ngày lập hoá đơn phải trước hoặc bằng ngày hiện hành");
 		}
 		this.ngayLapHD = ngayLapHD;
 	}

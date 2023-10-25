@@ -16,7 +16,8 @@ public class ChiTietTraHang {
 	public int getSoLuongSP() {
 		return soLuongSP;
 	}
-	public void setSoLuongSP(int soLuongSP) {
+	public void setSoLuongSP(int soLuongSP) throws Exception {
+		if (soLuongSP < 0) throw new Exception("so luong san pham phải lớn hơn 0");
 		this.soLuongSP = soLuongSP;
 	}
 	@Override
@@ -25,11 +26,11 @@ public class ChiTietTraHang {
 	}
 	
 	public double TinhThanhTien() {
-		return 0;
+		return SanPham.TinhGiaBan()*soLuongSP;
 	}
 	
 	public double TinhGTThue() {
-		return 0;
+		return SanPham.TinhThue()*soLuongSP;
 	}
 	
 }

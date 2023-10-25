@@ -6,27 +6,32 @@ import java.util.Objects;
 public class LishSuTon {
 	private String maLSTon;
 	private int soLuongNhap;
-	private LocalDateTime lichSuTon;
+	private LocalDateTime ngayThayDoi;
 	private SanPham sanPham;
-	public LishSuTon(String maLSTon, int soLuongNhap, LocalDateTime lichSuTon, SanPham sanPham) {
+	public LishSuTon(String maLSTon, int soLuongNhap, LocalDateTime ngayThayDoi, SanPham sanPham) throws Exception {
 		this.maLSTon = maLSTon;
 		this.setSoLuongNhap(soLuongNhap);
-		this.setLichSuTon(lichSuTon);
+		this.setNgayThayDoi(ngayThayDoi);
 		this.setSanPham(sanPham);
 	}
 	public LishSuTon(String maLSTon) {
 		this.maLSTon = maLSTon;
 	}
-	public LocalDateTime getLichSuTon() {
-		return lichSuTon;
+	public LocalDateTime getNgayThayDoi() {
+		return ngayThayDoi;
 	}
-	private void setLichSuTon(LocalDateTime lichSuTon) {
-		this.lichSuTon = lichSuTon;
+	private void setNgayThayDoi(LocalDateTime lichSuTon) throws Exception {
+		if (lichSuTon.isAfter(LocalDateTime.now())) {
+			throw new Exception("Ngày thay đổi phải trước hoặc bằng ngày hiện hành");
+		}
+		this.ngayThayDoi = lichSuTon;
 	}
 	public int getSoLuongNhap() {
 		return soLuongNhap;
 	}
-	private void setSoLuongNhap(int soLuongNhap) {
+	private void setSoLuongNhap(int soLuongNhap) throws Exception {
+		if (soLuongNhap < 0)
+			throw new Exception("Số lượng nhập không âm");
 		this.soLuongNhap = soLuongNhap;
 	}
 	public SanPham getSanPham() {
@@ -54,11 +59,11 @@ public class LishSuTon {
 	
 	@Override
 	public String toString() {
-		return "LishSuTon [maLSTon=" + maLSTon + ", soLuongNhap=" + soLuongNhap + ", lichSuTon=" + lichSuTon
+		return "LishSuTon [maLSTon=" + maLSTon + ", soLuongNhap=" + soLuongNhap + ", lichSuTon=" + ngayThayDoi
 				+ ", sanPham=" + sanPham + "]";
 	}
 	public double TinhTongTienNhap() {
-		return 0;
+		return sanPham.getGiaNhap()*soLuongNhap;
 	}
 	
 }

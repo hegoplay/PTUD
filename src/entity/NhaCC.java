@@ -83,6 +83,20 @@ public class NhaCC {
 	}
 	
 	public boolean laChauAu() {
-		return true;
+		try {
+			Connection con = ConnectDB.getConection();
+			String query = "Select * from eucountries where code = ?";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, quocGia);
+			ResultSet rs =  statement.executeQuery();
+			if(rs.next()) {
+				return true;
+			}
+			else return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
