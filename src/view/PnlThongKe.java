@@ -10,14 +10,16 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
+import java.awt.CardLayout;
 
 public class PnlThongKe extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	static final Color idle_pnlclr = new Color(7, 55, 99);
-	static final Color idle_lblclr = Color.white;
-	/**
+	public static final Color clrPnlColor = new Color(7, 55, 99);
+	public static final Color clrLblColor = Color.white;
+	public static final Color clrTheme = new Color(254,250,224);
+ 	/**
 	 * Create the panel.
 	 */
 	public PnlThongKe() {
@@ -33,39 +35,46 @@ public class PnlThongKe extends JPanel {
 		JPanel pnlDoanhThuCH = new JPanel();
 		pnlNavTK.add(pnlDoanhThuCH);
 		pnlDoanhThuCH.setBorder(new EmptyBorder(13,13,13,13));
-		pnlDoanhThuCH.setBackground(idle_pnlclr);
+		pnlDoanhThuCH.setBackground(clrPnlColor);
 		pnlDoanhThuCH.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblDoanhThuCuaHang = new JLabel("Doanh thu cửa hàng");
-		lblDoanhThuCuaHang.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/money_sign.png")));
+		lblDoanhThuCuaHang.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/money_sign_icon.png")));
 		lblDoanhThuCuaHang.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblDoanhThuCuaHang.setForeground(idle_lblclr);
+		lblDoanhThuCuaHang.setForeground(clrLblColor);
 		pnlDoanhThuCH.add(lblDoanhThuCuaHang);
 		
 		JPanel pnlDoanhThuNV = new JPanel();
 		pnlDoanhThuNV.setBorder(new EmptyBorder(13, 13, 13, 13));
-		pnlDoanhThuNV.setBackground(idle_pnlclr);
+		pnlDoanhThuNV.setBackground(clrPnlColor);
 		pnlNavTK.add(pnlDoanhThuNV);
 		pnlDoanhThuNV.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblDoanhThuNV = new JLabel("Doanh thu nhân viên");
-		lblDoanhThuNV.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/id_card_ico.png")));
+		lblDoanhThuNV.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/id_card_icon.png")));
 		lblDoanhThuNV.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblDoanhThuNV.setForeground(idle_lblclr);
+		lblDoanhThuNV.setForeground(clrLblColor);
 		pnlDoanhThuNV.add(lblDoanhThuNV, BorderLayout.NORTH);
 		
 		JPanel pnlTonKho = new JPanel();
 		pnlTonKho.setBorder(new EmptyBorder(13, 13, 13, 13));
-		pnlTonKho.setBackground(idle_pnlclr);
+		pnlTonKho.setBackground(clrPnlColor);
 		pnlNavTK.add(pnlTonKho);
 		pnlTonKho.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblTonKho = new JLabel("Tồn Kho");
-		lblTonKho.setForeground(idle_lblclr);
-		lblTonKho.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/unbox_ico.png")));
+		lblTonKho.setForeground(clrLblColor);
+		lblTonKho.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/unbox_icon.png")));
 		lblTonKho.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		pnlTonKho.add(lblTonKho, BorderLayout.NORTH);
-
+		
+		JPanel pnlTKLayouts = new JPanel();
+		add(pnlTKLayouts, BorderLayout.CENTER);
+		pnlTKLayouts.setLayout(new CardLayout(0, 0));
+		
+		PnlDoanhThu pnlDoanhThu = new PnlDoanhThu();
+		pnlTKLayouts.add(pnlDoanhThu, "name_117953713583000");
+		
 	}
 
 }
