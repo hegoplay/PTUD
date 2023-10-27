@@ -18,7 +18,7 @@ public class PnlThongKe extends JPanel {
 	
 	public static final Color clrPnlColor = new Color(7, 55, 99);
 	public static final Color clrLblColor = Color.white;
-	public static final Color clrTheme = new Color(254,250,224);
+	
  	/**
 	 * Create the panel.
 	 */

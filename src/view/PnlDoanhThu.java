@@ -34,13 +34,13 @@ public class PnlDoanhThu extends JPanel {
 	 */
 	public PnlDoanhThu() {
 		setBorder(new EmptyBorder(4, 25, 4, 25));
-		setBackground(PnlThongKe.clrTheme);
+		setBackground(MainFrame.clrTheme);
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlTKTheo = new JPanel();
 		add(pnlTKTheo, BorderLayout.NORTH);
 		pnlTKTheo.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 0));
-		pnlTKTheo.setBackground(PnlThongKe.clrTheme);
+		pnlTKTheo.setBackground(MainFrame.clrTheme);
 		
 		JLabel lblTKTheo = new JLabel("Thống kê theo");
 		lblTKTheo.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -103,7 +103,7 @@ public class PnlDoanhThu extends JPanel {
 		
 		JPanel pnlChart = new JPanel();
 		pnlChart.setBorder(new EmptyBorder(20, 0, 10, 0));
-		pnlChart.setBackground(PnlThongKe.clrTheme);
+		pnlChart.setBackground(MainFrame.clrTheme);
 		add(pnlChart, BorderLayout.CENTER);
 		pnlChart.setLayout(new BorderLayout(0, 0));
 		
