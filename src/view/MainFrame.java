@@ -9,12 +9,24 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.border.EmptyBorder;
+
+import component.Nav;
+import controller.ChuyenManHinhController;
+
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import java.awt.CardLayout;
 
 public class MainFrame {
 	
@@ -22,6 +34,7 @@ public class MainFrame {
 	public static final Color clrBtnIdle = new Color(69, 129, 142);
 	public static final Color clrOpsBg = new Color(118,165,175);
 	public static final Color clrTheme = new Color(254,250,224);
+	public static final Color clrBtnHover = new Color(221,161,94);
 	private JFrame frame;
 
 	/**
@@ -64,13 +77,15 @@ public class MainFrame {
 		
 		
 		JPanel pnlLogo = new JPanel();
-		pnlLogo.setBorder(new EmptyBorder(0, 0, 16, 0));
+		pnlLogo.setBorder(null);
 		pnlLogo.setPreferredSize(new Dimension(173, 64));
 		pnlNavBar.add(pnlLogo,BorderLayout.NORTH);
 		
 		ImageIcon logo = new ImageIcon(MainFrame.class.getResource("/view/icon/logo.png"));
+		pnlLogo.setLayout(new BorderLayout(0, 0));
 		JLabel lblLogo = new JLabel(logo,JLabel.CENTER);
-		pnlLogo.add(lblLogo, BorderLayout.NORTH);
+		lblLogo.setLabelFor(pnlLogo);
+		pnlLogo.add(lblLogo);
 		
 		
 		JPanel pnlNavLists = new JPanel();
@@ -85,6 +100,7 @@ public class MainFrame {
 		pnlBanHang.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblBanHang = new JLabel("Bán Hàng");
+		lblBanHang.setLabelFor(pnlBanHang);
 		lblBanHang.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBanHang.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/cart_icon.png")));
 		lblBanHang.setForeground(Color.DARK_GRAY);
@@ -97,6 +113,7 @@ public class MainFrame {
 		pnlKhachHang.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblKhachHang = new JLabel("Khách Hàng");
+		lblKhachHang.setLabelFor(pnlKhachHang);
 		lblKhachHang.setHorizontalAlignment(SwingConstants.CENTER);
 		lblKhachHang.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/khachHang_icon.png")));
 		lblKhachHang.setForeground(Color.DARK_GRAY);
@@ -109,6 +126,7 @@ public class MainFrame {
 		pnlSanPham.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblSanPham = new JLabel("Sản Phẩm");
+		lblSanPham.setLabelFor(pnlSanPham);
 		lblSanPham.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSanPham.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/clothes_icon.png")));
 		lblSanPham.setForeground(Color.DARK_GRAY);
@@ -121,6 +139,7 @@ public class MainFrame {
 		pnlNhaCungCap.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblNhaCungCap = new JLabel("Nhà cung cấp");
+		lblNhaCungCap.setLabelFor(pnlNhaCungCap);
 		lblNhaCungCap.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNhaCungCap.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/boxes_icon.png")));
 		lblNhaCungCap.setForeground(Color.DARK_GRAY);
@@ -133,6 +152,7 @@ public class MainFrame {
 		pnlNhanVien.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblNhanVien = new JLabel("Nhân Viên");
+		lblNhanVien.setLabelFor(pnlNhanVien);
 		lblNhanVien.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNhanVien.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/nhanVien_icon.png")));
 		lblNhanVien.setForeground(Color.DARK_GRAY);
@@ -145,6 +165,7 @@ public class MainFrame {
 		pnlThongKe.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblThngK = new JLabel("Thống Kê");
+		lblThngK.setLabelFor(pnlThongKe);
 		lblThngK.setHorizontalAlignment(SwingConstants.CENTER);
 		lblThngK.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/thongKe_icon.png")));
 		lblThngK.setForeground(Color.DARK_GRAY);
@@ -157,6 +178,7 @@ public class MainFrame {
 		pnlTraHang.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblTraHang = new JLabel("Trả Hàng");
+		lblTraHang.setLabelFor(pnlTraHang);
 		lblTraHang.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTraHang.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/traHang_icon.png")));
 		lblTraHang.setForeground(Color.DARK_GRAY);
@@ -169,14 +191,58 @@ public class MainFrame {
 		pnlHoTro.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblHoTro = new JLabel("Hỗ Trợ");
+		lblHoTro.setLabelFor(pnlHoTro);
 		lblHoTro.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHoTro.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/hoTro_icon.png")));
 		lblHoTro.setForeground(Color.DARK_GRAY);
 		lblHoTro.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pnlHoTro.add(lblHoTro);
+
+		Image imgBG = Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/view/icon/background_img.png"));
+		
+		JPanel pnlCenter = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				// TODO Auto-generated method stub
+				super.paintComponent(g);
+				g.drawImage(imgBG, 0, 0, this);
+			}
+		};
+		pnlCenter.setBorder(new EmptyBorder(15, 15, 15, 15));
+		pnlCenter.setPreferredSize(new Dimension(1088,694));
+		frame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
+		pnlCenter.setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlLogout = new JPanel();
 		pnlNavBar.add(pnlLogout, BorderLayout.SOUTH);
+		
+		JPanel pnlContent = new JPanel();
+		pnlCenter.add(pnlContent, BorderLayout.CENTER);
+		pnlContent.setLayout(new CardLayout(0, 0));
+		
+		PnlThongKe pnlThongKeContent = new PnlThongKe();
+		pnlContent.add(pnlThongKeContent, "Thong Ke");
+		
+		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent);
+		
+		PnlTraHang pnlTraHangContent = new PnlTraHang();
+		pnlContent.add(pnlTraHangContent, "Tra Hang");
+		
+		JLabel lblTitle = new JLabel("New label");
+		lblTitle.setForeground(Color.WHITE);
+		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 60));
+		pnlCenter.add(lblTitle, BorderLayout.NORTH);
+		
+//		controller.setView(pnlThongKe, lblThngK);
+		
+		List<Nav> listItem = new ArrayList<>();
+		
+		listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
+		listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
+		
+		
+		controller.setEvent(listItem);
 		
 	}
 
