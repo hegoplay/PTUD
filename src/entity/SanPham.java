@@ -16,24 +16,6 @@ public class SanPham {
 	private String hinhAnh;
 	private float thue;
 	private LoaiSP loaiSP;
-
-	
-	
-	public SanPham(String maSP, String tenSP, double giaNhap, int slTonKho, String kichThuoc,String mauSac, boolean conKinhDoanh,
-			boolean isNam, NhaCC nhaCC, String hinhAnh, LoaiSP loaiSP) throws Exception {
-		this.setMaSP(maSP);
-		this.setTenSP(tenSP);
-		this.setGiaNhap(giaNhap);
-		this.setSlTonKho(slTonKho);
-		this.setKichThuoc(kichThuoc);
-		this.setMauSac(mauSac);
-		this.setConKinhDoanh(conKinhDoanh);
-		this.setNam(isNam);
-		this.setNhaCC(nhaCC);
-		this.setHinhAnh(hinhAnh);
-		this.setThue();
-		this.setLoaiSP(loaiSP);
-	}
 	
 	public SanPham(String maSP, String tenSP, double giaNhap, int slTonKho, String kichThuoc, String mauSac, boolean conKinhDoanh,
 			boolean isNam, NhaCC nhaCC, String hinhAnh,float thue, LoaiSP loaiSP) throws Exception {
@@ -176,24 +158,8 @@ public class SanPham {
 		return thue;
 	}
 
-	public void setThue() {
-		thue = 0;
-		//Tinh thue VAT
-		if (loaiSP.isDoTT()) thue+=0.1;
-		else thue +=0.05;
-		//Tinh thue EVFTA
-		if(nhaCC.laChauAu()) {
-			if(loaiSP.getMaLoai() == "BLZ") {
-				thue+=0.1;
-			}
-			else {
-				thue += 0.066;
-			}
-		}
-	}
-	public void setThue(float thue) {
-		this.thue = thue;
-		
+	public void setThue(float thue) throws Exception {
+		this.thue = thue;;
 	}
 	
 	public LoaiSP getLoaiSP() {
