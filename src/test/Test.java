@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import entity.NhaCC;
 import entity.NhanVien;
 import entity.TaiKhoan;
-import view.PnlDoanhThu;
+import view.PnlTKDoanhThu;
 import view.PnlThongKe;
 
 public class Test {
@@ -25,7 +25,7 @@ public class Test {
 		System.out.println(tk);
 		JFrame frame = new JFrame();
 		frame.setBounds(0, 0, 1280, 720);
-		PnlDoanhThu pnlThongKe = new PnlDoanhThu();
+		PnlTKDoanhThu pnlThongKe = new PnlTKDoanhThu();
 		frame.add(pnlThongKe);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -3,12 +3,18 @@ package view;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import component.Nav;
+import controller.ChuyenManHinhController;
+
 import java.awt.Color;
 import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import java.awt.CardLayout;
 
@@ -72,8 +78,26 @@ public class PnlThongKe extends JPanel {
 		add(pnlTKLayouts, BorderLayout.CENTER);
 		pnlTKLayouts.setLayout(new CardLayout(0, 0));
 		
-		PnlDoanhThu pnlDoanhThu = new PnlDoanhThu();
-		pnlTKLayouts.add(pnlDoanhThu, "name_117953713583000");
+		PnlTKDoanhThu pnlTKDoanhThu = new PnlTKDoanhThu();
+		pnlTKLayouts.add(pnlTKDoanhThu, "Doanh thu nhan vien");
+		
+		PnlTKTK pnlTKTK = new PnlTKTK();
+		pnlTKLayouts.add(pnlTKTK,"Ton kho");
+		
+		PnlTKCH pnlTKCH = new PnlTKCH();
+		pnlTKLayouts.add(pnlTKCH,"Doanh thu cua hang");
+		
+		ChuyenManHinhController CHMcontroller = new ChuyenManHinhController(pnlTKLayouts,MainFrame.clrBlue6,MainFrame.clrBlue4);
+		
+		CHMcontroller.setView("Ton kho", pnlTonKho, lblTonKho);
+		
+		List<Nav> listItems = new ArrayList<Nav>();
+		
+		listItems.add(new Nav("Ton kho", pnlTonKho, lblTonKho));
+		listItems.add(new Nav("Doanh thu nhan vien",pnlDoanhThuNV,lblDoanhThuNV));
+		listItems.add(new Nav("Doanh thu cua hang",pnlDoanhThuCH,lblDoanhThuCuaHang));
+		
+		CHMcontroller.setEvent(listItems);
 		
 	}
 
