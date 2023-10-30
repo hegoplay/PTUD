@@ -5,22 +5,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class TblNhanVien extends JTable{
+public class TblCTTK extends JTable{
 	private static final int 
 			stt = 1 << 0,
-			maNV = 1 << 1,
-			tenNV = 1 << 2,
-			ngaySinh = 1 << 3,
-			gioiTinh = 1 << 4,
-			slHoaDon = 1 << 5,
-			sanPhamDaBan =1 << 6,
-			doanhThu = 1 << 7;
+			maSP = 1 << 1,
+			tenSP = 1 << 2,
+			loaiSP = 1 << 3,
+			kichThuoc = 1 << 4,
+			mauSac = 1 << 5,
+			soLuong =1 << 6,
+			daBan = 1 << 7,
+			nhapMoi = 1 << 8,
+			conLai = 1 << 9;
 	private static final String[] title = new String[] {
-		"STT","Mã NV", "Tên NV", "Ngày sinh","Giới tính","Hóa đơn đã lập","Sản phẩm đã bán","Doanh thu"
+		"STT","Mã SP", "Tên SP", "Loại","Kích thước","Màu sác","Số lượng","Đã bán","Nhập mới","Còn lại"
 	};
 	private TableRowSorter<TableModel> sorter;
 	private DefaultTableModel model;
-	public TblNhanVien() {
+	public TblCTTK() {
 		model = new DefaultTableModel(title,0) {
 			/**
 			 * 
@@ -30,17 +32,18 @@ public class TblNhanVien extends JTable{
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				// TODO Auto-generated method stub
-				int mask = 1 << columnIndex ;
-				if ((mask & (slHoaDon | sanPhamDaBan)) != 0) {
+				int mask = 1 << columnIndex;
+				if ((mask & (soLuong | daBan | nhapMoi | conLai)) != 0) {
 					return Integer.class;
 				}
-				else if ((mask & doanhThu) != 0)
-					return Double.class;
 				return String.class;
 			}
 		};
 		this.setModel(model);
 		sorter = new TableRowSorter<TableModel>(model);
+		this.getColumnModel().getColumn(0).setPreferredWidth(20);
+		this.getColumnModel().getColumn(1).setPreferredWidth(50);
+		this.getColumnModel().getColumn(4).setPreferredWidth(25);
 		
 	}
 	

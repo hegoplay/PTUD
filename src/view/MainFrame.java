@@ -31,10 +31,16 @@ import java.awt.CardLayout;
 public class MainFrame {
 	
 	
-	public static final Color clrBtnIdle = new Color(69, 129, 142);
-	public static final Color clrOpsBg = new Color(118,165,175);
+	public static final Color clrCyan4 = new Color(69, 129, 142);
+	public static final Color clrCyan3 = new Color(118,165,175);
 	public static final Color clrTheme = new Color(254,250,224);
 	public static final Color clrBtnHover = new Color(221,161,94);
+	public static final Color clrTblBg = new Color(255,217,102);
+	public static final Color clrGrey1 = new Color(51,51,51);
+	public static final Color clrYellow2 = new Color(255,229,153);
+	public static final Color clrCyan2 = new Color(162,196,201);
+	public static final Color clrBlue4 = new Color(89,126,170);
+	public static final Color clrBlue6 = new Color(7,55,99);
 	private JFrame frame;
 
 	/**
@@ -208,6 +214,7 @@ public class MainFrame {
 				g.drawImage(imgBG, 0, 0, this);
 			}
 		};
+		pnlCenter.setBackground(Color.black);
 		pnlCenter.setBorder(new EmptyBorder(15, 15, 15, 15));
 		pnlCenter.setPreferredSize(new Dimension(1088,694));
 		frame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
@@ -223,7 +230,7 @@ public class MainFrame {
 		PnlThongKe pnlThongKeContent = new PnlThongKe();
 		pnlContent.add(pnlThongKeContent, "Thong Ke");
 		
-		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent);
+		
 		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
@@ -234,7 +241,10 @@ public class MainFrame {
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 60));
 		pnlCenter.add(lblTitle, BorderLayout.NORTH);
 		
-//		controller.setView(pnlThongKe, lblThngK);
+		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
+		controller.setLbl(lblTitle);
+		
+		controller.setView("Thong Ke",pnlThongKe, lblThngK);
 		
 		List<Nav> listItem = new ArrayList<>();
 		
