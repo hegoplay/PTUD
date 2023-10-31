@@ -41,7 +41,7 @@ public class MainFrame {
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Launch the application.
