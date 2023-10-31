@@ -57,11 +57,12 @@ public class PnlTKTK extends JPanel {
 
 		JPanel pnlDateDauKy = new JPanel();
 		pnlDateDauKy.setBackground(MainFrame.clrTheme);
-		pnlDateDauKy.setBorder(new EmptyBorder(10, 0, 10, 0));
+		pnlDateDauKy.setBorder(new EmptyBorder(20, 0, 20, 0));
 		pnlDate.add(pnlDateDauKy);
 		pnlDateDauKy.setLayout(new BorderLayout(0, 0));
 		
 		JDateChooser dateDauKy = new JDateChooser();
+		lblDauKy.setLabelFor(dateDauKy);
 		pnlDateDauKy.add(dateDauKy);
 		
 		JLabel lblCuoiKy = new JLabel("Ngày cuối kỳ: ");
@@ -70,18 +71,19 @@ public class PnlTKTK extends JPanel {
 		
 		JPanel pnlDateCuoiKy = new JPanel();
 		pnlDateCuoiKy.setBackground(MainFrame.clrTheme);
-		pnlDateCuoiKy.setBorder(new EmptyBorder(10, 0, 10, 0));
+		pnlDateCuoiKy.setBorder(new EmptyBorder(20, 0, 20, 0));
 		pnlDate.add(pnlDateCuoiKy);
 		pnlDateCuoiKy.setLayout(new BorderLayout(0, 0));
 		
-		JDateChooser dateChooser = new JDateChooser();
-		pnlDateCuoiKy.add(dateChooser, BorderLayout.CENTER);
+		JDateChooser dateCuoiKy = new JDateChooser();
+		lblCuoiKy.setLabelFor(dateCuoiKy);
+		pnlDateCuoiKy.add(dateCuoiKy, BorderLayout.CENTER);
 		
 		
 		JPanel pnlXuatFile = new JPanel();
 		pnlXuatFile.setBackground(MainFrame.clrTheme);
 		pnlFirstLine.add(pnlXuatFile);
-		FlowLayout fl_pnlXuatFile = new FlowLayout(FlowLayout.RIGHT, 5, 5);
+		FlowLayout fl_pnlXuatFile = new FlowLayout(FlowLayout.TRAILING, 5, 20);
 		pnlXuatFile.setLayout(fl_pnlXuatFile);
 		
 		JButton btnXuatFile = new JButton("Xuất file");
@@ -98,6 +100,7 @@ public class PnlTKTK extends JPanel {
 		pnlSecondLine.setLayout(new GridLayout(1, 4, 90, 0));
 		
 		JPanel pnlTongSP = new JPanel();
+		pnlTongSP.setBorder(new EmptyBorder(5, 0, 5, 0));
 		pnlTongSP.setBackground(MainFrame.clrYellow2);
 		pnlSecondLine.add(pnlTongSP);
 		pnlTongSP.setLayout(new GridLayout(2, 1, 0, 0));
@@ -113,6 +116,7 @@ public class PnlTKTK extends JPanel {
 		pnlTongSP.add(lblValTongSP);
 		
 		JPanel pnlDaBan = new JPanel();
+		pnlDaBan.setBorder(new EmptyBorder(5, 0, 5, 0));
 		pnlDaBan.setBackground(MainFrame.clrYellow2);
 		pnlSecondLine.add(pnlDaBan);
 		pnlDaBan.setLayout(new GridLayout(2, 1, 0, 0));
@@ -128,6 +132,7 @@ public class PnlTKTK extends JPanel {
 		pnlDaBan.add(lblValDaBan);
 		
 		JPanel pnlNhapMoi = new JPanel();
+		pnlNhapMoi.setBorder(new EmptyBorder(5, 0, 5, 0));
 		pnlNhapMoi.setBackground(MainFrame.clrYellow2);
 		pnlSecondLine.add(pnlNhapMoi);
 		pnlNhapMoi.setLayout(new GridLayout(2, 1, 0, 0));
@@ -143,6 +148,7 @@ public class PnlTKTK extends JPanel {
 		pnlNhapMoi.add(lblValNhapMoi);
 		
 		JPanel pnlConLai = new JPanel();
+		pnlConLai.setBorder(new EmptyBorder(5, 0, 5, 0));
 		pnlConLai.setBackground(MainFrame.clrYellow2);
 		pnlSecondLine.add(pnlConLai);
 		pnlConLai.setLayout(new GridLayout(2, 1, 0, 0));
