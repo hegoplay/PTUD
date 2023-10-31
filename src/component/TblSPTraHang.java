@@ -36,8 +36,14 @@ public class TblSPTraHang extends JTable{
 					return Double.class;
 				return String.class;
 			}
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		};
 		this.setModel(model);
+		this.setRowSelectionAllowed(true);
 		sorter = new TableRowSorter<TableModel>(model);
 		this.getColumnModel().getColumn(0).setPreferredWidth(20);
 		this.getColumnModel().getColumn(1).setPreferredWidth(50);
@@ -50,5 +56,8 @@ public class TblSPTraHang extends JTable{
 	
 	public void ResetAllRow() {
 		model.setRowCount(0);
+	}
+	public void addRow(String stt, String maSP, String tenSP, double donGia, int soLuong, double thanhTien) {
+		model.addRow(new Object[] {stt,maSP,tenSP,donGia,soLuong,thanhTien});
 	}
 }

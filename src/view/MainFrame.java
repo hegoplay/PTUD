@@ -16,6 +16,7 @@ import controller.ChuyenManHinhController;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,9 @@ public class MainFrame {
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
+	
+	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyyy");
+	
 	public JFrame frame;
 
 	/**

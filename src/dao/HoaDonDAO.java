@@ -47,7 +47,7 @@ public class HoaDonDAO {
 		ArrayList<ChiTietHoaDon> list = new ArrayList<>();
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select * from ChiTietHoaDon where hoaDon = ?";
+			String sql = "Select * from ChiTietHoaDon where hoaDon = ? order by maSP";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, maHD);
 			ResultSet rs = statement.executeQuery();
