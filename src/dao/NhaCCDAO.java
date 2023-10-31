@@ -6,29 +6,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connectDB.ConnectDB;
+import entity.LoaiSP;
+import entity.NhaCC;
 
-public class TraHangDAO {
-	public static boolean KiemTraTTPhieuTra(String maPhieu) {
+public class NhaCCDAO {
+	public static NhaCC GetNhaCC(String maNCC) {
+		NhaCC ncc = null;
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select count(*) from PhieuTraHang where maPhieu = ?";
+			String sql = "Select * from NhaCC where maNCC = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setString(1, maPhieu);
+			statement.setString(1, maNCC);
 			ResultSet rs = statement.executeQuery();
-			
-			con.close();
-			boolean res = false;
 			if (rs.next()) {
-				if (rs.getInt(1) == 0) {
-					res = true;
-				}
+				String tenNCC = rs.getNString(2);
+				String diaChi = rs.getNString(3);
+				String maQG = rs.getString(4);
+				ncc = new NhaCC(maNCC, tenNCC, diaChi, maQG);
 			}
 			con.close();
-			return res;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
+		return ncc;
 	}
 }

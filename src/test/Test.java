@@ -12,19 +12,24 @@ import javax.swing.JFrame;
 
 import connectDB.ConnectDB;
 import dao.HoaDonDAO;
+import dao.NhanVienDAO;
+import dao.SanPhamDAO;
 import entity.HoaDon;
 import entity.NhaCC;
 import entity.NhanVien;
+import entity.SanPham;
 import entity.TaiKhoan;
 import view.PnlTKDoanhThu;
 import view.PnlThongKe;
 
 public class Test {
 	public static void main(String[] args) {
-		HoaDon hd = HoaDonDAO.GetHoaDon("HD00000001");
-		if(hd == null) {
-			System.out.println("DM cuoc doi");
-		}
+		
+//		SanPham sp = SanPhamDAO.GetSanPham("SP00000003");
+//		System.out.println(sp);
+		
+		
+	
 	}
 
 }

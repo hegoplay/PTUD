@@ -70,7 +70,6 @@ public class NhanVien {
 			throw new Exception("Số điện thoại không được rỗng");// cai nay co j nen
 //			sua lai la sdt chi co 10 ky tu
 		}
-		;
 		this.sdt = sdt;
 	}
 

@@ -32,6 +32,8 @@ public class HoaDonDAO {
 				double tongHoaDon = rs.getDouble(7);
 				NhanVien nv = NhanVienDAO.getNhanVien(maNV);
 				KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+				ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
+				hd = new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai,tienKhachDua, list);
 			}
 			con.close();
 			
@@ -50,11 +52,11 @@ public class HoaDonDAO {
 			statement.setString(1, maHD);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
-//				SanPham sp = SanPhamDAO
+				list.add(new ChiTietHoaDon(SanPhamDAO.GetSanPham(rs.getString(1)), rs.getInt(3)));
 			}
 			con.close();
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

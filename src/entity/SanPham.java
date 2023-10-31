@@ -79,7 +79,7 @@ public class SanPham {
 	}
 
 	public void setGiaNhap(double giaNhap) throws Exception {
-		if (giaNhap >= 0) {
+		if (giaNhap < 0) {
 			throw new Exception("Giá nhập không âm");
 		}
 		this.giaNhap = giaNhap;
@@ -91,8 +91,8 @@ public class SanPham {
 
 	public void setKichThuoc(String kichThuoc) throws Exception {
 		String pattern = "^X{0,4}(S|M|L)$";
-		Pattern p = Pattern.compile(pattern,Pattern.CASE_INSENSITIVE);
-		boolean check = p.matcher(maSP).find();
+		Pattern p = Pattern.compile(pattern);
+		boolean check = p.matcher(kichThuoc).find();
 		if (!check) {
 			throw new Exception("Kích thước không hợp lệ");
 		};

@@ -12,6 +12,24 @@ public class HoaDon {
 	private float khuyenMai;
 	private double tienKhachDua;
 	private ArrayList<ChiTietHoaDon> dsCTHD;
+	
+	
+	
+	public HoaDon(String maHD, LocalDateTime ngayLapHD, NhanVien nhanVien, KhachHang khachHang, float khuyenMai,
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
+		this.maHD = maHD;
+		try {
+			this.setNgayLapHD(ngayLapHD);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.setNhanVien(nhanVien);
+		this.setKhachHang(khachHang);
+		this.setKhuyenMai(khuyenMai);
+		this.setTienKhachDua(tienKhachDua);
+		this.setDsCTHD(dsCTHD);
+	}
 	public HoaDon(String maHD, LocalDateTime ngayLapHD, NhanVien nhanVien, KhachHang khachHang,
 			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
 		this.maHD = maHD;
@@ -84,6 +102,9 @@ public class HoaDon {
 	}
 	public float getKhuyenMai() {
 		return khuyenMai;
+	}
+	public void setKhuyenMai(float khuyenMai) {
+		this.khuyenMai = khuyenMai;
 	}
 	public void setKhuyenMai() {
 		//Neu tong tien > 4tr thi khuyen mai 10%

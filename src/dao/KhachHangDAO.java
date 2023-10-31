@@ -12,7 +12,7 @@ public class KhachHangDAO {
 		KhachHang kh = null;
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select * from HoaDon where maKH = ?";
+			String sql = "Select * from KhachHang where maKH = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, maKH);
 			ResultSet rs = statement.executeQuery();
