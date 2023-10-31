@@ -448,9 +448,15 @@ public class PnlTraHang extends JPanel implements ActionListener {
 			clearFileds();
 		}
 		else if (o == btnTimHD) {
-			HoaDon hd = HoaDonDAO.GetHoaDon(txtMaHD.getText());
-			if (hd == null) {
-				JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
+			HoaDon hd;
+			try {
+				hd = HoaDonDAO.GetHoaDon(txtMaHD.getText());
+				if (hd == null) {
+					JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
