@@ -10,7 +10,7 @@ import connectDB.ConnectDB;
 import entity.HoaDon;
 
 public class HoaDonDAO {
-	public HoaDon GetHoaDon(String maHD) {
+	public static HoaDon GetHoaDon(String maHD) {
 		HoaDon hd = null;
 		try {
 			Connection con = ConnectDB.getConection();
