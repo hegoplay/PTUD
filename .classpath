@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.5.4.jar"/>
 	<classpathentry kind="lib" path="lib/sqljdbc42.jar"/>
 	<classpathentry kind="lib" path="lib/swing2swt.jar"/>
+	<classpathentry kind="lib" path="jgoodies-common-1.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

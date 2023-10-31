@@ -35,7 +35,7 @@ public class MainFrame {
 	public static final Color clrOpsBg = new Color(118,165,175);
 	public static final Color clrTheme = new Color(254,250,224);
 	public static final Color clrBtnHover = new Color(221,161,94);
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -220,14 +220,26 @@ public class MainFrame {
 		pnlCenter.add(pnlContent, BorderLayout.CENTER);
 		pnlContent.setLayout(new CardLayout(0, 0));
 		
-		PnlThongKe pnlThongKeContent = new PnlThongKe();
-		pnlContent.add(pnlThongKeContent, "Thong Ke");
+//		PnlThongKe pnlThongKeContent = new PnlThongKe();
+//		pnlContent.add(pnlThongKeContent, "Thong Ke");
+		
+		PnlGDChinh pnlGDChinhContent = new PnlGDChinh();
+		pnlContent.add(pnlGDChinhContent, "Giao Dien Chinh");
 		
 		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent);
+		
+		PnlThongKe pnlThongKeContent = new PnlThongKe();
+		pnlContent.add(pnlThongKeContent, "Thong Ke");
 		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
 		
+		PnlNhanVien pnlNhanVienContent = new PnlNhanVien(); 
+		pnlContent.add(pnlNhanVienContent, "Nhan Vien");
+		
+		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC(); 
+		pnlContent.add(pnlNhaCungCapContent, "Nha Cung Cap");
+				
 		JLabel lblTitle = new JLabel("New label");
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -240,6 +252,8 @@ public class MainFrame {
 		
 		listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
 		listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
+		listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
+		listItem.add(new Nav("Nha Cung Cap", pnlNhaCungCap, lblNhaCungCap));
 		
 		
 		controller.setEvent(listItem);
