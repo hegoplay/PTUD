@@ -254,7 +254,8 @@ public class MainFrame {
 		
 		listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
 		listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
-		
+		listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
+		listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
 		
 		controller.setEvent(listItem);
 		
