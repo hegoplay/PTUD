@@ -14,7 +14,7 @@ public class NguoiQuanLy extends NhanVien{
 		// TODO Auto-generated constructor stub
 	}
 
-	public NguoiQuanLy(String maNV, String ten, String sdt, String email, String diaChi, double luong, String chucVu, boolean isNam,
+	public NguoiQuanLy(String maNV, String ten, String sdt, String email, String diaChi, double luong, boolean chucVu, boolean isNam,
 			boolean dangLamViec,String cuaHangQL) throws Exception {
 		super(maNV, ten, sdt,email, diaChi, luong, chucVu, isNam, dangLamViec);
 		// TODO Auto-generated constructor stub
@@ -22,7 +22,7 @@ public class NguoiQuanLy extends NhanVien{
 		dsNhanVien = new ArrayList<NhanVien>();
 	}
 
-	public NguoiQuanLy(String maNV, String ten, String sdt, String email, String diaChi, double luong, String chucVu, boolean isNam,
+	public NguoiQuanLy(String maNV, String ten, String sdt, String email, String diaChi, double luong, boolean chucVu, boolean isNam,
 			boolean dangLamViec,String cuaHangQL,ArrayList<NhanVien> dsNV) throws Exception {
 		super(maNV, ten, sdt,email, diaChi, luong, chucVu, isNam, dangLamViec);
 		// TODO Auto-generated constructor stub
@@ -43,10 +43,13 @@ public class NguoiQuanLy extends NhanVien{
 	}
 	
 	public boolean themNhanVien(NhanVien nv) {
-		return false;
+		if (dsNhanVien.contains(nv))
+			return false;
+		dsNhanVien.add(nv);
+		return true;
 	}
 	
 	public boolean xoaNhanVien(NhanVien nv) {
-		return false;
+		return dsNhanVien.remove(nv);
 	}
 }

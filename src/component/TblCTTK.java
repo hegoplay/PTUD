@@ -50,4 +50,8 @@ public class TblCTTK extends JTable{
 	public TableModel getTableModel(){
 		return this.model;
 	}
+	
+	public void ResetAllRow() {
+		model.setRowCount(0);
+	}
 }
