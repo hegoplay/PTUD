@@ -4,15 +4,21 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
 import component.TblSPTraHang;
+import dao.HoaDonDAO;
+import entity.HoaDon;
 
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -26,12 +32,31 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class PnlTraHang extends JPanel {
+public class PnlTraHang extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtMaHD;
 	private JTextField txtMaPhieu;
+	private JLabel lblTenNV;
+	private JLabel lblTenKH;
+	private JLabel lblNgayHD;
+	private TblSPTraHang tblCTHDTraHang;
+	private TblSPTraHang tblCTTTTraHang;
+	private JPanel pnlBtnXoa;
+	private JButton btnTraHang;
+	private JButton btnXoa;
+	private JLabel lblValueTongCong;
+	private JLabel lblValueKM;
+	private JLabel lblValueTongTien;
+	private JLabel lblValueTienTL;
+	private JButton btnXuatPhieu;
+	private JButton btnLamMoi;
+	private JLabel lblValueNgTH;
+	private JLabel lblValueNgayTra;
+	private JButton btnTimHD;
 
 	/**
 	 * Create the panel.
@@ -75,7 +100,7 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine1.add(pnlValueTongCong);
 		pnlValueTongCong.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblValueTongCong = new JLabel("679.000 VNĐ");
+		lblValueTongCong = new JLabel("679.000 VNĐ");
 		lblValueTongCong.setEnabled(false);
 		lblValueTongCong.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnlValueTongCong.add(lblValueTongCong);
@@ -94,7 +119,7 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine1.add(pnlValueKM);
 		pnlValueKM.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblValueKM = new JLabel("-33.500VNĐ");
+		lblValueKM = new JLabel("-33.500VNĐ");
 		lblValueKM.setEnabled(false);
 		lblValueKM.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnlValueKM.add(lblValueKM, BorderLayout.CENTER);
@@ -113,10 +138,10 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine1.add(pnlValueTongTien);
 		pnlValueTongTien.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblNewLabel_3 = new JLabel("636.500VNĐ\r\n");
-		lblNewLabel_3.setEnabled(false);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 17));
-		pnlValueTongTien.add(lblNewLabel_3, BorderLayout.CENTER);
+		lblValueTongTien = new JLabel("636.500VNĐ\r\n");
+		lblValueTongTien.setEnabled(false);
+		lblValueTongTien.setFont(new Font("Tahoma", Font.BOLD, 17));
+		pnlValueTongTien.add(lblValueTongTien, BorderLayout.CENTER);
 		
 		JPanel pnlLabelTienTL = new JPanel();
 		pnlLabelTienTL.setBackground(MainFrame.clrTheme);
@@ -132,7 +157,7 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine1.add(pnlValueTienTL);
 		pnlValueTienTL.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblValueTienTL = new JLabel("326.500 VNĐ");
+		lblValueTienTL = new JLabel("326.500 VNĐ");
 		lblValueTienTL.setForeground(Color.RED);
 		lblValueTienTL.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 24));
 		pnlValueTienTL.add(lblValueTienTL, BorderLayout.CENTER);
@@ -161,7 +186,7 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine2_1.add(pnlValueNgTH);
 		pnlValueNgTH.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblValueNgTH = new JLabel("Nguyễn Huy Hoàng");
+		lblValueNgTH = new JLabel("Nguyễn Huy Hoàng");
 		lblValueNgTH.setBackground(MainFrame.clrTheme);
 		lblValueNgTH.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
 		pnlValueNgTH.add(lblValueNgTH, BorderLayout.CENTER);
@@ -181,7 +206,7 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine2_1.add(pnlValueNgayTra);
 		pnlValueNgayTra.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblValueNgayTra = new JLabel("20/10/2023");
+		lblValueNgayTra = new JLabel("20/10/2023");
 		lblValueNgayTra.setBackground(MainFrame.clrTheme);
 		lblValueNgayTra.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnlValueNgayTra.add(lblValueNgayTra, BorderLayout.CENTER);
@@ -191,14 +216,14 @@ public class PnlTraHang extends JPanel {
 		pnlTongKetLine2.add(pnlTongKetLine2_2);
 		pnlTongKetLine2_2.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JButton btnXuatPhieu = new JButton("Xuất phiếu trả hàng");
+		btnXuatPhieu = new JButton("Xuất phiếu trả hàng");
 		btnXuatPhieu.setBackground(MainFrame.clrCyan4);
 		btnXuatPhieu.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/print_icon.png")));
 		btnXuatPhieu.setForeground(Color.WHITE);
 		btnXuatPhieu.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnlTongKetLine2_2.add(btnXuatPhieu);
 		
-		JButton btnLamMoi = new JButton("Làm mới");
+		btnLamMoi = new JButton("Làm mới");
 		btnLamMoi.setBackground(MainFrame.clrCyan4);
 		btnLamMoi.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/refresh_icon.png")));
 		btnLamMoi.setForeground(Color.WHITE);
@@ -245,7 +270,7 @@ public class PnlTraHang extends JPanel {
 		Component horizontalStrut = Box.createHorizontalStrut(16);
 		pnlMaHD.add(horizontalStrut);
 		
-		JButton btnTimHD = new JButton("Tìm");
+		btnTimHD = new JButton("Tìm");
 		btnTimHD.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/magnifying_glass_icon.png")));
 		btnTimHD.setBackground(MainFrame.clrCyan4);
 		btnTimHD.setForeground(Color.WHITE);
@@ -294,7 +319,7 @@ public class PnlTraHang extends JPanel {
 		pnlList.add(pnlTenKH);
 		pnlTenKH.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblTenKH = new JLabel("Lê Mậu Toàn");
+		lblTenKH = new JLabel("Lê Mậu Toàn");
 		lblTenKH.setEnabled(false);
 		lblTenKH.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 17));
 		lblTenKH.setHorizontalAlignment(SwingConstants.LEFT);
@@ -314,7 +339,7 @@ public class PnlTraHang extends JPanel {
 		pnlList.add(pnlTenNV);
 		pnlTenNV.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblTenNV = new JLabel("Hoàng Thị Mỹ Linh");
+		lblTenNV = new JLabel("Hoàng Thị Mỹ Linh");
 		lblTenNV.setEnabled(false);
 		lblTenNV.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 17));
 		pnlTenNV.add(lblTenNV, BorderLayout.CENTER);
@@ -333,7 +358,7 @@ public class PnlTraHang extends JPanel {
 		pnlList.add(pnlNgayHD);
 		pnlNgayHD.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblNgayHD = new JLabel("17/10/2023");
+		lblNgayHD = new JLabel("17/10/2023");
 		lblNgayHD.setEnabled(false);
 		lblNgayHD.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 17));
 		pnlNgayHD.add(lblNgayHD, BorderLayout.CENTER);
@@ -354,7 +379,7 @@ public class PnlTraHang extends JPanel {
 		scrHoaDon.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlCTHD.add(scrHoaDon, BorderLayout.CENTER);
 		
-		TblSPTraHang tblCTHDTraHang = new TblSPTraHang();
+		tblCTHDTraHang = new TblSPTraHang();
 		scrHoaDon.setViewportView(tblCTHDTraHang);
 		
 		JPanel pnlBtnTraHang = new JPanel();
@@ -362,7 +387,7 @@ public class PnlTraHang extends JPanel {
 		pnlCTHD.add(pnlBtnTraHang, BorderLayout.SOUTH);
 		pnlBtnTraHang.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JButton btnTraHang = new JButton("Trả Hàng");
+		btnTraHang = new JButton("Trả Hàng");
 		btnTraHang.setBackground(MainFrame.clrCyan4);
 		btnTraHang.setForeground(Color.WHITE);
 		btnTraHang.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/reply_icon.png")));
@@ -379,22 +404,55 @@ public class PnlTraHang extends JPanel {
 		JScrollPane scrCTTH = new JScrollPane();
 		pnlCTTH.add(scrCTTH, BorderLayout.CENTER);
 		
-		TblSPTraHang tblCTTTTraHang = new TblSPTraHang();
+		tblCTTTTraHang = new TblSPTraHang();
 		scrCTTH.setViewportView(tblCTTTTraHang);
 		
-		JPanel pnlBtnXoa = new JPanel();
+		pnlBtnXoa = new JPanel();
 		pnlBtnXoa.setBackground(MainFrame.clrTblBg);
 		FlowLayout flowLayout = (FlowLayout) pnlBtnXoa.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		pnlCTTH.add(pnlBtnXoa, BorderLayout.SOUTH);
 		
-		JButton btnXoa = new JButton("Xóa");
+		btnXoa = new JButton("Xóa");
 		btnXoa.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/gabage_icon.png")));
 		btnXoa.setBackground(MainFrame.clrCyan4);
 		btnXoa.setForeground(Color.WHITE);
 		btnXoa.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnlBtnXoa.add(btnXoa);
 
+		btnLamMoi.addActionListener(this);
+		btnTimHD.addActionListener(this);
 	}
 
+	public void clearFileds() {
+		tblCTHDTraHang.ResetAllRow();
+		tblCTTTTraHang.ResetAllRow();
+		txtMaHD.setText("");
+		txtMaPhieu.setText("");
+		lblValueTongTien.setText("");
+		lblValueKM.setText("");
+		lblValueTienTL.setText("");
+		lblValueTongCong.setText("");
+		lblTenKH.setText("");
+		lblNgayHD.setText("");
+		lblTenNV.setText("");
+		lblValueNgTH.setText("");
+		lblValueNgayTra.setText("");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == btnLamMoi) {
+			clearFileds();
+		}
+		else if (o == btnTimHD) {
+			HoaDon hd = HoaDonDAO.GetHoaDon(txtMaHD.getText());
+			if (hd == null) {
+				JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
+			}
+		}
+	}
+	
 }
