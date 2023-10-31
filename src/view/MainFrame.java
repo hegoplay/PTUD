@@ -41,7 +41,7 @@ public class MainFrame {
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -230,10 +230,14 @@ public class MainFrame {
 		PnlThongKe pnlThongKeContent = new PnlThongKe();
 		pnlContent.add(pnlThongKeContent, "Thong Ke");
 		
-		
-		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
+		
+		PnlNhanVien pnlNhanVienContent = new PnlNhanVien();
+		pnlContent.add(pnlNhanVienContent, "Nhan Vien");
+		
+		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
+		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
 		JLabel lblTitle = new JLabel("New label");
 		lblTitle.setForeground(Color.WHITE);
