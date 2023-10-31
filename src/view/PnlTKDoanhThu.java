@@ -24,7 +24,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 
-public class PnlDoanhThu extends JPanel {
+public class PnlTKDoanhThu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtTimTheoTen;
@@ -32,7 +32,7 @@ public class PnlDoanhThu extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PnlDoanhThu() {
+	public PnlTKDoanhThu() {
 		setBorder(new EmptyBorder(4, 25, 4, 25));
 		setBackground(MainFrame.clrTheme);
 		setLayout(new BorderLayout(0, 0));
@@ -51,7 +51,7 @@ public class PnlDoanhThu extends JPanel {
 		pnlTKTheo.add(comboBox);
 		
 		JPanel pnlXuatFile = new JPanel();
-		pnlXuatFile.setBackground(MainFrame.clrBtnIdle);
+		pnlXuatFile.setBackground(MainFrame.clrCyan4);
 		pnlXuatFile.setBorder(new EmptyBorder(5, 9, 5, 9));
 		pnlTKTheo.add(pnlXuatFile);
 		
@@ -64,13 +64,13 @@ public class PnlDoanhThu extends JPanel {
 		fillComboBox(comboBox);
 		
 		JPanel pnlTable = new JPanel();
-		pnlTable.setBackground(MainFrame.clrOpsBg);
+		pnlTable.setBackground(MainFrame.clrCyan3);
 		pnlTable.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Chi ti\u1EBFt th\u1ED1ng k\u00EA", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(pnlTable, BorderLayout.SOUTH);
 		pnlTable.setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlTimTheoTen = new JPanel();
-		pnlTimTheoTen.setBackground(MainFrame.clrOpsBg);
+		pnlTimTheoTen.setBackground(MainFrame.clrCyan3);
 		pnlTable.add(pnlTimTheoTen, BorderLayout.NORTH);
 		pnlTimTheoTen.setLayout(new FlowLayout(FlowLayout.RIGHT, 15, 5));
 		
@@ -87,7 +87,7 @@ public class PnlDoanhThu extends JPanel {
 		btnTim.setForeground(Color.WHITE);
 		btnTim.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnTim.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/magnifying_glass_icon.png")));
-		btnTim.setBackground(MainFrame.clrBtnIdle);
+		btnTim.setBackground(MainFrame.clrCyan4);
 		pnlTimTheoTen.add(btnTim);
 		
 		JScrollPane srcNhanVien = new JScrollPane();
@@ -109,13 +109,13 @@ public class PnlDoanhThu extends JPanel {
 		
 		JPanel pnlInfo = new JPanel();
 		pnlInfo.setBorder(new EmptyBorder(15, 15, 15, 15));
-		pnlInfo.setBackground(MainFrame.clrOpsBg);
+		pnlInfo.setBackground(MainFrame.clrCyan3);
 		pnlChart.add(pnlInfo, BorderLayout.EAST);
 		pnlInfo.setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlTitle = new JPanel();
 		pnlTitle.setBorder(new EmptyBorder(0, 0, 10, 0));
-		pnlTitle.setBackground(MainFrame.clrOpsBg);
+		pnlTitle.setBackground(MainFrame.clrCyan3);
 		pnlInfo.add(pnlTitle, BorderLayout.NORTH);
 		pnlTitle.setLayout(new BorderLayout(0, 0));
 		
@@ -125,7 +125,7 @@ public class PnlDoanhThu extends JPanel {
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel pnlDetails = new JPanel();
-		pnlDetails.setBackground(MainFrame.clrOpsBg);
+		pnlDetails.setBackground(MainFrame.clrCyan3);
 		pnlInfo.add(pnlDetails, BorderLayout.CENTER);
 		pnlDetails.setLayout(new GridLayout(5, 2, 30, 5));
 		

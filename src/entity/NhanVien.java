@@ -10,7 +10,7 @@ public class NhanVien {
 	private String email;
 	private String diaChi;
 	private double luong;
-	private String chucVu;
+	private boolean chucVu;
 	private boolean isNam;
 	private boolean dangLamViec;
 
@@ -18,7 +18,7 @@ public class NhanVien {
 		this.setMaNV(maNV);
 	}
 
-	public NhanVien(String maNV, String ten, String sdt, String email, String diaChi, double luong, String chucVu,
+	public NhanVien(String maNV, String ten, String sdt, String email, String diaChi, double luong, boolean chucVu,
 			boolean isNam, boolean dangLamViec) throws Exception {
 		this.setMaNV(maNV);
 		this.setTen(ten);
@@ -70,7 +70,6 @@ public class NhanVien {
 			throw new Exception("Số điện thoại không được rỗng");// cai nay co j nen
 //			sua lai la sdt chi co 10 ky tu
 		}
-		;
 		this.sdt = sdt;
 	}
 
@@ -112,11 +111,11 @@ public class NhanVien {
 		this.luong = luong;
 	}
 
-	public String getChucVu() {
+	public boolean isNQL() {
 		return chucVu;
 	}
 
-	public void setChucVu(String chucVu) {
+	public void setChucVu(boolean chucVu) {
 		this.chucVu = chucVu;
 	}
 

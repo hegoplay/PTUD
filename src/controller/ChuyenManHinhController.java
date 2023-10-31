@@ -16,29 +16,44 @@ import view.MainFrame;
 public class ChuyenManHinhController {
 	private JPanel root;
 	private String kindSelected = "";
-	
+	private Color clrIdle;
+	private Color clrHover;
 	private List<Nav> listItem = null;
+	private JLabel lblTitle = null;
 	
-	public ChuyenManHinhController(JPanel root) {
+	public ChuyenManHinhController(JPanel root, Color clrIdle, Color clrHover) {
 		this.root = root;
+		this.clrIdle = clrIdle;
+		this.clrHover = clrHover;
 	}
 	
-	public void setView(JPanel jpnItem,JLabel jlbItem) {
-		kindSelected = "name_27209059966600";
-		jpnItem.setBackground(new Color(96,100,191));
-		jlbItem.setBackground(new Color(96,100,191));
-		System.out.println(kindSelected);
+	public void setView(String kindSelected,JPanel jpnItem,JLabel jlbItem) {
+		this.kindSelected = kindSelected;
+		jpnItem.setBackground(clrHover);
+		jlbItem.setBackground(clrHover);
+		changeTitle(this.kindSelected);
+		System.out.println(this.kindSelected);
 //		chuyen sang man hinh trang chu
-		((CardLayout)root.getLayout()).show(root, kindSelected);
+		((CardLayout)root.getLayout()).show(root, this.kindSelected);
 	}
 	
 	public void setEvent(List<Nav> listItem) {
 		this.listItem = listItem;
+		
+		
 		for(Nav item :listItem) {
 			item.getJlb().addMouseListener(new LabelEvent(item.getKind(), item.getJpn(), item.getJlb()));
 		}
 		
 	}
+	
+	private void changeTitle(String kindSelected) {
+		// TODO Auto-generated method stub
+		if (lblTitle!=null) {
+			lblTitle.setText(kindSelected);
+		}
+	}
+	
 	class LabelEvent implements MouseListener{
 		
 		private JPanel node;
@@ -61,14 +76,18 @@ public class ChuyenManHinhController {
 			// TODO Auto-generated method stub
 			((CardLayout)root.getLayout()).show(root, kindSelected);
 			setChangeBackground(kind);
+			changeTitle(kindSelected);
 		}
+
+		
+
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
 			kindSelected = kind;
-			jpnItem.setBackground(MainFrame.clrBtnHover);
-			jlbItem.setBackground(MainFrame.clrBtnHover);
+			jpnItem.setBackground(clrHover);
+			jlbItem.setBackground(clrHover);
 		}
 
 		@Override
@@ -80,16 +99,16 @@ public class ChuyenManHinhController {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			jpnItem.setBackground(MainFrame.clrBtnHover);
-			jlbItem.setBackground(MainFrame.clrBtnHover);
+			jpnItem.setBackground(clrHover);
+			jlbItem.setBackground(clrHover);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (!kindSelected.equalsIgnoreCase(kind)) {
-				jpnItem.setBackground(MainFrame.clrTheme);
-				jlbItem.setBackground(MainFrame.clrTheme);
+				jpnItem.setBackground(clrIdle);
+				jlbItem.setBackground(clrIdle);
 			}
 		}
 		
@@ -97,13 +116,16 @@ public class ChuyenManHinhController {
 	private void setChangeBackground(String kind) {
 		for(Nav item: listItem) {
 			if(item.getKind().equalsIgnoreCase(kind)) {
-				item.getJpn().setBackground(MainFrame.clrBtnHover);
-				item.getJlb().setBackground(MainFrame.clrBtnHover);
+				item.getJpn().setBackground(clrHover);
+				item.getJlb().setBackground(clrHover);
 			}
 			else {
-				item.getJpn().setBackground(MainFrame.clrTheme);
-				item.getJlb().setBackground(MainFrame.clrTheme);
+				item.getJpn().setBackground(clrIdle);
+				item.getJlb().setBackground(clrIdle);
 			}
 		}
+	}
+	public void setLbl(JLabel lbl) {
+		this.lblTitle = lbl;
 	}
 }
