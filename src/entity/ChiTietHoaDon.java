@@ -29,4 +29,12 @@ public class ChiTietHoaDon {
 	public double TinhTongThue() {
 		return sanPham.TinhThue()*soLuong;
 	}
+	
+	public void tangSoLuong(int soLuong) throws Exception {
+		if(soLuong + this.soLuong <0) {
+			throw new Exception("So luong khong phu hop");
+		}
+		this.soLuong+=soLuong;
+	}
+	
 }

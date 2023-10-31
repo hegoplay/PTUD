@@ -1,5 +1,7 @@
 package component;
 
+import java.util.ArrayList;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -16,6 +18,7 @@ public class TblSPTraHang extends JTable{
 	private static final String[] title = new String[] {
 		"STT","Mã SP","Tên Sản Phẩm","Đơn giá(VNĐ)","SL","Thành tiền(VNĐ)"
 	};
+	private ArrayList<String> MaSPList;
 	private TableRowSorter<TableModel> sorter;
 	private DefaultTableModel model;
 	public TblSPTraHang() {
@@ -44,7 +47,10 @@ public class TblSPTraHang extends JTable{
 		};
 		this.setModel(model);
 		this.setRowSelectionAllowed(true);
+		
 		sorter = new TableRowSorter<TableModel>(model);
+		MaSPList = new ArrayList<>();
+		
 		this.getColumnModel().getColumn(0).setPreferredWidth(20);
 		this.getColumnModel().getColumn(1).setPreferredWidth(50);
 		this.getColumnModel().getColumn(4).setPreferredWidth(25);
@@ -59,5 +65,18 @@ public class TblSPTraHang extends JTable{
 	}
 	public void addRow(String stt, String maSP, String tenSP, double donGia, int soLuong, double thanhTien) {
 		model.addRow(new Object[] {stt,maSP,tenSP,donGia,soLuong,thanhTien});
+		MaSPList.add(tenSP);
 	}
+	public boolean checkMaSP(String maSP) {
+		return MaSPList.contains(maSP);
+	}
+	public void increaseValue(String maSP,int column, int valueIncrease) throws Exception {
+		if (!MaSPList.contains(maSP)) {
+			throw new Exception("maSP khong ton tai");
+		}
+		int row = MaSPList.indexOf(maSP);
+		model.setValueAt(row, column, (int) model.getValueAt(row, column) + valueIncrease); ;
+		
+	}
+	
 }

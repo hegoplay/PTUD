@@ -11,8 +11,12 @@ import javax.swing.border.EmptyBorder;
 
 import component.TblSPTraHang;
 import dao.HoaDonDAO;
+import dao.TraHangDAO;
 import entity.ChiTietHoaDon;
+import entity.ChiTietTraHang;
 import entity.HoaDon;
+import entity.PhieuTraHang;
+import entity.SanPham;
 
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
@@ -37,6 +41,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,6 +69,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 	private JLabel lblValueNgTH;
 	private JLabel lblValueNgayTra;
 	private JButton btnTimHD;
+	private HoaDon hd;
+	private PhieuTraHang pth;
 
 	/**
 	 * Create the panel.
@@ -174,6 +182,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		pnlTongKetLine2.setLayout(new GridLayout(0, 2, 0, 0));
 
 		JPanel pnlTongKetLine2_1 = new JPanel();
+		pnlTongKetLine2_1.setBackground(MainFrame.clrTheme);
 		pnlTongKetLine2.add(pnlTongKetLine2_1);
 		pnlTongKetLine2_1.setLayout(new BoxLayout(pnlTongKetLine2_1, BoxLayout.X_AXIS));
 
@@ -430,17 +439,21 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		pnlBtnXoa.add(btnXoa);
 
 //		thiet lap cac rang buoc cua cac component	
-	
+
 		txtMaPhieu.setEditable(false);
-		
+
 //		thiet lap ngay tra = ngay hom nay
-		
+
 		lblValueNgayTra.setText(LocalDateTime.now().format(MainFrame.timeFormatter));
-		
+
 //		thiet lap su kien cho cac btn
 		btnLamMoi.addActionListener(this);
 		btnTimHD.addActionListener(this);
 		txtMaHD.addKeyListener(this);
+		btnTraHang.addActionListener(this);
+		
+		clearFileds();
+
 	}
 
 	public void clearFileds() {
@@ -466,31 +479,99 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		if (o == btnLamMoi) {
 			clearFileds();
 		} else if (o == btnTimHD) {
-			LoadData();
-		}
-		else if (o == btnTraHang) {
-			ReduceValue();
-			
+			try {
+				LoadList();
+				LoadData();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (o == btnTraHang) {
+			try {
+				ReduceValue();
+				LoadData();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
-	
-	private void ReduceValue() {
+
+	private void LoadList() throws Exception {
 		// TODO Auto-generated method stub
+		hd = HoaDonDAO.GetHoaDon(txtMaHD.getText());
+		if (hd == null) {
+			JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
+			return;
+		} 
+		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), null, hd.getKhachHang(),
+				new ArrayList<>());
+		if (TraHangDAO.KiemTraTTPhieuTra("TH" + txtMaHD.getText().substring(2))) {
+			pth = null;
+			JOptionPane.showMessageDialog(this, "Phiếu trả tồn tại");
+		}
+		// bo khach hang di
+
+	}
+
+	private void ReduceValue() throws Exception {
+		// TODO đẩy 1 dữ liệu từ cthd sang ctth và sau đó load lại
+		int[] row = tblCTHDTraHang.getSelectedRows();
+		if (row.length <= 0) {
+			JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào được chọn");
+			return;
+		}
+		int slMuonTra = 0;
+		try {
+			slMuonTra = Integer.parseInt(JOptionPane.showInputDialog("Xin mời nhập số lượng hàng muốn trả"));
+
+		} catch (NumberFormatException ne) {
+			JOptionPane.showMessageDialog(this, "Số không đúng định dạng");
+		}
+		for (int i : row) {
+			if (hd.getDsCTHD().get(i).getSoLuong() < slMuonTra) {
+				JOptionPane.showMessageDialog(this, "Số lượng muốn trả lớn hơn số lượng hóa đơn có");
+				return;
+			}
 		
+		}
+		
+		for (int i : row) {
+			SanPham sp = new SanPham(hd.getDsCTHD().get(i).getSanPham().getMaSP());
+				//kiem tra xem ctth co chua
+				//neu chua them vao
+			if (!pth.getDsChiTiet().contains(
+					new ChiTietTraHang(sp))) {
+				ChiTietHoaDon cthd = hd.getDsCTHD().get(i);
+				ChiTietTraHang chiTietTraHang = new ChiTietTraHang(cthd.getSanPham(), slMuonTra);
+				pth.ThemCTTH(chiTietTraHang);
+//				tblCTTTTraHang.addRow(String.format("%03d", tblCTTTTraHang.getModel().getColumnCount()),
+//						cthd.getSanPham().getMaSP(), cthd.getSanPham().getTenSP(), i, slMuonTra, i);
+				
+			}
+			else {
+				//tang so luong san pham muon tra
+				pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).setSoLuongSP(
+						pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).getSoLuongSP() + slMuonTra
+					);
+			}
+			hd.getDsCTHD().get(i).tangSoLuong(-slMuonTra);;
+			
+		}
+
 	}
 
 	private void LoadData() {
-		HoaDon hd;
+		DecimalFormat formatter = new DecimalFormat("###,##0.00");
+		tblCTHDTraHang.ResetAllRow();
+		tblCTTTTraHang.ResetAllRow();
 		try {
-			hd = HoaDonDAO.GetHoaDon(txtMaHD.getText());
-			if (hd == null) {
-				JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
-			} 
-			else {
+
+			if (hd != null) {
 				ArrayList<ChiTietHoaDon> cthd = hd.getDsCTHD();
 				for (int i = 0; i < cthd.size(); i++) {
 					ChiTietHoaDon ct = cthd.get(i);
-					tblCTHDTraHang.addRow(String.format("%04d", i), ct.getSanPham().getMaSP(),
+					tblCTHDTraHang.addRow(String.format("%03d", i), ct.getSanPham().getMaSP(),
 							ct.getSanPham().getTenSP(), ct.getSanPham().TinhGiaBan(), ct.getSoLuong(),
 							ct.getSoLuong() * ct.getSanPham().TinhGiaBan());
 				}
@@ -498,7 +579,22 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				lblTenNV.setText(hd.getNhanVien().getTen());
 				lblNgayHD.setText(hd.getNgayLapHD().format(DateTimeFormatter.ofPattern("dd/MM/yyyyy")));
 				txtMaPhieu.setText("TH" + txtMaHD.getText().substring(2));
+				lblValueTongCong.setText(formatter.format(hd.TinhThanhTien()) + "VNĐ");
+				lblValueKM.setText("-" + formatter.format(hd.TinhTongKhuyenMai()) + "VNĐ");
+				lblValueTongTien.setText(formatter.format(hd.TinhTongTien()) + "VNĐ");
 			}
+			
+			if (pth!=null) {
+				ArrayList<ChiTietTraHang> ctth = pth.getDsChiTiet();
+				for (int i = 0; i < ctth.size(); i++) {
+					ChiTietTraHang ct = ctth.get(i);
+					tblCTTTTraHang.addRow(String.format("%03d", i), ct.getSanPham().getMaSP(),
+							ct.getSanPham().getTenSP(), ct.getSanPham().TinhGiaBan(), ct.getSoLuongSP(),
+							ct.getSoLuongSP() * ct.getSanPham().TinhGiaBan());
+				}
+				lblValueTienTL.setText(new DecimalFormat("###,##0.00").format (pth.TinhTienTra()) + "VNĐ");
+			}
+
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -508,20 +604,26 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			LoadData();
+			try {
+				LoadList();
+				LoadData();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
