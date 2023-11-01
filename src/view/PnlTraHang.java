@@ -71,6 +71,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 	private JButton btnTimHD;
 	private HoaDon hd;
 	private PhieuTraHang pth;
+	private JButton btnMaPhieu;
 
 	/**
 	 * Create the panel.
@@ -231,18 +232,25 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		pnlTongKetLine2.add(pnlTongKetLine2_2);
 		pnlTongKetLine2_2.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
+		btnMaPhieu = new JButton("Tạo");
+		pnlTongKetLine2_2.add(btnMaPhieu);
+		btnMaPhieu.setForeground(Color.WHITE);
+		btnMaPhieu.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/boxPlusWhite_icon.png")));
+		btnMaPhieu.setBackground(MainFrame.clrCyan4);
+		btnMaPhieu.setFont(new Font("Tahoma", Font.BOLD, 16));
+
 		btnXuatPhieu = new JButton("Xuất phiếu trả hàng");
 		btnXuatPhieu.setBackground(MainFrame.clrCyan4);
 		btnXuatPhieu.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/print_icon.png")));
 		btnXuatPhieu.setForeground(Color.WHITE);
-		btnXuatPhieu.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnXuatPhieu.setFont(new Font("Tahoma", Font.BOLD, 16));
 		pnlTongKetLine2_2.add(btnXuatPhieu);
 
 		btnLamMoi = new JButton("Làm mới");
 		btnLamMoi.setBackground(MainFrame.clrCyan4);
 		btnLamMoi.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/refresh_icon.png")));
 		btnLamMoi.setForeground(Color.WHITE);
-		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 16));
 		pnlTongKetLine2_2.add(btnLamMoi);
 
 		JPanel pnlCenter = new JPanel();
@@ -306,13 +314,6 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		txtMaPhieu.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pnlMaPhieu.add(txtMaPhieu);
 		txtMaPhieu.setColumns(10);
-
-		JButton btnMaPhieu = new JButton("Tạo");
-		btnMaPhieu.setForeground(Color.WHITE);
-		btnMaPhieu.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/boxPlusWhite_icon.png")));
-		btnMaPhieu.setBackground(MainFrame.clrCyan4);
-		btnMaPhieu.setFont(new Font("Tahoma", Font.BOLD, 17));
-		pnlMaPhieu.add(btnMaPhieu);
 
 		JPanel pnlList = new JPanel();
 		pnlList.setBackground(MainFrame.clrTheme);
@@ -445,13 +446,14 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 //		thiet lap ngay tra = ngay hom nay
 
 		lblValueNgayTra.setText(LocalDateTime.now().format(MainFrame.timeFormatter));
-
+		lblValueNgTH.setText(MainFrame.nql.getTen());
 //		thiet lap su kien cho cac btn
 		btnLamMoi.addActionListener(this);
 		btnTimHD.addActionListener(this);
 		txtMaHD.addKeyListener(this);
 		btnTraHang.addActionListener(this);
-		
+		btnXoa.addActionListener(this);
+		btnMaPhieu.addActionListener(this);
 		clearFileds();
 
 	}
@@ -476,87 +478,123 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if (o == btnLamMoi) {
-			clearFileds();
-		} else if (o == btnTimHD) {
-			try {
-				LoadList();
-				LoadData();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+		try {
+			if (o == btnLamMoi) {
+				clearFileds();
 			}
-		} else if (o == btnTraHang) {
-			try {
-				ReduceValue();
-				LoadData();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			if (o == btnTimHD) {
+
+				LoadList();
+
+			}
+			if (o == btnTraHang) {
+
+				reduceItem();
+
+			}
+			if (o == btnXoa) {
+				deleteItem();
+			}
+			if (o == btnMaPhieu) {
+				TraHangDAO.ThemPhieuTraHang(pth);
+				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công","Thông báo thành công",JOptionPane.OK_OPTION);
+				clearFileds();
+			}
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(this, e1.getMessage(),"Thông báo lỗi",JOptionPane.WARNING_MESSAGE);
+		}
+		LoadData();
+	}
+
+	private void deleteItem() throws Exception {
+		// TODO Auto-generated method stub
+		int[] row = tblCTTTTraHang.getSelectedRows();
+		if (row.length <= 0) {
+			throw new Exception("Chưa có sản phẩm nào được chọn");
+		}
+		int slMuonTra = 0;
+		try {
+			slMuonTra = Integer.parseInt(JOptionPane.showInputDialog("Xin mời nhập số lượng hàng muốn xóa"));
+
+		} catch (NumberFormatException ne) {
+			throw new Exception("Số không đúng định dạng");
+		}
+
+		for (int i : row) {
+			if (pth.getDsChiTiet().get(i).getSoLuongSP() < slMuonTra) {
+				throw new Exception("Số lượng muốn trả lớn hơn số lượng sản phẩm hiện có");
+			}
+			SanPham sp = new SanPham(pth.getDsChiTiet().get(i).getSanPham().getMaSP());
+			// TODO: tang so luong san pham ben hd và giảm bên trả hàng
+			// nếu slSp trả về không xóa khỏi trả hàng
+
+			hd.getDsCTHD().get(hd.getDsCTHD().indexOf(new ChiTietHoaDon(sp))).tangSoLuong(slMuonTra);
+
+			pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).tangSoLuong(-slMuonTra);
+
+			if (pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).getSoLuongSP() == 0) {
+				pth.getDsChiTiet().remove(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp)));
 			}
 		}
+
 	}
 
 	private void LoadList() throws Exception {
 		// TODO Auto-generated method stub
 		hd = HoaDonDAO.GetHoaDon(txtMaHD.getText());
 		if (hd == null) {
-			JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
-			return;
-		} 
-		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), null, hd.getKhachHang(),
+			throw new Exception("Hóa đơn không tồn tại");
+		}
+		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), MainFrame.nql, hd.getKhachHang(),
 				new ArrayList<>());
+		System.out.println(hd);
 		if (TraHangDAO.KiemTraTTPhieuTra("TH" + txtMaHD.getText().substring(2))) {
 			pth = null;
-			JOptionPane.showMessageDialog(this, "Phiếu trả tồn tại");
+			throw new Exception("Phiếu trả tồn tại");
 		}
 		// bo khach hang di
 
 	}
 
-	private void ReduceValue() throws Exception {
+	private void reduceItem() throws Exception {
 		// TODO đẩy 1 dữ liệu từ cthd sang ctth và sau đó load lại
 		int[] row = tblCTHDTraHang.getSelectedRows();
 		if (row.length <= 0) {
-			JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào được chọn");
-			return;
+			throw new Exception("Chưa có sản phẩm nào được chọn");
 		}
 		int slMuonTra = 0;
 		try {
 			slMuonTra = Integer.parseInt(JOptionPane.showInputDialog("Xin mời nhập số lượng hàng muốn trả"));
 
 		} catch (NumberFormatException ne) {
-			JOptionPane.showMessageDialog(this, "Số không đúng định dạng");
+			throw new Exception("Số không đúng định dạng");
 		}
+
 		for (int i : row) {
 			if (hd.getDsCTHD().get(i).getSoLuong() < slMuonTra) {
-				JOptionPane.showMessageDialog(this, "Số lượng muốn trả lớn hơn số lượng hóa đơn có");
-				return;
+				throw new Exception("Số lượng muốn trả lớn hơn số lượng hóa đơn có");
 			}
-		
-		}
-		
-		for (int i : row) {
 			SanPham sp = new SanPham(hd.getDsCTHD().get(i).getSanPham().getMaSP());
-				//kiem tra xem ctth co chua
-				//neu chua them vao
-			if (!pth.getDsChiTiet().contains(
-					new ChiTietTraHang(sp))) {
+			// kiem tra xem ctth co chua
+			// neu chua them vao
+			if (!pth.getDsChiTiet().contains(new ChiTietTraHang(sp))) {
 				ChiTietHoaDon cthd = hd.getDsCTHD().get(i);
 				ChiTietTraHang chiTietTraHang = new ChiTietTraHang(cthd.getSanPham(), slMuonTra);
 				pth.ThemCTTH(chiTietTraHang);
 //				tblCTTTTraHang.addRow(String.format("%03d", tblCTTTTraHang.getModel().getColumnCount()),
 //						cthd.getSanPham().getMaSP(), cthd.getSanPham().getTenSP(), i, slMuonTra, i);
-				
-			}
-			else {
-				//tang so luong san pham muon tra
+
+			} else {
+				// tang so luong san pham muon tra
 				pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).setSoLuongSP(
-						pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).getSoLuongSP() + slMuonTra
-					);
+						pth.getDsChiTiet().get(pth.getDsChiTiet().indexOf(new ChiTietTraHang(sp))).getSoLuongSP()
+								+ slMuonTra);
 			}
-			hd.getDsCTHD().get(i).tangSoLuong(-slMuonTra);;
-			
+			hd.getDsCTHD().get(i).tangSoLuong(-slMuonTra);
+			;
+
 		}
 
 	}
@@ -583,8 +621,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				lblValueKM.setText("-" + formatter.format(hd.TinhTongKhuyenMai()) + "VNĐ");
 				lblValueTongTien.setText(formatter.format(hd.TinhTongTien()) + "VNĐ");
 			}
-			
-			if (pth!=null) {
+
+			if (pth != null) {
 				ArrayList<ChiTietTraHang> ctth = pth.getDsChiTiet();
 				for (int i = 0; i < ctth.size(); i++) {
 					ChiTietTraHang ct = ctth.get(i);
@@ -592,7 +630,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 							ct.getSanPham().getTenSP(), ct.getSanPham().TinhGiaBan(), ct.getSoLuongSP(),
 							ct.getSoLuongSP() * ct.getSanPham().TinhGiaBan());
 				}
-				lblValueTienTL.setText(new DecimalFormat("###,##0.00").format (pth.TinhTienTra()) + "VNĐ");
+				lblValueTienTL.setText(new DecimalFormat("###,##0.00").format(pth.TinhTienTra()) + "VNĐ");
 			}
 
 		} catch (Exception e1) {

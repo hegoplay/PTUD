@@ -27,6 +27,7 @@ public class HoaDonDAO {
 				LocalDateTime ngayLapHD = rs.getTimestamp(2).toLocalDateTime();
 				String maNV = rs.getString(3);
 				String maKH = rs.getString(4);
+				
 				float khuyenMai = rs.getFloat(5);
 				double tienKhachDua = rs.getDouble(6);
 				double tongHoaDon = rs.getDouble(7);

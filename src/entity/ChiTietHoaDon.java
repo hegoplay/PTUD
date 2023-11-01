@@ -1,5 +1,10 @@
 package entity;
 
+import java.util.Objects;
+
+/**
+ * 
+ */
 public class ChiTietHoaDon {
 	private SanPham sanPham;
 	private int soLuong;
@@ -36,5 +41,25 @@ public class ChiTietHoaDon {
 		}
 		this.soLuong+=soLuong;
 	}
+	public ChiTietHoaDon(SanPham sanPham) {
+		this.sanPham = sanPham;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(sanPham);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChiTietHoaDon other = (ChiTietHoaDon) obj;
+		return Objects.equals(sanPham, other.sanPham);
+	}
+	
+	
 	
 }

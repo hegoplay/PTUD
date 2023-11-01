@@ -60,4 +60,52 @@ public class NhanVienDAO {
 		}
 		return nv;
 	}
+
+	public static NguoiQuanLy getNguoiQuanLy(String maNQL) {
+		NguoiQuanLy nv = null;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "Select * from NhanVien where maNV = ? and chucVu = 1";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, maNQL);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				String tenNV = rs.getNString(2);
+				boolean isNam = rs.getBoolean(3);
+				String diaChi = rs.getNString(4);
+				String sdt = rs.getString(5);
+				String email = rs.getString(6);
+				double luong = rs.getDouble(7);
+				boolean chucVu = rs.getBoolean(8);
+				boolean dangLamViec = rs.getBoolean(9);
+				String cuaHangQL = rs.getString(12);
+				nv = new NguoiQuanLy(maNQL, tenNV, sdt, email, diaChi, luong, chucVu, isNam, dangLamViec, cuaHangQL);
+				sql = "Select * from NhanVien where maNQL = ? and chucVu = 1";
+				statement = con.prepareStatement(sql);
+				statement.setString(1, maNQL);
+				rs = statement.executeQuery();
+				ArrayList<NhanVien> dsNv = new ArrayList<>();
+				while (rs.next()) {
+					String maNV = rs.getString(1);
+					tenNV = rs.getNString(2);
+					isNam = rs.getBoolean(3);
+					diaChi = rs.getNString(4);
+					sdt = rs.getString(5);
+					email = rs.getString(6);
+					luong = rs.getDouble(7);
+					chucVu = rs.getBoolean(8);
+					dangLamViec = rs.getBoolean(9);
+					dsNv.add(new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, chucVu, isNam, dangLamViec));
+
+				}
+
+				return nv;
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nv;
+	}
 }

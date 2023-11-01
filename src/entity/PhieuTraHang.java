@@ -139,4 +139,7 @@ public class PhieuTraHang {
 		// TODO Auto-generated method stub
 		this.hoaDon = hoaDon;
 	}
+	public String getMaPhieu() {
+		return this.maPhieu;
+	}
 }
