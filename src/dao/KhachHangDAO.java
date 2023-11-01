@@ -22,7 +22,7 @@ public class KhachHangDAO {
 				String sdt = rs.getString(4);
 				int namSinh = rs.getInt(5);
 				boolean gioiTinh = rs.getBoolean(6);
-				kh = new KhachHang(tenKH, diaChi, sdt, namSinh, gioiTinh);
+				kh = new KhachHang(maKH,tenKH,diaChi,sdt,namSinh,gioiTinh);
 			}
 			
 		} catch (Exception e) {

@@ -46,7 +46,9 @@ public class SanPham {
 		};
 		this.maSP = maSP;
 	}
-
+	public String getMaSP() {
+		return this.maSP;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(maSP);
