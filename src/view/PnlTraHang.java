@@ -239,7 +239,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		btnMaPhieu.setBackground(MainFrame.clrCyan4);
 		btnMaPhieu.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-		btnXuatPhieu = new JButton("Xuất phiếu trả hàng");
+		btnXuatPhieu = new JButton("Tạo và xuất phiếu");
 		btnXuatPhieu.setBackground(MainFrame.clrCyan4);
 		btnXuatPhieu.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/print_icon.png")));
 		btnXuatPhieu.setForeground(Color.WHITE);
