@@ -60,7 +60,7 @@ public class TblSPTraHang extends JTable{
 		return this.model;
 	}
 	
-	public void ResetAllRow() {
+	public void removeAllRow() {
 		model.setRowCount(0);
 	}
 	public void addRow(String stt, String maSP, String tenSP, double donGia, int soLuong, double thanhTien) {

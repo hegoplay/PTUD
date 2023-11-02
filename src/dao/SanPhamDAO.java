@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.KhachHang;
@@ -36,17 +37,18 @@ public class SanPhamDAO {
 				float thue = rs.getFloat(12);
 				NhaCC ncc = NhaCCDAO.GetNhaCC(maNCC);
 				LoaiSP lsp = SanPhamDAO.GetLoaiSP(maLoaiSP);
-				sp = new SanPham(maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, conKinhDoanh, isNam, ncc, hinhAnh, thue, lsp);
+				sp = new SanPham(maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, conKinhDoanh, isNam, ncc, hinhAnh,
+						thue, lsp);
 			}
 			con.close();
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return sp;
 	}
-	
+
 	public static LoaiSP GetLoaiSP(String maLoai) {
 		LoaiSP lsp = null;
 		try {
@@ -61,13 +63,47 @@ public class SanPhamDAO {
 				lsp = new LoaiSP(maLoai, tenLoai, isDoTT);
 			}
 			con.close();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return lsp;
 	}
-	
-	
+
+	public static ArrayList<SanPham> getAllSP() {
+		ArrayList<SanPham> lists = new ArrayList<>();
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select * from SanPham order by maSP";
+			PreparedStatement statement = con.prepareStatement(sql);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				String maSP = rs.getString(1);
+				String tenSP = rs.getNString(2);
+				double giaNhap = rs.getDouble(3);
+				int slTonKho = rs.getInt(4);
+				String kichThuoc = rs.getString(5);
+				String mauSac = rs.getString(6);
+				boolean isNam = rs.getBoolean(7);
+				boolean conKinhDoanh = rs.getBoolean(8);
+				String maLoaiSP = rs.getString(9);
+				String hinhAnh = rs.getNString(10);
+				String maNCC = rs.getString(11);
+				float thue = rs.getFloat(12);
+				NhaCC ncc = NhaCCDAO.GetNhaCC(maNCC);
+				LoaiSP lsp = SanPhamDAO.GetLoaiSP(maLoaiSP);
+				SanPham sp = new SanPham(maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, conKinhDoanh, isNam, ncc, hinhAnh,
+						thue, lsp);
+				lists.add(sp);
+			}
+			con.close();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lists;
+	}
+
 }

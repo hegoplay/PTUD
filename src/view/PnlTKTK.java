@@ -3,11 +3,31 @@ package view;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import com.toedter.calendar.JDateChooser;
 
 import component.TblCTTK;
+import dao.HoaDonDAO;
+import dao.LSTTonDAO;
+import dao.TraHangDAO;
+import entity.LishSuTon;
+import entity.SanPham;
 
 import javax.swing.JButton;
 import java.awt.FlowLayout;
@@ -21,11 +41,21 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class PnlTKTK extends JPanel {
+public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtTimTheoTen;
-	private JTable tblCTTK;
+	private TblCTTK tblCTTK;
+	private JDateChooser dateCuoiKy;
+	private JDateChooser dateDauKy;
+	private JLabel lblValConLai;
+	private JLabel lblValNhapMoi;
+	private JLabel lblValDaBan;
+	private JLabel lblValTongSP;
+	private JButton btnTim;
+	private ArrayList<SanPham> dsSP;
+	private LocalDate ldDauKy;
+	private LocalDate ldCuoiKy;
 
 	/**
 	 * Create the panel.
@@ -61,7 +91,8 @@ public class PnlTKTK extends JPanel {
 		pnlDate.add(pnlDateDauKy);
 		pnlDateDauKy.setLayout(new BorderLayout(0, 0));
 		
-		JDateChooser dateDauKy = new JDateChooser();
+		dateDauKy = new JDateChooser();
+		dateDauKy.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDauKy.setLabelFor(dateDauKy);
 		pnlDateDauKy.add(dateDauKy);
 		
@@ -75,7 +106,8 @@ public class PnlTKTK extends JPanel {
 		pnlDate.add(pnlDateCuoiKy);
 		pnlDateCuoiKy.setLayout(new BorderLayout(0, 0));
 		
-		JDateChooser dateCuoiKy = new JDateChooser();
+		dateCuoiKy = new JDateChooser();
+		dateCuoiKy.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblCuoiKy.setLabelFor(dateCuoiKy);
 		pnlDateCuoiKy.add(dateCuoiKy, BorderLayout.CENTER);
 		
@@ -110,7 +142,7 @@ public class PnlTKTK extends JPanel {
 		lblTongSP.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlTongSP.add(lblTongSP);
 		
-		JLabel lblValTongSP = new JLabel("13134");
+		lblValTongSP = new JLabel("13134");
 		lblValTongSP.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblValTongSP.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlTongSP.add(lblValTongSP);
@@ -126,7 +158,7 @@ public class PnlTKTK extends JPanel {
 		lblDaBan.setFont(new Font("Tahoma", Font.BOLD, 20));
 		pnlDaBan.add(lblDaBan);
 		
-		JLabel lblValDaBan = new JLabel("1145");
+		lblValDaBan = new JLabel("1145");
 		lblValDaBan.setHorizontalAlignment(SwingConstants.CENTER);
 		lblValDaBan.setFont(new Font("Tahoma", Font.BOLD, 24));
 		pnlDaBan.add(lblValDaBan);
@@ -142,7 +174,7 @@ public class PnlTKTK extends JPanel {
 		lblNhapMoi.setFont(new Font("Tahoma", Font.BOLD, 20));
 		pnlNhapMoi.add(lblNhapMoi);
 		
-		JLabel lblValNhapMoi = new JLabel("207");
+		lblValNhapMoi = new JLabel("207");
 		lblValNhapMoi.setHorizontalAlignment(SwingConstants.CENTER);
 		lblValNhapMoi.setFont(new Font("Tahoma", Font.BOLD, 24));
 		pnlNhapMoi.add(lblValNhapMoi);
@@ -158,7 +190,7 @@ public class PnlTKTK extends JPanel {
 		lblConLai.setFont(new Font("Tahoma", Font.BOLD, 20));
 		pnlConLai.add(lblConLai);
 		
-		JLabel lblValConLai = new JLabel("12196");
+		lblValConLai = new JLabel("12196");
 		lblValConLai.setHorizontalAlignment(SwingConstants.CENTER);
 		lblValConLai.setFont(new Font("Tahoma", Font.BOLD, 24));
 		pnlConLai.add(lblValConLai);
@@ -185,7 +217,7 @@ public class PnlTKTK extends JPanel {
 		pnlHeader.add(txtTimTheoTen);
 		txtTimTheoTen.setColumns(15);
 		
-		JButton btnTim = new JButton("Tìm");
+		btnTim = new JButton("Tìm");
 		btnTim.setBackground(MainFrame.clrCyan4);
 		btnTim.setIcon(new ImageIcon(PnlTKTK.class.getResource("/view/icon/magnifying_glass_icon.png")));
 		btnTim.setForeground(Color.WHITE);
@@ -195,10 +227,142 @@ public class PnlTKTK extends JPanel {
 		JScrollPane scrCTTK = new JScrollPane();
 		pnlTable.add(scrCTTK, BorderLayout.CENTER);
 		
-		TblCTTK tblCTTK = new TblCTTK();
-		tblCTTK.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tblCTTK = new TblCTTK();
+		tblCTTK.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		scrCTTK.setViewportView(tblCTTK);
+		
+//		them su kien cac btn
+		
+		dateDauKy.getDateEditor().addPropertyChangeListener(this);
+		
+//		cai dat ngay mac dinh cua lich
+		
+		
+		dateCuoiKy.setDate(new Date());
+		dateDauKy.setDate(new Date());
+		setJDate();
+		btnTim.addActionListener(this);
+		txtTimTheoTen.addKeyListener(this);
+	}
+	
+	
+	private void setJDate() {
 
+		
+		
+//		han che ngay cua lich
+		dateCuoiKy.setMaxSelectableDate(new Date());
+		dateDauKy.setMaxSelectableDate(new Date());
+		dateCuoiKy.setMinSelectableDate(dateDauKy.getDate());
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == btnTim) {
+			TimSP();
+			
+		}
+	}
+	
+	private void TimSP() {
+		try {
+			int index = dsSP.indexOf(new SanPham(txtTimTheoTen.getText()));
+			if (index == -1) {
+				throw new Exception("Khong tim thay san pham");
+			}
+			tblCTTK.setRowSelectionInterval(index, index);
+			tblCTTK.scrollRectToVisible(new Rectangle(tblCTTK.getCellRect(index, 0, true)));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(this, e1.getMessage());
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		Object obj = evt.getSource();
+		if (obj == dateDauKy.getDateEditor()) {
+			
+			dateCuoiKy.setMinSelectableDate(dateDauKy.getDate());
+		}
+		LoadTable();
+	}
+
+	private void LoadTable() {
+		tblCTTK.removeAllRow();
+		// TODO Auto-generated method stub
+		ldDauKy = dateDauKy.getDate().toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();
+		if (ldDauKy == null) {
+			ldDauKy = LocalDate.now().plusYears(10);
+		}
+		ldCuoiKy = dateCuoiKy.getDate().toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();
+		if (ldCuoiKy == null) {
+			ldCuoiKy = LocalDate.now().minusYears(10);
+		}
+		
+		ldCuoiKy = ldCuoiKy.plusDays(1);
+		
+		dsSP = HoaDonDAO.GetSanPhamInDate(ldDauKy,ldCuoiKy);
+		for (SanPham sp : LSTTonDAO.GetSanPhamInDate(ldDauKy, ldCuoiKy)) {
+			dsSP.add(sp);
+		}
+		dsSP.sort(new Comparator<SanPham>() {
+
+			@Override
+			public int compare(SanPham o1, SanPham o2) {
+				// TODO Auto-generated method stub
+				return o1.getMaSP().compareToIgnoreCase(o2.getMaSP());
+			}
+		});
+		
+		int temp = 0;
+		int tongConLai = 0;
+		int tongTang = 0;
+		int tongBan = 0;
+		int tongSanPham = 0;
+		for (SanPham x :dsSP) {
+			int slTang = LSTTonDAO.GetSLTang(x, ldDauKy, ldCuoiKy);
+			int slBan = HoaDonDAO.GetSLSanPham(x, ldDauKy, ldCuoiKy);
+			tblCTTK.addRow(String.format("%03d", temp),x.getMaSP(),x.getTenSP(),x.getLoaiSP().getTenLoai(),x.getKichThuoc(),
+					x.getMauSac(),slBan + x.getSlTonKho(),slBan,slTang,x.getSlTonKho());
+			temp++;
+			tongConLai += x.getSlTonKho();
+			tongTang +=slTang;
+			tongBan +=slBan;
+			tongSanPham+= x.getSlTonKho() + slBan;
+		}
+		lblValConLai.setText(tongConLai + "");
+		lblValNhapMoi.setText(tongTang + "");
+		lblValDaBan.setText(tongBan+"");
+		lblValTongSP.setText("" + tongSanPham);
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			TimSP();
+		}
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }

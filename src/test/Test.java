@@ -33,16 +33,8 @@ public class Test {
 		
 //		SanPham sp = SanPhamDAO.GetSanPham("SP00000003");
 //		System.out.println(sp);
-		
-		ArrayList<ChiTietTraHang> ctth =  new ArrayList<ChiTietTraHang>();
-		ctth.add(new ChiTietTraHang(new SanPham("SP00000019"), 1));
-		ctth.add(new ChiTietTraHang(new SanPham("SP00000020"), 1));
-		
-		PhieuTraHang pth = new PhieuTraHang("TH00000000", new HoaDon("HD00000001"), LocalDate.now(),
-				new NguoiQuanLy("NV00000000", "PHTM", "0909092343", "adfa@gmail.com"
-						, "abc", 10000000, false, false, false, "abc"), new KhachHang("KH0947842274"), 
-				ctth);
-		TraHangDAO.ThemPhieuTraHang(pth);
+		LocalDate current = LocalDate.now().minusDays(31);
+		System.out.println(HoaDonDAO.GetSanPhamInDate(current, LocalDate.now()));
 	
 	}
 

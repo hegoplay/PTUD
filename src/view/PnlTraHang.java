@@ -239,7 +239,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		btnMaPhieu.setBackground(MainFrame.clrCyan4);
 		btnMaPhieu.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-		btnXuatPhieu = new JButton("Xuất phiếu trả hàng");
+		btnXuatPhieu = new JButton("Tạo và xuất phiếu");
 		btnXuatPhieu.setBackground(MainFrame.clrCyan4);
 		btnXuatPhieu.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/print_icon.png")));
 		btnXuatPhieu.setForeground(Color.WHITE);
@@ -459,8 +459,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void clearFileds() {
-		tblCTHDTraHang.ResetAllRow();
-		tblCTTTTraHang.ResetAllRow();
+		tblCTHDTraHang.removeAllRow();
+		tblCTTTTraHang.removeAllRow();
 		txtMaHD.setText("");
 		txtMaPhieu.setText("");
 		lblValueTongTien.setText("");
@@ -601,8 +601,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 
 	private void LoadData() {
 		DecimalFormat formatter = new DecimalFormat("###,##0.00");
-		tblCTHDTraHang.ResetAllRow();
-		tblCTTTTraHang.ResetAllRow();
+		tblCTHDTraHang.removeAllRow();
+		tblCTTTTraHang.removeAllRow();
 		try {
 
 			if (hd != null) {
