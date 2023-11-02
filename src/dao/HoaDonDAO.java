@@ -182,4 +182,27 @@ public class HoaDonDAO {
 		}
 		return res;
 	}
+	
+	public static double GetTongDT(LocalDate startDate, LocalDate endDate) {
+		double res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(tongHoaDon) from HoaDon hd \r\n"
+					+ "where (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(1, Date.valueOf(startDate));
+			statement.setDate(2, Date.valueOf(endDate));
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getDouble(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
 }
