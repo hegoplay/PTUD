@@ -3,6 +3,7 @@ package view;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -271,6 +272,7 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 				throw new Exception("Khong tim thay san pham");
 			}
 			tblCTTK.setRowSelectionInterval(index, index);
+			tblCTTK.scrollRectToVisible(new Rectangle(tblCTTK.getCellRect(index, 0, true)));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(this, e1.getMessage());
@@ -289,7 +291,7 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 	}
 
 	private void LoadTable() {
-		tblCTTK.ResetAllRow();
+		tblCTTK.removeAllRow();
 		// TODO Auto-generated method stub
 		ldDauKy = dateDauKy.getDate().toInstant()
 			      .atZone(ZoneId.systemDefault())

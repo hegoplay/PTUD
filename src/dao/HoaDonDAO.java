@@ -113,4 +113,73 @@ public class HoaDonDAO {
 		}
 		return res;
 	}
+	public static int GetSLHDCuaNV(NhanVien nv, LocalDate startDate, LocalDate endDate) {
+		int res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select count(*) from HoaDon hd \r\n"
+					+ "where maNV = ? and (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(2, Date.valueOf(startDate));
+			statement.setDate(3, Date.valueOf(endDate));
+			statement.setString(1, nv.getMaNV());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getInt(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public static double GetTongDTNV(NhanVien nv, LocalDate startDate, LocalDate endDate) {
+		double res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(tongHoaDon) from HoaDon hd \r\n"
+					+ "where maNV = ? and (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(2, Date.valueOf(startDate));
+			statement.setDate(3, Date.valueOf(endDate));
+			statement.setString(1, nv.getMaNV());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getDouble(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public static int GetTongSPNV(NhanVien nv, LocalDate startDate, LocalDate endDate) {
+		int res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(soLuong) from HoaDon hd \r\n"
+					+ "inner join ChiTietHoaDon cthd on hd.maHD = cthd.hoaDon "
+					+ "where maNV = ? and (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(2, Date.valueOf(startDate));
+			statement.setDate(3, Date.valueOf(endDate));
+			statement.setString(1, nv.getMaNV());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getInt(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 }

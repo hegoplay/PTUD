@@ -56,7 +56,7 @@ public class TblCTTK extends JTable{
 		return this.model;
 	}
 	
-	public void ResetAllRow() {
+	public void removeAllRow() {
 		model.setRowCount(0);
 	}
 	public void addRow(String stt, String maSP, String tenSp, String loaiSp,String kt, 

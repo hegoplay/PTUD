@@ -459,8 +459,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void clearFileds() {
-		tblCTHDTraHang.ResetAllRow();
-		tblCTTTTraHang.ResetAllRow();
+		tblCTHDTraHang.removeAllRow();
+		tblCTTTTraHang.removeAllRow();
 		txtMaHD.setText("");
 		txtMaPhieu.setText("");
 		lblValueTongTien.setText("");
@@ -601,8 +601,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 
 	private void LoadData() {
 		DecimalFormat formatter = new DecimalFormat("###,##0.00");
-		tblCTHDTraHang.ResetAllRow();
-		tblCTTTTraHang.ResetAllRow();
+		tblCTHDTraHang.removeAllRow();
+		tblCTTTTraHang.removeAllRow();
 		try {
 
 			if (hd != null) {
