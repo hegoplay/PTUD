@@ -6,6 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
 import dao.HoaDonDAO;
+import dao.TraHangDAO;
+import entity.HoaDon;
+import entity.PhieuTraHang;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -18,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Formatter;
 
 import javax.swing.SwingConstants;
@@ -140,6 +144,8 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		}
 		}
 		lblValueDoanhThu.setText(new DecimalFormat("###,###").format(HoaDonDAO.GetTongDT(startDay, endDay)));
+		ArrayList<HoaDon> hdList = HoaDonDAO.GetHoaDonInDate(startDay, endDay);
+		ArrayList<PhieuTraHang> pthList = TraHangDAO.GetPTHInDate(startDay, endDay);
 	}
 
 	@Override
