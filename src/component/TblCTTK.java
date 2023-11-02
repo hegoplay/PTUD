@@ -38,13 +38,18 @@ public class TblCTTK extends JTable{
 				}
 				return String.class;
 			}
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		};
 		this.setModel(model);
 		sorter = new TableRowSorter<TableModel>(model);
+		this.setRowHeight(20);
 		this.getColumnModel().getColumn(0).setPreferredWidth(20);
 		this.getColumnModel().getColumn(1).setPreferredWidth(50);
 		this.getColumnModel().getColumn(4).setPreferredWidth(25);
-		
 	}
 	
 	public TableModel getTableModel(){
@@ -53,5 +58,9 @@ public class TblCTTK extends JTable{
 	
 	public void ResetAllRow() {
 		model.setRowCount(0);
+	}
+	public void addRow(String stt, String maSP, String tenSp, String loaiSp,String kt, 
+			String mauSac, int soLuong,int daBan, int nhapMoi, int conLai) {
+		model.addRow(new Object[] {stt,maSP,tenSp,loaiSp, kt,mauSac,soLuong,daBan,nhapMoi,conLai});
 	}
 }

@@ -32,7 +32,7 @@ public class ChuyenManHinhController {
 		jpnItem.setBackground(clrHover);
 		jlbItem.setBackground(clrHover);
 		changeTitle(this.kindSelected);
-		System.out.println(this.kindSelected);
+//		System.out.println(this.kindSelected);
 //		chuyen sang man hinh trang chu
 		((CardLayout)root.getLayout()).show(root, this.kindSelected);
 	}
