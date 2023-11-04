@@ -210,7 +210,7 @@ public class HoaDonDAO {
 		try {
 			Connection con = ConnectDB.getConection();
 			String sql = "Select * from HoaDon"
-					+ "	where (ngayLapHD between ? and ?) order by maSP";
+					+ "	where (ngayLapHD between ? and ?)";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setDate(1, Date.valueOf(startDate));
 			statement.setDate(2, Date.valueOf(endDate));
