@@ -199,7 +199,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		}
 
 		lblValueDoanhThu.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienHoan));
-		lblValueLoiNhuan.setText(new DecimalFormat("###,###").format(tongTienGoc - tongTienHoan));
+		lblValueLoiNhuan.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienGoc - tongTienHoan));
 		lblValueDoanhSo.setText(HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate()).size() + "");
 
 		Map<String,Integer> SPMap = new TreeMap<>();
