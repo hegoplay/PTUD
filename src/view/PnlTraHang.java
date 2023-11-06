@@ -10,6 +10,7 @@ import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
 import component.TblSPTraHang;
+import controller.ToPDFController;
 import dao.HoaDonDAO;
 import dao.TraHangDAO;
 import entity.ChiTietHoaDon;
@@ -454,6 +455,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		btnTraHang.addActionListener(this);
 		btnXoa.addActionListener(this);
 		btnMaPhieu.addActionListener(this);
+		btnXuatPhieu.addActionListener(this);
 		clearFileds();
 
 	}
@@ -501,12 +503,18 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công","Thông báo thành công",JOptionPane.OK_OPTION);
 				clearFileds();
 			}
-
+			if (o == btnXuatPhieu) {
+				TraHangDAO.ThemPhieuTraHang(pth);
+				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công","Thông báo thành công",JOptionPane.OK_OPTION);
+				ToPDFController.xuatPTTH("invoice.pdf", pth);
+				clearFileds();
+			}
+			LoadData();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(this, e1.getMessage(),"Thông báo lỗi",JOptionPane.WARNING_MESSAGE);
 		}
-		LoadData();
+		
 	}
 
 	private void deleteItem() throws Exception {
@@ -654,7 +662,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				LoadData();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(this, e1.getMessage(),"Thông báo lỗi",JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}
