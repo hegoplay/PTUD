@@ -182,4 +182,60 @@ public class HoaDonDAO {
 		}
 		return res;
 	}
+	
+	public static double GetTongDT(LocalDate startDate, LocalDate endDate) {
+		double res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(tongHoaDon) from HoaDon hd \r\n"
+					+ "where (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(1, Date.valueOf(startDate));
+			statement.setDate(2, Date.valueOf(endDate));
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getDouble(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public static ArrayList<HoaDon> GetHoaDonInDate(LocalDate startDate, LocalDate endDate){
+		ArrayList<HoaDon> res = new ArrayList<>();
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "Select * from HoaDon"
+					+ "	where (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(1, Date.valueOf(startDate));
+			statement.setDate(2, Date.valueOf(endDate));
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				HoaDon hd;
+				String maHD = rs.getString(1);
+				LocalDateTime ngayLapHD = rs.getTimestamp(2).toLocalDateTime();
+				String maNV = rs.getString(3);
+				String maKH = rs.getString(4);
+				float khuyenMai = rs.getFloat(5);
+				double tienKhachDua = rs.getDouble(6);
+				NhanVien nv = NhanVienDAO.getNhanVien(maNV);
+				KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+				ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
+				hd = new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai,tienKhachDua, list);
+				res.add(hd);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
 }
