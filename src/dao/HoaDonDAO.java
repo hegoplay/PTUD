@@ -1,11 +1,14 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 import connectDB.ConnectDB;
 import entity.ChiTietHoaDon;
@@ -27,6 +30,7 @@ public class HoaDonDAO {
 				LocalDateTime ngayLapHD = rs.getTimestamp(2).toLocalDateTime();
 				String maNV = rs.getString(3);
 				String maKH = rs.getString(4);
+				
 				float khuyenMai = rs.getFloat(5);
 				double tienKhachDua = rs.getDouble(6);
 				double tongHoaDon = rs.getDouble(7);
@@ -47,7 +51,7 @@ public class HoaDonDAO {
 		ArrayList<ChiTietHoaDon> list = new ArrayList<>();
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select * from ChiTietHoaDon where hoaDon = ?";
+			String sql = "Select * from ChiTietHoaDon where hoaDon = ? order by maSP";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, maHD);
 			ResultSet rs = statement.executeQuery();
@@ -62,6 +66,120 @@ public class HoaDonDAO {
 		}
 		return list;
 	}
+	public static int GetSLSanPham(SanPham sp, LocalDate startDate, LocalDate endDate){
+		int res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(soLuong) from HoaDon hd "
+					+ "inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon "
+					+ "where (ngayLapHD between ? and ?) and maSP = ? "
+					+ "group by maSP";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(1, Date.valueOf(startDate));
+			statement.setDate(2, Date.valueOf(endDate));
+			statement.setString(3, sp.getMaSP());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getInt(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 	
+	public static ArrayList<SanPham> GetSanPhamInDate(LocalDate startDate, LocalDate endDate){
+		ArrayList<SanPham> res = new ArrayList<>();
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "Select distinct maSP from HoaDon hd"
+					+ "	inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon"
+					+ "	where (ngayLapHD between ? and ?) order by maSP";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(1, Date.valueOf(startDate));
+			statement.setDate(2, Date.valueOf(endDate));
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				res.add(SanPhamDAO.GetSanPham(rs.getString(1)));
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	public static int GetSLHDCuaNV(NhanVien nv, LocalDate startDate, LocalDate endDate) {
+		int res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select count(*) from HoaDon hd \r\n"
+					+ "where maNV = ? and (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(2, Date.valueOf(startDate));
+			statement.setDate(3, Date.valueOf(endDate));
+			statement.setString(1, nv.getMaNV());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getInt(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 	
+	public static double GetTongDTNV(NhanVien nv, LocalDate startDate, LocalDate endDate) {
+		double res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(tongHoaDon) from HoaDon hd \r\n"
+					+ "where maNV = ? and (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(2, Date.valueOf(startDate));
+			statement.setDate(3, Date.valueOf(endDate));
+			statement.setString(1, nv.getMaNV());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getDouble(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public static int GetTongSPNV(NhanVien nv, LocalDate startDate, LocalDate endDate) {
+		int res = 0;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "select sum(soLuong) from HoaDon hd \r\n"
+					+ "inner join ChiTietHoaDon cthd on hd.maHD = cthd.hoaDon "
+					+ "where maNV = ? and (ngayLapHD between ? and ?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setDate(2, Date.valueOf(startDate));
+			statement.setDate(3, Date.valueOf(endDate));
+			statement.setString(1, nv.getMaNV());
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				res = rs.getInt(1);
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 }
