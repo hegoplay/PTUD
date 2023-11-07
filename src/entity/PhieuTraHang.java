@@ -142,4 +142,12 @@ public class PhieuTraHang {
 	public String getMaPhieu() {
 		return this.maPhieu;
 	}
+	
+	public double TinhTongTienGoc() {
+		double res = 0;
+		for (ChiTietTraHang ct : dsChiTiet) {
+			res+=ct.getSanPham().getGiaNhap() * ct.getSoLuongSP();
+		}
+		return res;
+	}
 }

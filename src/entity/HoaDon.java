@@ -181,4 +181,13 @@ public class HoaDon {
 	public boolean XoaCTHD(ChiTietHoaDon cthd) {
 		return dsCTHD.remove(cthd);
 	}
+	
+	public double TinhTongTienGoc() {
+		double res = 0;
+		for (ChiTietHoaDon ct : dsCTHD) {
+			res += ct.TinhTienGoc();
+		}
+		return res;
+	}
+	
 }

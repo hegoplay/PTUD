@@ -46,7 +46,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JTextField txtTimTheoTen;
 	private TblNhanVien tblNhanVien;
-	private JComboBox<String> cbTKTheo;
+	private JComboBox<String> cmbTKTheo;
 	private JLabel lblHoaDonLap;
 	private JLabel lblDoanhSo;
 	private JLabel lblDoanhThu;
@@ -73,10 +73,10 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		lblTKTheo.setFont(new Font("Tahoma", Font.BOLD, 17));
 		pnlTKTheo.add(lblTKTheo);
 
-		cbTKTheo = new JComboBox<String>(new String[] { "Ngày", "Tháng", "Kỳ", "Năm" });
-		cbTKTheo.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		cmbTKTheo = new JComboBox<String>(new String[] { "Ngày", "Tháng", "Kỳ", "Năm" });
+		cmbTKTheo.setFont(new Font("Tahoma", Font.PLAIN, 17));
 
-		pnlTKTheo.add(cbTKTheo);
+		pnlTKTheo.add(cmbTKTheo);
 
 		JButton btnXuatFile = new JButton("Xuất file");
 		btnXuatFile.setBackground(MainFrame.clrCyan4);
@@ -200,7 +200,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		
 		LoadTable();
 		
-		cbTKTheo.addActionListener(this);
+		cmbTKTheo.addActionListener(this);
 //		JPanel panel = new JPanel();
 //		pnlTitle.add(panel, BorderLayout.CENTER);
 	}
@@ -213,7 +213,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		startDay = LocalDate.now();
 		endDay = LocalDate.now().plusDays(1);
 
-		switch ((String) cbTKTheo.getSelectedItem()) {
+		switch ((String) cmbTKTheo.getSelectedItem()) {
 		case "Tháng": {
 			startDay = startDay.minusMonths(1);
 		}

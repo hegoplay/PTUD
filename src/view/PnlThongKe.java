@@ -40,9 +40,9 @@ public class PnlThongKe extends JPanel {
 		
 		JPanel pnlDoanhThuCH = new JPanel();
 		pnlNavTK.add(pnlDoanhThuCH);
-		pnlDoanhThuCH.setBorder(new EmptyBorder(13,13,13,13));
+		pnlDoanhThuCH.setBorder(null);
 		pnlDoanhThuCH.setBackground(clrPnlColor);
-		pnlDoanhThuCH.setLayout(new BorderLayout(0, 0));
+		pnlDoanhThuCH.setLayout(new FlowLayout(FlowLayout.CENTER, 13, 13));
 		
 		JLabel lblDoanhThuCuaHang = new JLabel("Doanh thu cửa hàng");
 		lblDoanhThuCuaHang.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/money_sign_icon.png")));
@@ -51,28 +51,28 @@ public class PnlThongKe extends JPanel {
 		pnlDoanhThuCH.add(lblDoanhThuCuaHang);
 		
 		JPanel pnlDoanhThuNV = new JPanel();
-		pnlDoanhThuNV.setBorder(new EmptyBorder(13, 13, 13, 13));
+		pnlDoanhThuNV.setBorder(null);
 		pnlDoanhThuNV.setBackground(clrPnlColor);
 		pnlNavTK.add(pnlDoanhThuNV);
-		pnlDoanhThuNV.setLayout(new BorderLayout(0, 0));
+		pnlDoanhThuNV.setLayout(new FlowLayout(FlowLayout.CENTER, 13, 13));
 		
 		JLabel lblDoanhThuNV = new JLabel("Doanh thu nhân viên");
 		lblDoanhThuNV.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/id_card_icon.png")));
 		lblDoanhThuNV.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblDoanhThuNV.setForeground(clrLblColor);
-		pnlDoanhThuNV.add(lblDoanhThuNV, BorderLayout.NORTH);
+		pnlDoanhThuNV.add(lblDoanhThuNV);
 		
 		JPanel pnlTonKho = new JPanel();
-		pnlTonKho.setBorder(new EmptyBorder(13, 13, 13, 13));
+		pnlTonKho.setBorder(null);
 		pnlTonKho.setBackground(clrPnlColor);
 		pnlNavTK.add(pnlTonKho);
-		pnlTonKho.setLayout(new BorderLayout(0, 0));
+		pnlTonKho.setLayout(new FlowLayout(FlowLayout.CENTER, 13, 13));
 		
 		JLabel lblTonKho = new JLabel("Tồn Kho");
 		lblTonKho.setForeground(clrLblColor);
 		lblTonKho.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/unbox_icon.png")));
 		lblTonKho.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		pnlTonKho.add(lblTonKho, BorderLayout.NORTH);
+		pnlTonKho.add(lblTonKho);
 		
 		JPanel pnlTKLayouts = new JPanel();
 		add(pnlTKLayouts, BorderLayout.CENTER);

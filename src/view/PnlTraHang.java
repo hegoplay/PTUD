@@ -470,6 +470,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		lblTenKH.setText("");
 		lblNgayHD.setText("");
 		lblTenNV.setText("");
+		hd = null;
+		pth = null;
 //		lblValueNgTH.setText("");
 //		lblValueNgayTra.setText("");
 	}
@@ -490,7 +492,6 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 			if (o == btnTraHang) {
 
 				reduceItem();
-
 			}
 			if (o == btnXoa) {
 				deleteItem();
@@ -549,7 +550,6 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		}
 		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), MainFrame.nql, hd.getKhachHang(),
 				new ArrayList<>());
-		System.out.println(hd);
 		if (TraHangDAO.KiemTraTTPhieuTra("TH" + txtMaHD.getText().substring(2))) {
 			pth = null;
 			throw new Exception("Phiếu trả tồn tại");

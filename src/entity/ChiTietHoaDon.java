@@ -60,6 +60,8 @@ public class ChiTietHoaDon {
 		return Objects.equals(sanPham, other.sanPham);
 	}
 	
-	
+	public double TinhTienGoc() {
+		return sanPham.getGiaNhap() * soLuong;
+	}
 	
 }
