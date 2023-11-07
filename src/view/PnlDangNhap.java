@@ -47,7 +47,7 @@ public class PnlDangNhap extends JFrame {
 	 */
 	public PnlDangNhap() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1265, 782);
+		setBounds(100, 100, 1315, 782);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -56,13 +56,13 @@ public class PnlDangNhap extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(PnlDangNhap.class.getResource("/view/icon/logogdchinh-removebg-preview.png")));
-		lblNewLabel.setBounds(273, 0, 543, 229);
+		lblNewLabel.setBounds(339, 0, 543, 229);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblDangNhapHeThong = new JLabel("ĐĂNG NHẬP HỆ THỐNG");
 		lblDangNhapHeThong.setForeground(new Color(255, 255, 255));
 		lblDangNhapHeThong.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblDangNhapHeThong.setBounds(411, 223, 296, 54);
+		lblDangNhapHeThong.setBounds(482, 223, 296, 54);
 		contentPane.add(lblDangNhapHeThong);
 		
 		txtTaiKhoan = new JTextField();
@@ -99,7 +99,7 @@ public class PnlDangNhap extends JFrame {
 		JButton btnDangNhap = new JButton("Đăng nhập");
 		btnDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnDangNhap.setBackground(new Color(64, 128, 128));
-		btnDangNhap.setBounds(546, 442, 161, 42);
+		btnDangNhap.setBounds(545, 443, 161, 42);
 		contentPane.add(btnDangNhap);
 		
 		btnDangNhap.addActionListener(new ActionListener() {
@@ -129,8 +129,8 @@ public class PnlDangNhap extends JFrame {
 		});
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(PnlDangNhap.class.getResource("/view/icon/anhnengdchinh.jpg")));
-		lblNewLabel_1.setBounds(24, 11, 1225, 741);
+		lblNewLabel_1.setIcon(new ImageIcon(PnlDangNhap.class.getResource("/view/icon/hinhanhgiaodienchinh.png")));
+		lblNewLabel_1.setBounds(0, 0, 1296, 745);
 		contentPane.add(lblNewLabel_1);
 		
 		passwordField = new JPasswordField();

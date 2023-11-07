@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
+import javax.swing.ImageIcon;
 
 public class PnlNhaCC extends JPanel {
 	private JTextField textMaNCC;
@@ -58,6 +59,7 @@ public class PnlNhaCC extends JPanel {
 		add(lblTenNhaCC);
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		comboBox.setBounds(186, 102, 171, 22);
 		add(comboBox);
 		
@@ -99,9 +101,10 @@ public class PnlNhaCC extends JPanel {
 		panel.add(textTimNhaCC);
 		
 		JButton btnTim = new JButton("Tìm");
+		btnTim.setIcon(new ImageIcon(PnlNhaCC.class.getResource("/view/icon/magnifying_glass_icon.png")));
 		btnTim.setForeground(new Color(255, 255, 255));
 		btnTim.setBackground(new Color(0, 128, 192));
-		btnTim.setBounds(774, 34, 103, 32);
+		btnTim.setBounds(774, 34, 120, 32);
 		panel.add(btnTim);
 		// Thêm dữ liệu cho các hàng khác ở đây
 
@@ -130,29 +133,32 @@ public class PnlNhaCC extends JPanel {
         panel.add(scrollPane);
 		
 		JButton btnThem = new JButton("Thêm mới");
+		btnThem.setIcon(new ImageIcon(PnlNhaCC.class.getResource("/view/icon/boxPlusWhite_icon.png")));
 		btnThem.setForeground(new Color(255, 255, 255));
 		btnThem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnThem.setBackground(new Color(0, 128, 192));
-		btnThem.setBounds(218, 148, 119, 32);
+		btnThem.setBounds(218, 148, 139, 32);
 		add(btnThem);
 		
 		JButton btnSua = new JButton("Sửa thông tin");
+		btnSua.setIcon(new ImageIcon(PnlNhaCC.class.getResource("/view/icon/mechanical-gears-.png")));
 		btnSua.setForeground(new Color(255, 255, 255));
 		btnSua.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnSua.setBackground(new Color(0, 128, 192));
-		btnSua.setBounds(457, 149, 128, 32);
+		btnSua.setBounds(457, 149, 145, 32);
 		add(btnSua);
 		
 		JButton btnLamMoi = new JButton("Làm mới");
+		btnLamMoi.setIcon(new ImageIcon(PnlNhaCC.class.getResource("/view/icon/refresh_icon.png")));
 		btnLamMoi.setForeground(new Color(255, 255, 255));
 		btnLamMoi.setBackground(new Color(0, 128, 192));
-		btnLamMoi.setBounds(716, 148, 119, 32);
+		btnLamMoi.setBounds(716, 148, 139, 32);
 		add(btnLamMoi);
 
 	}

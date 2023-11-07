@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
@@ -93,7 +95,6 @@ public class TraHangDAO {
 		}
 		return res;
 	}
-	
 	public static ArrayList<PhieuTraHang> GetPTHInDate(LocalDate startDate, LocalDate endDate){
 		ArrayList<PhieuTraHang> res = new ArrayList<>();
 		try {
