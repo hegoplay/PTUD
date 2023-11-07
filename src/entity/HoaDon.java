@@ -79,6 +79,9 @@ public class HoaDon {
 		HoaDon other = (HoaDon) obj;
 		return Objects.equals(maHD, other.maHD);
 	}
+	public String getMaHD() {
+		return maHD;
+	}
 	public LocalDateTime getNgayLapHD() {
 		return ngayLapHD;
 	}

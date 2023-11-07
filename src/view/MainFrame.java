@@ -12,10 +12,13 @@ import javax.swing.border.EmptyBorder;
 
 import component.Nav;
 import controller.ChuyenManHinhController;
+import dao.NhanVienDAO;
+import entity.NguoiQuanLy;
 
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +44,11 @@ public class MainFrame {
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
+	
+	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
 	public JFrame frame;
+	public static NguoiQuanLy nql;
 
 	/**
 	 * Launch the application.
@@ -63,6 +70,7 @@ public class MainFrame {
 	 * Create the application.
 	 */
 	public MainFrame() {
+		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
 		initialize();
 	}
 
@@ -70,7 +78,10 @@ public class MainFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/view/icon/shop_logo.png")));
 		frame.setBounds(0, 0, 1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -244,6 +255,9 @@ public class MainFrame {
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 60));
 		pnlCenter.add(lblTitle, BorderLayout.NORTH);
+		
+		//set nguoi quan ly
+		
 		
 		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
 		controller.setLbl(lblTitle);

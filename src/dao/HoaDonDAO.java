@@ -27,6 +27,7 @@ public class HoaDonDAO {
 				LocalDateTime ngayLapHD = rs.getTimestamp(2).toLocalDateTime();
 				String maNV = rs.getString(3);
 				String maKH = rs.getString(4);
+				
 				float khuyenMai = rs.getFloat(5);
 				double tienKhachDua = rs.getDouble(6);
 				double tongHoaDon = rs.getDouble(7);
@@ -47,7 +48,7 @@ public class HoaDonDAO {
 		ArrayList<ChiTietHoaDon> list = new ArrayList<>();
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select * from ChiTietHoaDon where hoaDon = ?";
+			String sql = "Select * from ChiTietHoaDon where hoaDon = ? order by maSP";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, maHD);
 			ResultSet rs = statement.executeQuery();

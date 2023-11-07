@@ -101,6 +101,10 @@ public class PhieuTraHang {
 		}
 		return money;
 	}
+	
+	public double TinhTienTra() {
+		return TinhThanhTien()*(1-hoaDon.getKhuyenMai());
+	}
 
 	public void XuatPhieuTraHang(String url) {
 
@@ -134,5 +138,8 @@ public class PhieuTraHang {
 	private void setHoaDon(HoaDon hoaDon) {
 		// TODO Auto-generated method stub
 		this.hoaDon = hoaDon;
+	}
+	public String getMaPhieu() {
+		return this.maPhieu;
 	}
 }
