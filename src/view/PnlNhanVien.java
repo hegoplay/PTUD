@@ -15,11 +15,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.ImageIcon;
 
 public class PnlNhanVien extends JPanel {
 
@@ -58,7 +60,7 @@ public class PnlNhanVien extends JPanel {
 
         JLabel lblTenNhaCC = new JLabel("Tên Nhà cung cấp:");
         lblTenNhaCC.setFont(new Font("Tahoma", Font.BOLD, 17));
-        lblTenNhaCC.setBounds(389, 51, 176, 32);
+        lblTenNhaCC.setBounds(322, 51, 176, 32);
         add(lblTenNhaCC);
 
         JComboBox comboBox = new JComboBox();
@@ -66,11 +68,6 @@ public class PnlNhanVien extends JPanel {
         comboBox.setModel(new DefaultComboBoxModel(new String[] {"Nhân viên", "Quản lý"}));
         comboBox.setBounds(96, 170, 171, 22);
         add(comboBox);
-
-        JLabel lblDiaChi = new JLabel("Giới tính:");
-        lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 17));
-        lblDiaChi.setBounds(320, 109, 81, 32);
-        add(lblDiaChi);
 
         JPanel panel = new JPanel();
         panel.setForeground(new Color(255, 255, 255));
@@ -90,6 +87,7 @@ public class PnlNhanVien extends JPanel {
         panel.add(lblTimNV);
 
         JButton btnTimNV = new JButton("Tìm");
+        btnTimNV.setIcon(new ImageIcon(PnlNhanVien.class.getResource("/view/icon/magnifying_glass_icon.png")));
         btnTimNV.setForeground(new Color(255, 255, 255));
         btnTimNV.setBackground(new Color(0, 128, 192));
         btnTimNV.setBounds(774, 34, 103, 32);
@@ -121,33 +119,36 @@ public class PnlNhanVien extends JPanel {
         ));
 
         JButton btnThemNV = new JButton("Thêm mới");
+        btnThemNV.setIcon(new ImageIcon(PnlNhanVien.class.getResource("/view/icon/boxPlusWhite_icon.png")));
         btnThemNV.setForeground(new Color(255, 255, 255));
         btnThemNV.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
         btnThemNV.setBackground(new Color(0, 128, 192));
-        btnThemNV.setBounds(213, 217, 119, 32);
+        btnThemNV.setBounds(213, 217, 139, 32);
         add(btnThemNV);
 
         JButton btnSuaNV = new JButton("Sửa thông tin");
+        btnSuaNV.setIcon(new ImageIcon(PnlNhanVien.class.getResource("/view/icon/mechanical-gears-.png")));
         btnSuaNV.setForeground(new Color(255, 255, 255));
         btnSuaNV.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
         btnSuaNV.setBackground(new Color(0, 128, 192));
-        btnSuaNV.setBounds(450, 217, 128, 32);
+        btnSuaNV.setBounds(450, 217, 146, 32);
         add(btnSuaNV);
 
         JButton btnLamMoiNV = new JButton("Làm mới");
+        btnLamMoiNV.setIcon(new ImageIcon(PnlNhanVien.class.getResource("/view/icon/refresh_icon.png")));
         btnLamMoiNV.setForeground(new Color(255, 255, 255));
         btnLamMoiNV.setBackground(new Color(0, 128, 192));
-        btnLamMoiNV.setBounds(714, 217, 119, 32);
+        btnLamMoiNV.setBounds(714, 217, 139, 32);
         add(btnLamMoiNV);
 
         textMaNV = new JTextField();
-        textMaNV.setBounds(139, 54, 139, 32);
+        textMaNV.setBounds(139, 54, 171, 32);
         add(textMaNV);
         textMaNV.setColumns(10);
 
@@ -160,16 +161,10 @@ public class PnlNhanVien extends JPanel {
         textSDT.setColumns(10);
         textSDT.setBounds(141, 112, 169, 32);
         add(textSDT);
-
-        JButton btnTao = new JButton("Tạo");
-        btnTao.setForeground(Color.WHITE);
-        btnTao.setBackground(new Color(0, 128, 192));
-        btnTao.setBounds(288, 53, 81, 35);
-        add(btnTao);
 		
 		textTenNCC = new JTextField();
 		textTenNCC.setColumns(10);
-		textTenNCC.setBounds(554, 54, 155, 32);
+		textTenNCC.setBounds(503, 54, 212, 32);
 		add(textTenNCC);
 		
 		JLabel lblNgySinh = new JLabel("Ngày sinh:");
@@ -181,15 +176,46 @@ public class PnlNhanVien extends JPanel {
 		dateChooser.setBounds(853, 51, 176, 32);
 		add(dateChooser);
 		
-		JRadioButton rdbtnNam = new JRadioButton("Nam");
-		rdbtnNam.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		rdbtnNam.setBounds(407, 110, 67, 31);
-		add(rdbtnNam);
-		
-		JRadioButton rdbtnNu = new JRadioButton("Nữ");
-		rdbtnNu.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		rdbtnNu.setBounds(484, 110, 55, 31);
-		add(rdbtnNu);
+//		JLabel lblGioiTinh = new JLabel("Giới tính:");
+//        lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
+//        lblGioiTinh.setBounds(320, 109, 81, 32);
+//        add(lblGioiTinh);
+//        
+//		JRadioButton rdbtnNam = new JRadioButton("Nam");
+//		rdbtnNam.setFont(new Font("Tahoma", Font.PLAIN, 17));
+//		rdbtnNam.setBounds(407, 110, 67, 31);
+//		add(rdbtnNam);
+//		
+//		JRadioButton rdbtnNu = new JRadioButton("Nữ");
+//		rdbtnNu.setFont(new Font("Tahoma", Font.PLAIN, 17));
+//		rdbtnNu.setBounds(484, 110, 55, 31);
+//		add(rdbtnNu);
+		JLabel lblGioiTinh = new JLabel("Giới tính:");
+        lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
+        lblGioiTinh.setBounds(322, 109, 81, 32);
+        add(lblGioiTinh);
+
+        JRadioButton rdbtnNam = new JRadioButton("Nam");
+        rdbtnNam.setBackground(new Color(254, 250, 224));
+        rdbtnNam.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        rdbtnNam.setBounds(408, 110, 67, 31);
+        add(rdbtnNam);
+
+        JRadioButton rdbtnNu = new JRadioButton("Nữ");
+        rdbtnNu.setBackground(new Color(254, 250, 224));
+        rdbtnNu.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        rdbtnNu.setBounds(482, 110, 55, 31);
+        add(rdbtnNu);
+
+        // Nhóm các JRadioButton lại với nhau
+        ButtonGroup groupGioiTinh = new ButtonGroup();
+        groupGioiTinh.add(rdbtnNam);
+        groupGioiTinh.add(rdbtnNu);
+
+        // Đặt "Nam" là lựa chọn mặc định
+        rdbtnNam.setSelected(true);
+
+        setVisible(true);
 		
 		JLabel lblaCh = new JLabel("Địa chỉ:");
 		lblaCh.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -227,14 +253,26 @@ public class PnlNhanVien extends JPanel {
 		add(lblTrangThai);
 		
 		JRadioButton rdbtnDangLam = new JRadioButton("Đang làm");
+		rdbtnDangLam.setBackground(new Color(254, 250, 224));
 		rdbtnDangLam.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		rdbtnDangLam.setBounds(587, 166, 109, 31);
 		add(rdbtnDangLam);
 		
 		JRadioButton rdbtnDaNghi = new JRadioButton("Đã nghỉ");
+		rdbtnDaNghi.setBackground(new Color(254, 250, 224));
 		rdbtnDaNghi.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		rdbtnDaNghi.setBounds(705, 166, 93, 31);
 		add(rdbtnDaNghi);
+		
+		 // Nhóm các JRadioButton lại với nhau
+        ButtonGroup groupTrangThai = new ButtonGroup();
+        groupTrangThai.add(rdbtnDangLam);
+        groupTrangThai.add(rdbtnDaNghi);
+
+        // Đặt "Nam" là lựa chọn mặc định
+        rdbtnDangLam.setSelected(true);
+
+        setVisible(true);
 		
 		JLabel lblCuaHangQL = new JLabel("Cửa hàng QL:");
 		lblCuaHangQL.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -242,7 +280,7 @@ public class PnlNhanVien extends JPanel {
 		add(lblCuaHangQL);
 		
 		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"AM Store"}));
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"AM Store", "HM Store"}));
 		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		comboBox_1.setBounds(931, 170, 97, 22);
 		add(comboBox_1);
