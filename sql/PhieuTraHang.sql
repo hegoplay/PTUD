@@ -3,7 +3,7 @@ values('TH00000000','KH0947842274','NV00000000',GETDATE(),'HD00000001')
 delete from PhieuTraHang
 where maPhieu = 'Th00000002'
 
-select * from PhieuTraHang
+select * from HoaDon hd inner join ChiTietHoaDon cthd on hd.maHD = cthd.hoaDon
 
 drop trigger Trg_PTH_SP
 go
@@ -25,3 +25,5 @@ begin
 	set slTonKho = @currentSL + @soLuong
 	where maSP = @maSP
 end;
+
+select * from HoaDon

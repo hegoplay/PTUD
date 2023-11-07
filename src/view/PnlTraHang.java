@@ -506,7 +506,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 			if (o == btnXuatPhieu) {
 				TraHangDAO.ThemPhieuTraHang(pth);
 				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công","Thông báo thành công",JOptionPane.OK_OPTION);
-				ToPDFController.xuatPTTH("invoice.pdf", pth);
+				pth.XuatPhieuTraHang("invoice.pdf");
 				clearFileds();
 			}
 			LoadData();

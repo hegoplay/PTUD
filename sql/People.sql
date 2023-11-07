@@ -51,3 +51,37 @@ go
 insert into KhachHang
 values('KH0947842274',N'Đinh Thiện Quang',N'Phường 27, Quận Gò Vấp, TPHCM','0947842274',2002,1),
 ('KH0944894321',N'Lê Thị Hồng Vương',N'Bạch Mai, Hai Bà Trưng, Hà Nội','0944894321',1963,0)
+
+
+go
+
+create function getTongDTNV (
+	@maNV varchar(10),
+	@ngayDauKy datetime,
+	@ngayCuoiKy datetime)
+	returns money
+as
+begin
+	
+	declare @tongHD money = (select sum(tongHoaDon) from HoaDon hd 
+	where maNV = @maNV and (ngayLapHD between @ngayDauKy and @ngayCuoiKy))
+	declare @tongGiaNhap money = (select sum(giaNhap * soLuong) from HoaDon hd 
+		inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon
+		inner join SanPham sp on sp.maSP = ct.maSP
+		where maNV = @maNV and (ngayLapHD between @ngayDauKy and @ngayCuoiKy))
+	return @tongHD - @tongGiaNhap
+end;
+
+
+go
+
+DECLARE @startDate datetime = GETDATE() - 3;
+DECLARE @endDate datetime = GETDATE();
+declare @site_name money  =  getTongDTNV ('NV00000003',@startDate , @endDate);
+PRINT @site_name;
+
+
+select sum(giaNhap * soLuong) from HoaDon hd 
+inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon
+inner join SanPham sp on sp.maSP = ct.maSP
+where maNV = 'NV00000003'
