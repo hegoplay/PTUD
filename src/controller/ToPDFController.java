@@ -1,18 +1,33 @@
 package controller;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import org.jfree.chart.JFreeChart;
 
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.border.DashedBorder;
@@ -22,8 +37,14 @@ import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
+import com.orsonpdf.PDFDocument;
+import com.orsonpdf.PDFGraphics2D;
+import com.orsonpdf.Page;
 
+import component.TblNhanVien;
 import entity.ChiTietTraHang;
+import entity.NguoiQuanLy;
 import entity.PhieuTraHang;
 import view.MainFrame;
 
@@ -53,149 +74,145 @@ public class ToPDFController {
 		Cell myCell = new Cell().add(textValue).setFontSize(10f).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT).setFont(font);
 		return isBold ? myCell.setBold() : myCell;
 	}
-}
-
 //sample test 
-//	public static void xuatPTTH(String path, PhieuTraHang pth) throws IOException {
-//		PdfWriter pdfWriter = new PdfWriter(path);
-//		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-//		pdfDocument.setDefaultPageSize(PageSize.A4);
-//		
-//		Document document = new Document(pdfDocument);
-//		ImageData imageData = ImageDataFactory.create(MainFrame.class.getResource("/view/icon/shop_logo.png"));
-//		Image image = new Image(imageData);
-//		
-//		float x = pdfDocument.getDefaultPageSize().getWidth()/2;
-//		float y = pdfDocument.getDefaultPageSize().getHeight()/2;
-//		image.setFixedPosition(x-image.getImageWidth()/2, y - image.getImageHeight()/2);
-//		image.setOpacity(0.1f);
-//		document.add(image);
-//		
-//		
-//		
-//		float threecol = 190f;
-//		float twocol = 285f;
-//		float twocol150 = twocol + 150f; 
-//		float twocolumnWidth[] = {twocol150,twocol};
-//		float threeColumnWidth[] = {threecol,threecol,threecol};
-//		float fullWidth[] = {threecol*3};
-//		Paragraph onesp = new Paragraph("\n");
-//		Table table = new Table(twocolumnWidth);
-//		table.addCell(new Cell().add("Phiếu Trả Hàng").setFontSize(20f).setBorder(Border.NO_BORDER).setBold()).setFont(font);
-//		Table nestedTable = new Table(new float[] {twocol/2,twocol/2});
-//		
-//		nestedTable.addCell(getHeaderTextCell("Mã phiếu: "));
-//		nestedTable.addCell(getHeaderTextCellValue(pth.getMaPhieu()));
-//		
-//		nestedTable.addCell(getHeaderTextCell("Ngày Trả Hàng"));
-//		nestedTable.addCell(getHeaderTextCellValue(String.valueOf(pth.getNgayTraHang())));
-//		
-//		table.addCell(new Cell().add(nestedTable).setBorder(Border.NO_BORDER));
-//		
-//		Border gb = new SolidBorder(Color.GRAY, 2f);
-//		Table divider = new Table(fullWidth);
-//		divider.setBorder(gb);
-//		
-//		document.add(table);
-//		document.add(onesp);
-//		document.add(divider);
-//		document.add(onesp);
-//		
-//		Table twoColTable = new Table(twocolumnWidth);
-//		twoColTable.addCell(getBillingandShippingCell("Thông tin khách Hàng"));
-//		twoColTable.addCell(getBillingandShippingCell("Thông tin người quản lý"));
-//		document.add(twoColTable.setMarginBottom(12f));
-//		
-//		Table twoColTable2 = new Table(twocolumnWidth);
-//		twoColTable2.addCell(getCell10fLeft("Mã Khách Hàng", true));
-//		twoColTable2.addCell(getCell10fLeft("Mã Người Quản lý", true));
-//		twoColTable2.addCell(getCell10fLeft(pth.getKhachHang().getMaKH(), false));
-//		twoColTable2.addCell(getCell10fLeft(pth.getNguoiQuanLy().getMaNV(), false));
-//		document.add(twoColTable2);
-//		
-//		Table twoColTable3 = new Table(twocolumnWidth);
-//		twoColTable3.addCell(getCell10fLeft("Tên Khách Hàng", true));
-//		twoColTable3.addCell(getCell10fLeft("Tên Người Quản lý", true));
-//		twoColTable3.addCell(getCell10fLeft(pth.getKhachHang().getTenKH(), false));
-//		twoColTable3.addCell(getCell10fLeft(pth.getNguoiQuanLy().getTen(), false));
-//		document.add(twoColTable3);
-//		
-////		float oneColumnwidth[] = {twocol150};
-//		
-////		Table oneColTable1 = new Table(oneColumnwidth);
-////		oneColTable1.addCell(getCell10fLeft("Address", true));
-////		oneColTable1.addCell(getCell10fLeft("8570 Gulseth Terra, 3324 Eastwood\nSpringfi, Ma, 01114", false));
-////		oneColTable1.addCell(getCell10fLeft("Email", true));
-////		oneColTable1.addCell(getCell10fLeft("stern@example.com", false));
-////		document.add(oneColTable1);
-//		
-//		Table tableDivider2 = new Table(fullWidth);
-//		Border dgb= new DashedBorder(Color.GRAY,0.5f);
-//		document.add(tableDivider2.setBorder(dgb).setMarginTop(12f));
-//		
-//		Paragraph productPara = new Paragraph("Sản phẩm");
-//		document.add(productPara.setBold().setFont(font));
-//		
-//		Table threeColTable1 = new Table(threeColumnWidth);
-//		threeColTable1.setBackgroundColor(Color.BLACK,0.7f);
-//			
-//		threeColTable1.addCell(getHeaderTextCell("Tên Sản Phẩm").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.LEFT));
-//		threeColTable1.addCell(getHeaderTextCell("Số Lượng").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
-//		threeColTable1.addCell(getHeaderTextCell("Giá Thành").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT));
-//		
-//		document.add(threeColTable1);
-////		
-////		List<Product> productList = new ArrayList<>();
-////		productList.add(new Product("apple", 2, 159));
-////		productList.add(new Product("mango", 4, 205));
-////		productList.add(new Product("banana", 2, 90));
-////		productList.add(new Product("grapes", 3, 10));
-////		productList.add(new Product("coconut", 2, 61));
-////		productList.add(new Product("cherry", 1, 1000));
-////		productList.add(new Product("kiwi", 3, 30));
-////		
-//		Table threeColTable2 = new Table(threeColumnWidth);
-//		double totalSum = 0f;
-//		for(ChiTietTraHang ct : pth.getDsChiTiet()) {
-//			totalSum += ct.getSoLuongSP() * ct.getSanPham().TinhGiaBan();
-//			threeColTable2.addCell(getHeaderTextCellValue(ct.getSanPham().getTenSP()).setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
-//			threeColTable2.addCell(getHeaderTextCellValue(String.valueOf(ct.getSoLuongSP())).setTextAlignment(TextAlignment.CENTER));
-//			threeColTable2.addCell(
-//					getHeaderTextCellValue(MainFrame.moneyFormatter.format(
-//							ct.getSanPham().TinhGiaBan())).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
-//		}
-//		
-//		document.add(threeColTable2.setMarginBottom(20f));
-//		float onetwo[] = {threecol + 125,threecol *2};
-//		Table threeColTable4 = new Table(onetwo);
-//		threeColTable4.addCell(new Cell().add("").setBorder(Border.NO_BORDER));
-//		threeColTable4.addCell(new Cell().add(tableDivider2).setBorder(Border.NO_BORDER));
-//		document.add(threeColTable4);
-//		
-//		Table threeColTable3 = new Table(threeColumnWidth);
-//		
-//		threeColTable3.addCell(getHeaderTextCellValue("").setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
-//		threeColTable3.addCell(getHeaderTextCellValue("Total").setTextAlignment(TextAlignment.CENTER));
-//		threeColTable3.addCell(
-//				getHeaderTextCellValue(MainFrame.moneyFormatter.format(
-//						totalSum)).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
-//		document.add(threeColTable3);
-//		
-//		document.add(tableDivider2);
-//		document.add(new Paragraph("\n"));
-//		document.add(divider.setBorder(new SolidBorder(Color.GRAY,1))).setBottomMargin(15f);
-//		
-//		Table tb = new Table(fullWidth);
-//		tb.addCell(getHeaderTextCell("ĐIỀU KHOẢN VÀ ĐIỀU KIỆN\n").setTextAlignment(TextAlignment.LEFT));
-//		List<String> TncList = new ArrayList<>();
-//		TncList.add("1. Mỗi Hóa Đơn chỉ được hoàn 1 lần duy nhất");
-////		TncList.add("2. The Seller warrants the product for one (1) year fromt he date of shipment");
-//		
-//		for(String tnc: TncList) {
-//			tb.addCell(getHeaderTextCellValue(tnc));
-//		}
-//		
-//		document.add(tb);
-//		document.close();
-//		System.out.println("Generated");
-//	}
+	public static void xuatTKDTNV(String path, LocalDate startDate, LocalDate endDate, NguoiQuanLy nql, TblNhanVien tblNV, JFreeChart chart) throws IOException {
+		PdfWriter pdfWriter = new PdfWriter(path);
+		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+		pdfDocument.setDefaultPageSize(PageSize.A4);
+		
+		Document document = new Document(pdfDocument);
+		ImageData imageData = ImageDataFactory.create(MainFrame.class.getResource("/view/icon/shop_logo.png"));
+		Image image = new Image(imageData);
+		
+		setFont();
+		
+		float x = pdfDocument.getDefaultPageSize().getWidth()/2;
+		float y = pdfDocument.getDefaultPageSize().getHeight()/2;
+		image.setFixedPosition(x-image.getImageWidth()/2, y - image.getImageHeight()/2);
+		image.setOpacity(0.1f);
+		document.add(image);
+		
+		
+		//tao ra cac mang luu cac thông tin của 1 hàng
+		float oneCol = 570f;
+		float twocol = oneCol/2;
+		float threecol = oneCol/3;
+		float twocol150 = twocol + 150f; 
+		float twoColumnWidth[] = {twocol,twocol};
+		float twocolumnWidth150[] = {twocol150,twocol};
+		float twoColumnWidth2p1[] = {threecol*2,threecol};
+		float threeColumnWidth[] = {threecol,threecol,threecol};
+		float sixColumnWidth[] = {threecol/2+ 45f,threecol/2 + 70f,threecol/2,threecol/2,threecol/2,threecol/2+ 45f};
+		float fullWidth[] = {threecol*3};
+		
+		
+		
+		Paragraph onesp = new Paragraph("\n");
+		Border gb = new SolidBorder(Color.GRAY, 2f);
+		
+		
+		Table header = new Table(twoColumnWidth2p1 );
+		header.addCell(new Cell().add("Phiếu Thống Kê Doanh Thu Nhân Viên")
+				.setFont(font).setFontSize(20).setBold().setBorder(Border.NO_BORDER));
+		Table timeCreate = new Table(twoColumnWidth);
+		timeCreate.addCell(getHeaderTextCell("Ngày lập phiếu: ").setFontSize(10f).setTextAlignment(TextAlignment.LEFT)).setVerticalAlignment(VerticalAlignment.BOTTOM);
+		timeCreate.addCell(getHeaderTextCell(
+						LocalDateTime.now().format(
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")).toString()).setFontSize(10f)
+		).setVerticalAlignment(VerticalAlignment.BOTTOM);
+		header.addCell(new Cell().add(timeCreate).setBorder(Border.NO_BORDER).setVerticalAlignment(VerticalAlignment.BOTTOM));
+		document.add(header);
+		Table divider = new Table(fullWidth);
+		Table tableDivider2 = new Table(fullWidth);
+		Border dgb= new DashedBorder(Color.GRAY,0.5f);		
+		document.add(tableDivider2.setBorder(dgb).setMarginTop(12f));
+		
+		Table subTable = new Table(twoColumnWidth);
+		subTable.addCell(getHeaderTextCell("Ngày bắt đầu: ").setTextAlignment(TextAlignment.LEFT));
+		subTable.addCell(getHeaderTextCell(startDate.toString()));
+		subTable.addCell(getHeaderTextCell("Ngày kết thúc: ").setTextAlignment(TextAlignment.LEFT));
+		subTable.addCell(getHeaderTextCell(endDate.toString()));
+		subTable.addCell(getHeaderTextCell("Người Quản Lý thống kê: ").setTextAlignment(TextAlignment.LEFT));
+		subTable.addCell(getHeaderTextCell(nql.getTen()));
+		subTable.addCell(getHeaderTextCell("Chi nhánh: ").setTextAlignment(TextAlignment.LEFT));
+		subTable.addCell(getHeaderTextCell("Gò Vấp, TPHCM"));
+		
+		Table fullColTable1 = new Table(fullWidth);
+		
+//		Tao du lieu anh de ve
+		PDFDocument doc = new PDFDocument();
+        Rectangle bounds = new Rectangle((int) pdfDocument.getDefaultPageSize().getWidth()- 100, 200);
+        Page page = doc.createPage(bounds);
+        PDFGraphics2D g2 = page.getGraphics2D();
+        chart.draw(g2, bounds);
+        
+        
+        PdfReader reader = new PdfReader(new ByteArrayInputStream(doc.getPDFBytes()));
+        PdfDocument chartDoc = new PdfDocument(reader);
+        PdfFormXObject chart1 = chartDoc.getFirstPage().copyAsFormXObject(pdfDocument);
+        Image chartImage = new Image(chart1);
+		
+        Paragraph chartParaph = new Paragraph("").add(chartImage);
+        document.add(chartParaph);
+        //them thong tin ve ngay bat dau, ngay ket thuc
+		fullColTable1.addCell(new Cell().add(subTable).setBorder(Border.NO_BORDER));
+		document.add(fullColTable1);
+		
+		Paragraph productPara = new Paragraph("Nhân Viên");
+		document.add(productPara.setBold().setFont(font));
+		
+//		Tạo title cho bảng
+		Table sixColTable1 = new Table(sixColumnWidth);
+		sixColTable1.setBackgroundColor(Color.BLACK,0.7f);
+		sixColTable1.addCell(
+				getHeaderTextCell("Mã nhân viên").setFontColor(Color.WHITE).setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
+		sixColTable1.addCell(
+				getHeaderTextCell("Tên nhân viên").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.LEFT));
+		sixColTable1.addCell(
+				getHeaderTextCell("Giới tính").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
+		sixColTable1.addCell(
+				getHeaderTextCell("HĐ Lặp").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
+		sixColTable1.addCell(
+				getHeaderTextCell("SP bán").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
+		sixColTable1.addCell(
+				getHeaderTextCell("Doanh Thu").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
+		
+		document.add(sixColTable1);	
+		
+//		Thêm thông tin các cột
+		Table sixColumnTable2 = new Table(sixColumnWidth);
+		double totalSum = 0f;
+		for(int i = 0 ; i < tblNV.getModel().getRowCount();i++) {
+			if((Double)tblNV.getValue(i, 6) <=0) { continue; }
+			sixColumnTable2.addCell(getHeaderTextCellValue((String)tblNV.getValue(i, 1)).setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
+			sixColumnTable2.addCell(getHeaderTextCellValue(tblNV.getValue(i, 2) + "").setTextAlignment(TextAlignment.LEFT));
+			String gt = (Boolean)tblNV.getValue(i, 3) ? "Nam" : "Nữ";
+			sixColumnTable2.addCell(getHeaderTextCellValue(gt).setTextAlignment(TextAlignment.CENTER));
+			sixColumnTable2.addCell(getHeaderTextCellValue(String.valueOf(tblNV.getValue(i, 4))).setTextAlignment(TextAlignment.CENTER));
+			sixColumnTable2.addCell(getHeaderTextCellValue(String.valueOf(tblNV.getValue(i, 5))).setTextAlignment(TextAlignment.CENTER));
+			sixColumnTable2.addCell(
+					getHeaderTextCellValue(MainFrame.moneyFormatter.format(
+							tblNV.getValue(i, 6))).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
+			totalSum += (Double)tblNV.getValue(i, 6);
+		}
+		
+		document.add(sixColumnTable2.setMarginBottom(20f));
+		float onetwo[] = {threecol + 125,threecol *2};
+		Table threeColTable4 = new Table(onetwo);
+		threeColTable4.addCell(new Cell().add("").setBorder(Border.NO_BORDER));
+		threeColTable4.addCell(new Cell().add(tableDivider2).setBorder(Border.NO_BORDER));
+		document.add(threeColTable4);
+		
+		Table threeColTable3 = new Table(threeColumnWidth);
+		//Thêm thông tin tổng doanh thu
+		threeColTable3.addCell(getHeaderTextCellValue("").setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
+		threeColTable3.addCell(getHeaderTextCellValue("Tổng doanh thu").setTextAlignment(TextAlignment.CENTER));
+		threeColTable3.addCell(
+				getHeaderTextCellValue(MainFrame.moneyFormatter.format(
+						totalSum) + " VND").setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
+		document.add(threeColTable3);
+		
+		document.close();
+		System.out.println("Generated");
+	}
+}

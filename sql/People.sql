@@ -77,7 +77,7 @@ go
 
 DECLARE @startDate datetime = GETDATE() - 3;
 DECLARE @endDate datetime = GETDATE();
-declare @site_name money  =  getTongDTNV ('NV00000003',@startDate , @endDate);
+select dbo.getTongDTNV ('NV00000003', @startDate , @endDate);
 PRINT @site_name;
 
 

@@ -298,4 +298,7 @@ public class PhieuTraHang {
 		}
 		return res;
 	}
+	
+	
+	
 }

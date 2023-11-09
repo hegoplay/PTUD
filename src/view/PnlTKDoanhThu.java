@@ -27,19 +27,40 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.border.DashedBorder;
+import com.itextpdf.layout.border.SolidBorder;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
+
 import component.TblNhanVien;
+import controller.ToPDFController;
 import dao.HoaDonDAO;
 import dao.NhanVienDAO;
+import entity.ChiTietTraHang;
+import entity.NguoiQuanLy;
 import entity.NhanVien;
+import entity.PhieuTraHang;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PnlTKDoanhThu extends JPanel implements ActionListener {
 
@@ -55,6 +76,8 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 	private JPanel pnlContent;
 	private LocalDate startDay;
 	private LocalDate endDay;
+	private JButton btnXuatFile;
+	private JFreeChart barChart;
 
 	/**
 	 * Create the panel.
@@ -78,7 +101,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 
 		pnlTKTheo.add(cmbTKTheo);
 
-		JButton btnXuatFile = new JButton("Xuất file");
+		btnXuatFile = new JButton("Xuất file");
 		btnXuatFile.setBackground(MainFrame.clrCyan4);
 		btnXuatFile.setForeground(new Color(255, 255, 255));
 		btnXuatFile.setIcon(new ImageIcon(PnlTKDoanhThu.class.getResource("/view/icon/file_icon.png")));
@@ -201,6 +224,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		LoadTable();
 		
 		cmbTKTheo.addActionListener(this);
+		btnXuatFile.addActionListener(this);
 //		JPanel panel = new JPanel();
 //		pnlTitle.add(panel, BorderLayout.CENTER);
 	}
@@ -231,13 +255,14 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		}
 		lblMaNV.setText((String) tblNhanVien.getValueAt(0, 1));
 		lblTenNV.setText((String) tblNhanVien.getValueAt(0, 2));
-		lblDoanhThu.setText((Integer) tblNhanVien.getValueAt(0, 4) + "");
-		lblHoaDonLap.setText((Integer) tblNhanVien.getValueAt(0, 5) + "");
-		lblDoanhSo.setText(new DecimalFormat("#0.00").format((Double) tblNhanVien.getValueAt(0, 6)));
+		lblHoaDonLap.setText((Integer) tblNhanVien.getValueAt(0, 4) + "");
+		lblDoanhSo.setText((Integer) tblNhanVien.getValueAt(0, 5) + "");
+		lblDoanhThu.setText(MainFrame.moneyFormatter.format((Double) tblNhanVien.getValueAt(0, 6)) + "VND");
 
 
-		JFreeChart barChart = ChartFactory.createBarChart("Top Nhân Viên có doanh thu cao trong tháng", "",
+		barChart = ChartFactory.createBarChart("Top nhân viên có doanh thu cao trong tháng", "",
 				"Doanh thu", createDataset(), PlotOrientation.VERTICAL, true, true, false);
+		barChart.getTitle().setFont(new Font("Times New Roman", Font.BOLD, 24));
 		ChartPanel chartPanel = new ChartPanel(barChart);
 		chartPanel.setMouseZoomable(false);
 		chartPanel.setDisplayToolTips(true);
@@ -252,8 +277,10 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();             
 
 		for (int i = 0; i < 5 && i < tblNhanVien.getRowCount(); i++) {
-			dataset.addValue((Double) tblNhanVien.getValueAt(i, 6), trongThang, (String) tblNhanVien.getValueAt(i, 2));
-//			dataset.addValue(HoaDonDAO.GetTongDTNV(new NhanVien((String) tblNhanVien.getValueAt(i, 1)), startDay.minusMonths(1), endDay.minusMonths(1)), thangTruoc, (String) tblNhanVien.getValueAt(i, 2));
+			String arr[] = ((String) tblNhanVien.getValueAt(i, 2)).trim().split(" ");
+			dataset.addValue((Double) tblNhanVien.getValueAt(i, 6), trongThang,
+					arr[arr.length-1] + " " + arr[0]);
+			
 		}
 
 		
@@ -262,18 +289,22 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		if (e.getSource() == cbTKTheo) {
-//			
-//		}
+		if (e.getSource() == btnXuatFile) {
+			try {
+				ToPDFController.xuatTKDTNV(
+						"test.pdf", 
+						startDay, 
+						endDay, 
+						NhanVienDAO.getNguoiQuanLy("NV00000000"), 
+						tblNhanVien,
+						barChart
+						);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		LoadTable();
 	}
-
-//	private void fillComboBox(JComboBox<String> comboBox) {
-//		// TODO Auto-generated method stub
-//		comboBox.addItem("Tháng");
-//		comboBox.addItem("Tuần");
-//		comboBox.addItem("Ngày");
-//		comboBox.addItem("Năm");
-//	}
 
 }

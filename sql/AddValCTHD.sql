@@ -25,8 +25,4 @@ values('SP00000143','HD00000002',1);
 insert into ChiTietHoaDon
 values('SP00000143','HD00000002',2);
 
-create procedure getTongDTNV (@maNV varchar(10), @tongDT money out)
-as
-begin
-	
-end;
+

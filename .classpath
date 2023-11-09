@@ -41,5 +41,7 @@
 	<classpathentry kind="lib" path="lib/iText7/itext7-sign-7.0.4-sources.jar"/>
 	<classpathentry kind="lib" path="lib/logback.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j.jar"/>
+	<classpathentry kind="lib" path="lib/JavaFx/javafx-0.2.jar"/>
+	<classpathentry kind="lib" path="lib/orsonpdf-1.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
