@@ -42,34 +42,40 @@ public class NhaCC {
 	public NhaCC(String maNCC) {
 		this.maNCC = maNCC;
 	}
+	public String getMaNCC() {
+		return maNCC;
+	}
+	public void setMaNCC(String maNCC) {
+		this.maNCC = maNCC;
+	}
 	public String getTenNCC() {
 		return tenNCC;
 	}
 	public void setTenNCC(String tenNCC) throws Exception {
-		if(tenNCC.length() > 100) {
-			throw new Exception("Tên nhà cung cấp lớn hơn 100");
-		}
 		this.tenNCC = tenNCC;
 	}
 	public String getQuocGia() {
 		return quocGia;
 	}
+//	public void setQuocGia(String quocGia) {
+//		try {
+//			Connection con = ConnectDB.getConection();
+//			String query = "Select * from Countries where Iso = ?";
+//			PreparedStatement statement = con.prepareStatement(query);
+//			statement.setString(1, quocGia);
+//			ResultSet rs =  statement.executeQuery();
+//			if(rs.next()) {
+//				this.quocGia = quocGia;
+//			}
+//			else throw new Exception("khong tim thay quoc gia");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
 	public void setQuocGia(String quocGia) {
-		try {
-			Connection con = ConnectDB.getConection();
-			String query = "Select * from Countries where Iso = ?";
-			PreparedStatement statement = con.prepareStatement(query);
-			statement.setString(1, quocGia);
-			ResultSet rs =  statement.executeQuery();
-			if(rs.next()) {
-				this.quocGia = quocGia;
-			}
-			else throw new Exception("khong tim thay quoc gia");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		this.quocGia = quocGia;
 	}
 	public String getDiaChi() {
 		return diaChi;
