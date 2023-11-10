@@ -42,7 +42,7 @@ public class PnlNhanVien extends JPanel {
     private static final long serialVersionUID = 1L;
     private JTextField textMaNV;
     private JTextField textSDT;
-    private JTextField textTenNCC;
+    private JTextField textTenNV;
     private JTextField textDiaChi;
     private JTextField textEmail;
     private JTextField textLuong;
@@ -169,7 +169,7 @@ public class PnlNhanVien extends JPanel {
 
                 // Hiển thị thông tin trong text fields và combobox
                 textMaNV.setText(maNV);
-                textTenNCC.setText(tenNV);
+                textTenNV.setText(tenNV);
                 textSDT.setText(sdt);
                 textEmail.setText(email);
                 textDiaChi.setText(diaChi);
@@ -259,10 +259,10 @@ public class PnlNhanVien extends JPanel {
         textSDT.setBounds(141, 112, 169, 32);
         add(textSDT);
 		
-		textTenNCC = new JTextField();
-		textTenNCC.setColumns(10);
-		textTenNCC.setBounds(456, 54, 212, 32);
-		add(textTenNCC);
+		textTenNV = new JTextField();
+		textTenNV.setColumns(10);
+		textTenNV.setBounds(456, 54, 212, 32);
+		add(textTenNV);
 		
 //		JLabel lblGioiTinh = new JLabel("Giới tính:");
 //        lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -414,7 +414,7 @@ public class PnlNhanVien extends JPanel {
     
     private void clearForm() {
         textMaNV.setText("");
-        textTenNCC.setText("");
+        textTenNV.setText("");
         textSDT.setText("");
         textEmail.setText("");
         textDiaChi.setText("");
@@ -462,7 +462,7 @@ public class PnlNhanVien extends JPanel {
             // Nếu danh sách không rỗng, chỉ hiển thị thông tin của nhân viên đầu tiên trong danh sách
             NhanVien nv = dsNhanVien.get(0);
             textMaNV.setText(nv.getMaNV());
-            textTenNCC.setText(nv.getTen());
+            textTenNV.setText(nv.getTen());
             textSDT.setText(nv.getSdt());
             textEmail.setText(nv.getEmail());
             textDiaChi.setText(nv.getDiaChi());
@@ -492,33 +492,78 @@ public class PnlNhanVien extends JPanel {
     }
     
     private void themMoiNhanVien() throws Exception {
-        // Lấy dữ liệu từ các text fields và combobox
-        String maNV = nv_dao.tuPhatSinhMa();
-        String tenNV = textTenNCC.getText();
-        String sdt = textSDT.getText();
-        String email = textEmail.getText();
-        String diaChi = textDiaChi.getText();
-        double luong = Double.parseDouble(textLuong.getText());
-        String chucVu = (String) comboBox.getSelectedItem();
-        boolean nam = rdbtnNam.isSelected();
-        boolean dangLamViec = rdbtnDangLam.isSelected();
-        String cuaHangQL = textField.getText();
+//        // Lấy dữ liệu từ các text fields và combobox
+//        String maNV = nv_dao.tuPhatSinhMa();
+//        String tenNV = textTenNCC.getText();
+//        String sdt = textSDT.getText();
+//        String email = textEmail.getText();
+//        String diaChi = textDiaChi.getText();
+//        double luong = Double.parseDouble(textLuong.getText());
+//        String chucVu = (String) comboBox.getSelectedItem();
+//        boolean nam = rdbtnNam.isSelected();
+//        boolean dangLamViec = rdbtnDangLam.isSelected();
+//        String cuaHangQL = textField.getText();
+//
+//        // Tạo đối tượng NhanVien từ dữ liệu
+//        NhanVien nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, dangLamViec, nam, dangLamViec, cuaHangQL);
+//
+//        // Gọi hàm thêm mới từ DAO
+//        nv_dao.addNhanVien(nv);
+//
+//        // Làm mới bảng
+//        loadDataToTable();
+//        clearForm();
+    	try {
+            // Lấy dữ liệu từ các text fields và combobox
+            String maNV = nv_dao.tuPhatSinhMa();
+            String tenNV = textTenNV.getText();
+            String sdt = textSDT.getText();
+            String email = textEmail.getText();
+            String diaChi = textDiaChi.getText();
+            double luong = 0;
 
-        // Tạo đối tượng NhanVien từ dữ liệu
-        NhanVien nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, dangLamViec, nam, dangLamViec, cuaHangQL);
+            // Kiểm tra và chuyển đổi giá trị từ textLuong
+            String luongStr = textLuong.getText();
+            if (!luongStr.isEmpty()) {
+                double luongValue = Double.parseDouble(luongStr);
 
-        // Gọi hàm thêm mới từ DAO
-        nv_dao.addNhanVien(nv);
+                // Kiểm tra nếu giá trị lương lớn hơn 0
+                if (luongValue > 0) {
+                    luong = luongValue;
+                } else {
+                    throw new Exception("Vui lòng nhập số lương lớn hơn 0");
+                }
+            } else {
+                throw new Exception("Vui lòng nhập số lương");
+            }
 
-        // Làm mới bảng
-        loadDataToTable();
-        clearForm();
+
+            String chucVu = (String) comboBox.getSelectedItem();
+            boolean nam = rdbtnNam.isSelected();
+            boolean dangLamViec = rdbtnDangLam.isSelected();
+            String cuaHangQL = textField.getText();
+
+            // Tạo đối tượng NhanVien từ dữ liệu
+            NhanVien nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, dangLamViec, nam, dangLamViec, cuaHangQL);
+
+            // Gọi hàm thêm mới từ DAO
+            nv_dao.addNhanVien(nv);
+
+            // Làm mới bảng
+            loadDataToTable();
+            clearForm();
+        } catch (NumberFormatException ex) {
+            // Xử lý nếu người dùng nhập không phải là số
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lương hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void suaThongTinNhanVien() throws Exception {
         // Lấy dữ liệu từ các text fields và combobox
         String maNV = textMaNV.getText();
-        String tenNV = textTenNCC.getText();
+        String tenNV = textTenNV.getText();
         String sdt = textSDT.getText();
         String email = textEmail.getText();
         String diaChi = textDiaChi.getText();

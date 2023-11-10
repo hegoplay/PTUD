@@ -12,7 +12,7 @@ import entity.NhaCC;
 import entity.SanPham;
 
 public class NhaCCDAO {
-	public static NhaCC GetNhaCC(String maNCC) {
+	public static NhaCC GetNhaCC(String maNCC) throws Exception {
 		NhaCC ncc = null;
 		try {
 			Connection con = ConnectDB.getConection();
@@ -103,7 +103,7 @@ public class NhaCCDAO {
 	        return false;
 	    }
 	}
-	public ArrayList<NhaCC> searchNhaCCByCode(String maNCC) {
+	public ArrayList<NhaCC> searchNhaCCByCode(String maNCC) throws Exception {
 	    ArrayList<NhaCC> dsNCC = new ArrayList<>();
 	    try {
 	        Connection con = ConnectDB.getConection();

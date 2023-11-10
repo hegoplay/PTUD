@@ -129,7 +129,12 @@ public class PnlNhaCC extends JPanel {
 		btnTim.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Gọi hàm tìm kiếm ở đây
-                timNhaCC();
+                try {
+					timNhaCC();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
 		btnTim.setBackground(new Color(0, 128, 192));
@@ -188,7 +193,12 @@ public class PnlNhaCC extends JPanel {
 		btnThem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Gọi hàm thêm mới ở đây
-                themMoiNhaCC();
+                try {
+					themMoiNhaCC();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             	}
         	});
 		btnThem.setBackground(new Color(0, 128, 192));
@@ -201,7 +211,12 @@ public class PnlNhaCC extends JPanel {
 		btnSua.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Gọi hàm sửa thông tin ở đây
-                suaThongTinNhaCC();
+                try {
+					suaThongTinNhaCC();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             	}
 			});
 		btnSua.setBackground(new Color(0, 128, 192));
@@ -243,24 +258,37 @@ public class PnlNhaCC extends JPanel {
 	    }
 	 
 	 private void themMoiNhaCC() {
-	        // Lấy dữ liệu từ các text fields và combobox
-	        String maNCC = ncc_dao.tuPhatSinhMa();
-	        String tenNCC = textTenNhaCC.getText();
-	        String diaChi = textDiaChi.getText();
-	        String quocGia = (String) comboBox.getSelectedItem();
+		    try {
+		        // Lấy dữ liệu từ các text fields và combobox
+		        String maNCC = ncc_dao.tuPhatSinhMa();
+		        String tenNCC = textTenNhaCC.getText();
+		        String diaChi = textDiaChi.getText();
+		        String quocGia = (String) comboBox.getSelectedItem();
 
-	        // Tạo đối tượng NhaCC từ dữ liệu
-	        NhaCC ncc = new NhaCC(maNCC, tenNCC, diaChi, quocGia);
+		        // Kiểm tra điều kiện trước khi thêm mới
+		        if (tenNCC.trim().isEmpty()) {
+		            throw new Exception("Vui lòng nhập tên nhà cung cấp!");
+		        }
 
-	        // Gọi hàm thêm mới từ DAO
-	        ncc_dao.addNhaCC(ncc);
+		        // Tạo đối tượng NhaCC từ dữ liệu
+		        NhaCC ncc = new NhaCC(maNCC, tenNCC, diaChi, quocGia);
 
-	        // Làm mới bảng
-	        loadDataToTable();
-	    }
+		        // Gọi hàm thêm mới từ DAO
+		        ncc_dao.addNhaCC(ncc);
+
+		        // Làm mới bảng
+		        loadDataToTable();
+
+		        // Hiển thị thông báo thành công
+		        JOptionPane.showMessageDialog(this, "Thêm mới Nhà cung cấp thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		    } catch (Exception ex) {
+		        // Hiển thị thông báo lỗi
+		        JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+		    }
+		}
 
 
-	    private void suaThongTinNhaCC() {
+	    private void suaThongTinNhaCC() throws Exception {
 	        // Lấy dữ liệu từ các text fields và combobox
 	        String maNCC = textMaNCC.getText();
 	        String tenNCC = textTenNhaCC.getText();
@@ -276,7 +304,7 @@ public class PnlNhaCC extends JPanel {
 	        // Làm mới bảng
 	        loadDataToTable();
 	    }
-	private void timNhaCC() {
+	private void timNhaCC() throws Exception {
 		    // Lấy mã NCC từ text field
 		    String maNCC = textTimNhaCC.getText();
 

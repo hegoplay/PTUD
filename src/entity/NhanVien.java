@@ -57,42 +57,54 @@ public class NhanVien {
 		this.tenNV = ten;
 	}
 
-	public String getMaNV() {
-		return maNV;
-	}
+//	public String getMaNV() {
+//		return maNV;
+//	}
+//
+//	private void setMaNV(String maNV) throws Exception {
+//		String pattern = "^NV[0-9]{8}$";
+//		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+//		boolean check = p.matcher(maNV).find();
+//		if (!check) {
+//			throw new Exception("Mã nhân viên không đúng định dạng");
+//		}
+//		
+//		this.maNV = maNV;
+//	}
 
-	private void setMaNV(String maNV) throws Exception {
-		String pattern = "^NV[0-9]{8}$";
-		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-		boolean check = p.matcher(maNV).find();
-		if (!check) {
-			throw new Exception("Mã nhân viên không đúng định dạng");
-		}
-		
-		this.maNV = maNV;
-	}
 
 	public String getSdt() {
 		return sdt;
 	}
+
 
 	public void setSdt(String sdt) throws Exception {
 		String pattern = "^[0-9]{10}$";
 		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
 		boolean check = p.matcher(sdt).find();
 		if (!check) {
-			throw new Exception("Số điện thoại không được rỗng");// cai nay co j nen
+			throw new Exception("Số điện thoại không được rỗng và theo dạng ^[0-9]{10}$");// cai nay co j nen
 //			sua lai la sdt chi co 10 ky tu
 		}
 		this.sdt = sdt;
+	}
+	public String getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(String maNV) {
+		this.maNV = maNV;
 	}
 
 	public String getDiaChi() {
 		return diaChi;
 	}
 
-	public void setDiaChi(String diaChi) {
-		this.diaChi = diaChi;
+	public void setDiaChi(String diaChi) throws Exception {
+	    if (diaChi.trim().isEmpty()) {
+	        throw new Exception("Địa chỉ không được rỗng");
+	    }
+	    this.diaChi = diaChi;
 	}
 
 	public String getEmail() {

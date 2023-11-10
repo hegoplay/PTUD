@@ -28,7 +28,7 @@ public class NhaCC {
 		NhaCC other = (NhaCC) obj;
 		return Objects.equals(maNCC, other.maNCC);
 	}
-	public NhaCC(String maNCC, String tenNCC, String diaChi, String quocGia) {
+	public NhaCC(String maNCC, String tenNCC, String diaChi, String quocGia) throws Exception {
 		this.maNCC = maNCC;
 		try {
 			this.setTenNCC(tenNCC);
@@ -52,6 +52,10 @@ public class NhaCC {
 		return tenNCC;
 	}
 	public void setTenNCC(String tenNCC) throws Exception {
+		if (tenNCC.trim().equalsIgnoreCase(""))
+			throw new Exception("Vui lòng nhập tên nhà cung cấp!");
+		if (tenNCC.length() > 50)
+			throw new Exception("Tên nhân viên không quá 50 ký tự");
 		this.tenNCC = tenNCC;
 	}
 	public String getQuocGia() {
@@ -80,8 +84,11 @@ public class NhaCC {
 	public String getDiaChi() {
 		return diaChi;
 	}
-	public void setDiaChi(String diaChi) {
-		this.diaChi = diaChi;
+	public void setDiaChi(String diaChi) throws Exception {
+	    if (diaChi.trim().isEmpty()) {
+	        throw new Exception("Vui lòng nhập địa chỉ nhà cung cấp!");
+	    }
+	    this.diaChi = diaChi;
 	}
 	@Override
 	public String toString() {
