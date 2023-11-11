@@ -2,6 +2,13 @@ package connectDB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import entity.NhaCC;
 
 public class ConnectDB {
 	private static final String url = "jdbc:sqlserver://localhost:1433;"
@@ -28,4 +35,43 @@ public class ConnectDB {
 			e.printStackTrace();
 		}
 	}
+	public static List<String> getQuocGiaList() {
+        List<String> quocGiaList = new ArrayList<>();
+
+        try (Connection con = getConection()) {
+            String query = "SELECT Iso FROM Countries";
+            try (PreparedStatement statement = con.prepareStatement(query);
+                 ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    quocGiaList.add(rs.getString("Iso"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return quocGiaList;
+    }
+//	public static String getMaQuocGiaByTen(String tenQuocGia) {
+//        String maQuocGia = null;
+//
+//        try {
+//            Connection con = getConection();
+//            String sql = "SELECT Iso FROM Countries WHERE Name = ?";
+//            PreparedStatement statement = con.prepareStatement(sql);
+//            statement.setString(1, tenQuocGia);
+//            ResultSet rs = statement.executeQuery();
+//
+//            if (rs.next()) {
+//                maQuocGia = rs.getString("Iso");
+//            }
+//
+//            con.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            // Xử lý exception tùy ý, có thể thông báo lỗi hoặc trả về giá trị mặc định
+//        }
+//
+//        return maQuocGia;
+//    }
 }

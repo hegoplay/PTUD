@@ -28,7 +28,7 @@ public class NhaCC {
 		NhaCC other = (NhaCC) obj;
 		return Objects.equals(maNCC, other.maNCC);
 	}
-	public NhaCC(String maNCC, String tenNCC, String diaChi, String quocGia) {
+	public NhaCC(String maNCC, String tenNCC, String diaChi, String quocGia) throws Exception {
 		this.maNCC = maNCC;
 		try {
 			this.setTenNCC(tenNCC);
@@ -42,40 +42,53 @@ public class NhaCC {
 	public NhaCC(String maNCC) {
 		this.maNCC = maNCC;
 	}
+	public String getMaNCC() {
+		return maNCC;
+	}
+	public void setMaNCC(String maNCC) {
+		this.maNCC = maNCC;
+	}
 	public String getTenNCC() {
 		return tenNCC;
 	}
 	public void setTenNCC(String tenNCC) throws Exception {
-		if(tenNCC.length() > 100) {
-			throw new Exception("Tên nhà cung cấp lớn hơn 100");
-		}
+		if (tenNCC.trim().equalsIgnoreCase(""))
+			throw new Exception("Vui lòng nhập tên nhà cung cấp!");
+		if (tenNCC.length() > 50)
+			throw new Exception("Tên nhân viên không quá 50 ký tự");
 		this.tenNCC = tenNCC;
 	}
 	public String getQuocGia() {
 		return quocGia;
 	}
+//	public void setQuocGia(String quocGia) {
+//		try {
+//			Connection con = ConnectDB.getConection();
+//			String query = "Select * from Countries where Iso = ?";
+//			PreparedStatement statement = con.prepareStatement(query);
+//			statement.setString(1, quocGia);
+//			ResultSet rs =  statement.executeQuery();
+//			if(rs.next()) {
+//				this.quocGia = quocGia;
+//			}
+//			else throw new Exception("khong tim thay quoc gia");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
 	public void setQuocGia(String quocGia) {
-		try {
-			Connection con = ConnectDB.getConection();
-			String query = "Select * from Countries where Iso = ?";
-			PreparedStatement statement = con.prepareStatement(query);
-			statement.setString(1, quocGia);
-			ResultSet rs =  statement.executeQuery();
-			if(rs.next()) {
-				this.quocGia = quocGia;
-			}
-			else throw new Exception("khong tim thay quoc gia");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		this.quocGia = quocGia;
 	}
 	public String getDiaChi() {
 		return diaChi;
 	}
-	public void setDiaChi(String diaChi) {
-		this.diaChi = diaChi;
+	public void setDiaChi(String diaChi) throws Exception {
+	    if (diaChi.trim().isEmpty()) {
+	        throw new Exception("Vui lòng nhập địa chỉ nhà cung cấp!");
+	    }
+	    this.diaChi = diaChi;
 	}
 	@Override
 	public String toString() {

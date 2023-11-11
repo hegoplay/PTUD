@@ -4,32 +4,46 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class NhanVien {
-	private String maNV;
-	private String tenNV;
-	private String sdt;
-	private String email;
-	private String diaChi;
-	private double luong;
-	private boolean chucVu;
-	private boolean isNam;
-	private boolean dangLamViec;
+    private String maNV;
+    private String tenNV;
+    private String sdt;
+    private String email;
+    private String diaChi;
+    private double luong;
+    private boolean chucVu;
+    private boolean isNam;
+    private boolean dangLamViec;
+    private String cuaHangQL;
 
-	public NhanVien(String maNV) throws Exception {
-		this.setMaNV(maNV);
-	}
+    public NhanVien(String maNV) throws Exception {
+        this.setMaNV(maNV);
+    }
 
-	public NhanVien(String maNV, String ten, String sdt, String email, String diaChi, double luong, boolean chucVu,
-			boolean isNam, boolean dangLamViec) throws Exception {
-		this.setMaNV(maNV);
-		this.setTen(ten);
-		this.setSdt(sdt);
-		this.setEmail(email);
-		this.setDiaChi(diaChi);
-		this.setLuong(luong);
-		this.setChucVu(chucVu);
-		this.setNam(isNam);
-		this.setDangLamViec(dangLamViec);
-	}
+    public NhanVien(String maNV, String tenNV, String sdt, String email, String diaChi, double luong, boolean chucVu,
+            boolean isNam, boolean dangLamViec) throws Exception {
+        this.setMaNV(maNV);
+        this.setTen(tenNV);
+        this.setSdt(sdt);
+        this.setEmail(email);
+        this.setDiaChi(diaChi);
+        this.setLuong(luong);
+        this.setChucVu(chucVu);
+        this.setNam(isNam);
+        this.setDangLamViec(dangLamViec);
+    }
+    public NhanVien(String maNV, String tenNV, String sdt, String email, String diaChi, double luong, boolean chucVu,
+            boolean isNam, boolean dangLamViec, String cuaHangQL) throws Exception {
+        this.setMaNV(maNV);
+        this.setTen(tenNV);
+        this.setSdt(sdt);
+        this.setEmail(email);
+        this.setDiaChi(diaChi);
+        this.setLuong(luong);
+        this.setChucVu(chucVu);
+        this.setNam(isNam);
+        this.setDangLamViec(dangLamViec);
+        this.setCuaHangQL(cuaHangQL);
+    }
 
 	public String getTen() {
 		return tenNV;
@@ -43,42 +57,54 @@ public class NhanVien {
 		this.tenNV = ten;
 	}
 
-	public String getMaNV() {
-		return maNV;
-	}
+//	public String getMaNV() {
+//		return maNV;
+//	}
+//
+//	private void setMaNV(String maNV) throws Exception {
+//		String pattern = "^NV[0-9]{8}$";
+//		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+//		boolean check = p.matcher(maNV).find();
+//		if (!check) {
+//			throw new Exception("Mã nhân viên không đúng định dạng");
+//		}
+//		
+//		this.maNV = maNV;
+//	}
 
-	private void setMaNV(String maNV) throws Exception {
-		String pattern = "^NV[0-9]{8}$";
-		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-		boolean check = p.matcher(maNV).find();
-		if (!check) {
-			throw new Exception("Mã nhân viên không đúng định dạng");
-		}
-		
-		this.maNV = maNV;
-	}
 
 	public String getSdt() {
 		return sdt;
 	}
+
 
 	public void setSdt(String sdt) throws Exception {
 		String pattern = "^[0-9]{10}$";
 		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
 		boolean check = p.matcher(sdt).find();
 		if (!check) {
-			throw new Exception("Số điện thoại không được rỗng");// cai nay co j nen
+			throw new Exception("Số điện thoại không được rỗng và theo dạng ^[0-9]{10}$");// cai nay co j nen
 //			sua lai la sdt chi co 10 ky tu
 		}
 		this.sdt = sdt;
+	}
+	public String getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(String maNV) {
+		this.maNV = maNV;
 	}
 
 	public String getDiaChi() {
 		return diaChi;
 	}
 
-	public void setDiaChi(String diaChi) {
-		this.diaChi = diaChi;
+	public void setDiaChi(String diaChi) throws Exception {
+	    if (diaChi.trim().isEmpty()) {
+	        throw new Exception("Địa chỉ không được rỗng");
+	    }
+	    this.diaChi = diaChi;
 	}
 
 	public String getEmail() {
@@ -134,6 +160,15 @@ public class NhanVien {
 	public void setDangLamViec(boolean dangLamViec) {
 		this.dangLamViec = dangLamViec;
 	}
+	
+
+	public String getCuaHangQL() {
+		return cuaHangQL;
+	}
+
+	public void setCuaHangQL(String cuaHangQL) {
+		this.cuaHangQL = cuaHangQL;
+	}
 
 	@Override
 	public int hashCode() {
@@ -154,8 +189,9 @@ public class NhanVien {
 
 	@Override
 	public String toString() {
-		return "NhanVien [maNV=" + maNV + ", ten=" + tenNV + ", sdt=" + sdt + ", diaChi=" + diaChi + ", luong=" + luong
-				+ ", chucVu=" + chucVu + ", isNam=" + isNam + ", dangLamViec=" + dangLamViec + "]";
-	}
+        return "NhanVien [maNV=" + maNV + ", tenNV=" + tenNV + ", sdt=" + sdt + ", email=" + email + ", diaChi="
+                + diaChi + ", luong=" + luong + ", chucVu=" + chucVu + ", isNam=" + isNam + ", dangLamViec="
+                + dangLamViec + ", cuaHangQL=" + cuaHangQL + "]";
+    }
 
 }
