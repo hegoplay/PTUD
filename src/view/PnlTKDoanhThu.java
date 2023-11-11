@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
@@ -78,6 +79,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 	private LocalDate endDay;
 	private JButton btnXuatFile;
 	private JFreeChart barChart;
+	private JButton btnTim;
 
 	/**
 	 * Create the panel.
@@ -129,7 +131,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		txtTimTheoTen.setColumns(18);
 		pnlTimTheoTen.add(txtTimTheoTen);
 
-		JButton btnTim = new JButton("Tìm");
+		btnTim = new JButton("Tìm");
 		btnTim.setForeground(Color.WHITE);
 		btnTim.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnTim.setIcon(new ImageIcon(PnlThongKe.class.getResource("/view/icon/magnifying_glass_icon.png")));
@@ -225,6 +227,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		
 		cmbTKTheo.addActionListener(this);
 		btnXuatFile.addActionListener(this);
+		btnTim.addActionListener(this);
 //		JPanel panel = new JPanel();
 //		pnlTitle.add(panel, BorderLayout.CENTER);
 	}
@@ -261,7 +264,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 
 
 		barChart = ChartFactory.createBarChart("Top nhân viên có doanh thu cao trong tháng", "",
-				"Doanh thu", createDataset(), PlotOrientation.VERTICAL, true, true, false);
+				"Lợi nhuận", createDataset(), PlotOrientation.VERTICAL, true, true, false);
 		barChart.getTitle().setFont(new Font("Times New Roman", Font.BOLD, 24));
 		ChartPanel chartPanel = new ChartPanel(barChart);
 		chartPanel.setMouseZoomable(false);
@@ -269,6 +272,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		pnlContent.add(chartPanel,BorderLayout.CENTER);
 		chartPanel.setLayout(new BorderLayout(0, 0));
 		pnlContent.revalidate();
+		
 	}
 
 	private CategoryDataset createDataset() {
@@ -304,7 +308,26 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 				e1.printStackTrace();
 			}
 		}
+		if(e.getSource() == btnTim) {
+			 timMa();
+		}
 		LoadTable();
 	}
 
+	private void timMa() {
+		boolean check = false;
+		for (int i = 0 ; i < tblNhanVien.getRowCount();i++) {
+			if(((String)tblNhanVien.getValueAt(i, 1)).equalsIgnoreCase(txtTimTheoTen.getText()) ) {
+				tblNhanVien.setRowSelectionInterval(i, i);
+				tblNhanVien.requestFocus();
+				check =true;
+				
+				break;
+			}
+		}
+		if (!check) {
+			JOptionPane.showMessageDialog(this, "Không tìm thấy mã");
+		}
+	}
+	
 }

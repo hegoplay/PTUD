@@ -159,12 +159,12 @@ public class PhieuTraHang {
 				setBorder(Border.NO_BORDER).setBold()).setFont(ToPDFController.getFont());
 		Table nestedTable = new Table(new float[] {twocol/2,twocol/2});
 		
-		nestedTable.addCell(ToPDFController.getHeaderTextCell("Mã phiếu: "));
-		nestedTable.addCell(ToPDFController.getHeaderTextCellValue(this.getMaPhieu()));
+		nestedTable.addCell(ToPDFController.getHeaderLeftTextCell("Mã phiếu: "));
+		nestedTable.addCell(ToPDFController.getHeaderLeftTextCellValue(this.getMaPhieu()));
 		
-		nestedTable.addCell(ToPDFController.getHeaderTextCell("Ngày Trả Hàng"));
+		nestedTable.addCell(ToPDFController.getHeaderLeftTextCell("Ngày Trả Hàng"));
 		nestedTable.addCell(ToPDFController.
-				getHeaderTextCellValue(String.valueOf(this.getNgayTraHang())));
+				getHeaderLeftTextCellValue(String.valueOf(this.getNgayTraHang())));
 		
 		table.addCell(new Cell().add(nestedTable).setBorder(Border.NO_BORDER));
 		
@@ -207,19 +207,19 @@ public class PhieuTraHang {
 		Table threeColTable1 = new Table(threeColumnWidth);
 		threeColTable1.setBackgroundColor(Color.BLACK,0.7f);
 			
-		threeColTable1.addCell(ToPDFController.getHeaderTextCell("Tên Sản Phẩm").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.LEFT));
-		threeColTable1.addCell(ToPDFController.getHeaderTextCell("Số Lượng").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
-		threeColTable1.addCell(ToPDFController.getHeaderTextCell("Giá Thành").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT));
+		threeColTable1.addCell(ToPDFController.getHeaderLeftTextCell("Tên Sản Phẩm").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.LEFT));
+		threeColTable1.addCell(ToPDFController.getHeaderLeftTextCell("Số Lượng").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
+		threeColTable1.addCell(ToPDFController.getHeaderLeftTextCell("Giá Thành").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT));
 		
 		document.add(threeColTable1);
 		Table threeColTable2 = new Table(threeColumnWidth);
 		double totalSum = 0f;
 		for(ChiTietTraHang ct : this.getDsChiTiet()) {
 			totalSum += ct.getSoLuongSP() * ct.getSanPham().TinhGiaBan();
-			threeColTable2.addCell(ToPDFController.getHeaderTextCellValue(ct.getSanPham().getTenSP()).setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
-			threeColTable2.addCell(ToPDFController.getHeaderTextCellValue(String.valueOf(ct.getSoLuongSP())).setTextAlignment(TextAlignment.CENTER));
+			threeColTable2.addCell(ToPDFController.getHeaderLeftTextCellValue(ct.getSanPham().getTenSP()).setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
+			threeColTable2.addCell(ToPDFController.getHeaderLeftTextCellValue(String.valueOf(ct.getSoLuongSP())).setTextAlignment(TextAlignment.CENTER));
 			threeColTable2.addCell(
-					ToPDFController.getHeaderTextCellValue(MainFrame.moneyFormatter.format(
+					ToPDFController.getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format(
 							ct.getSanPham().TinhGiaBan())).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
 		}
 		
@@ -232,10 +232,10 @@ public class PhieuTraHang {
 		
 		Table threeColTable3 = new Table(threeColumnWidth);
 		
-		threeColTable3.addCell(ToPDFController.getHeaderTextCellValue("").setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
-		threeColTable3.addCell(ToPDFController.getHeaderTextCellValue("Total").setTextAlignment(TextAlignment.CENTER));
+		threeColTable3.addCell(ToPDFController.getHeaderLeftTextCellValue("").setMarginLeft(10f).setTextAlignment(TextAlignment.LEFT));
+		threeColTable3.addCell(ToPDFController.getHeaderLeftTextCellValue("Total").setTextAlignment(TextAlignment.CENTER));
 		threeColTable3.addCell(
-				ToPDFController.getHeaderTextCellValue(MainFrame.moneyFormatter.format(
+				ToPDFController.getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format(
 						totalSum)).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
 		document.add(threeColTable3);
 		
@@ -244,13 +244,13 @@ public class PhieuTraHang {
 		document.add(divider.setBorder(new SolidBorder(Color.GRAY,1))).setBottomMargin(15f);
 		
 		Table tb = new Table(fullWidth);
-		tb.addCell(ToPDFController.getHeaderTextCell("ĐIỀU KHOẢN VÀ ĐIỀU KIỆN\n").setTextAlignment(TextAlignment.LEFT));
+		tb.addCell(ToPDFController.getHeaderLeftTextCell("ĐIỀU KHOẢN VÀ ĐIỀU KIỆN\n").setTextAlignment(TextAlignment.LEFT));
 		List<String> TncList = new ArrayList<>();
 		TncList.add("1. Mỗi Hóa Đơn chỉ được hoàn 1 lần duy nhất");
 //		TncList.add("2. The Seller warrants the product for one (1) year fromt he date of shipment");
 		
 		for(String tnc: TncList) {
-			tb.addCell(ToPDFController.getHeaderTextCellValue(tnc));
+			tb.addCell(ToPDFController.getHeaderLeftTextCellValue(tnc));
 		}
 		
 		document.add(tb);

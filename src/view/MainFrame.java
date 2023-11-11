@@ -277,6 +277,11 @@ public class MainFrame {
 		controller.setEvent(listItem);
 		
 	}
+
+	public static NguoiQuanLy getNguoiQuanLy() {
+		// TODO Auto-generated method stub
+		return NhanVienDAO.getNguoiQuanLy("NV00000000");
+	}
 	
 	
 	
