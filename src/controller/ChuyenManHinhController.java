@@ -77,6 +77,8 @@ public class ChuyenManHinhController {
 			((CardLayout)root.getLayout()).show(root, kindSelected);
 			setChangeBackground(kind);
 			changeTitle(kindSelected);
+			root.revalidate();
+			
 		}
 
 		
