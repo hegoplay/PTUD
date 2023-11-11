@@ -164,6 +164,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 	}
 
 	private void LoadData() {
+		String timeTitle = "Giờ";
 		pnlTables.removeAll();
 		startDay = LocalDateTime.now().with(LocalTime.MIDNIGHT);
 		endDay = LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT);
@@ -172,14 +173,17 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			case "Tháng": {
 				startDay = startDay.minusMonths(1);
 				type = 1;
+				timeTitle = "Ngày";
 				break;
 			}
 			case "Kỳ": {
 				startDay = startDay.minusMonths(3);
+				timeTitle = "Tháng";
 				break;
 			}
 			case "Năm": {
 				startDay = startDay.minusYears(1);
+				timeTitle = "Kỳ";
 				break;
 			}
 		}
@@ -237,7 +241,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 // Xu ly du lieu tren dataset		
 
 		lineChart = ChartFactory.createXYLineChart("So sánh doanh thu",
-				"Thời gian", "doanh thu", createLineDataset(), PlotOrientation.VERTICAL, true, true, false);
+				"Thời gian (" + timeTitle + ")", "doanh thu", createLineDataset(), PlotOrientation.VERTICAL, true, true, false);
 		ChartPanel linePanel = new ChartPanel(lineChart);
 		linePanel.setMouseZoomable(false);
 		linePanel.setDisplayToolTips(true);
@@ -245,7 +249,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		linePanel.setLayout(new BorderLayout(0, 0));
 		
 		JFreeChart barChart = ChartFactory.createBarChart("Top 5 sản phẩm bán dạy", "Sản phẩm",
-				"", createDataset(), PlotOrientation.VERTICAL, true, true, false);
+				"Doanh thu", createDataset(), PlotOrientation.VERTICAL, true, true, false);
 		ChartPanel chartPanel = new ChartPanel(barChart);
 		chartPanel.setMouseZoomable(false);
 		chartPanel.setDisplayToolTips(true);
@@ -278,7 +282,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			series1 = new XYSeries("Doanh thu hôm nay");
 			series2 = new XYSeries("Doanh thu hôm qua");
 			ArrayList<HoaDon> lists = HoaDonDAO.GetHoaDonInDate(startDay.minusDays(1).toLocalDate(), endDay.minusDays(1).toLocalDate());
-			final int step = 6;
+			final int step = 3;
 			for(int i = 0; i <24;i+=step) {
 				double res = 0;
 				for (HoaDon hd : hdList) {
@@ -384,7 +388,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 						res += hd.TinhTongTien();
 					}
 				}
-				series1.add(i+step,res);
+				series1.add((i+step)/step,res);
 				res = 0;
 				for (HoaDon hd : lists) {
 					if (hd.getNgayLapHD().isAfter(startDay.minusYears(1).plusMonths(i)) && 
@@ -392,7 +396,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 						res += hd.TinhTongTien();
 					}
 				}
-				series2.add(i+step,res);
+				series2.add((i+step)/step,res);
 			}
 		}
 		dataset.addSeries(series1);

@@ -19,6 +19,7 @@ import entity.NhanVien;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class MainFrame {
 	public static final Color clrBlue6 = new Color(7,55,99);
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
 	
 	public JFrame frame;
 	private JPanel pnlNhanVien;
@@ -356,6 +358,11 @@ public class MainFrame {
 
 	        // ...
 	    }
+	}
+
+	public static NguoiQuanLy getNguoiQuanLy() {
+		// TODO Auto-generated method stub
+		return NhanVienDAO.getNguoiQuanLy("NV00000000");
 	}
 	
 }
