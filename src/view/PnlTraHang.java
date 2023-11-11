@@ -447,7 +447,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 //		thiet lap ngay tra = ngay hom nay
 
 		lblValueNgayTra.setText(LocalDateTime.now().format(MainFrame.timeFormatter));
-		lblValueNgTH.setText(MainFrame.nql.getTen());
+		lblValueNgTH.setText(MainFrame.nv.getTen());
 //		thiet lap su kien cho cac btn
 		btnLamMoi.addActionListener(this);
 		btnTimHD.addActionListener(this);
