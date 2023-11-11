@@ -10,6 +10,7 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JTextField;
@@ -57,6 +58,7 @@ import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -295,14 +297,21 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnXuatFile) {
 			try {
-				ToPDFController.xuatTKDTNV(
-						"test.pdf", 
-						startDay, 
-						endDay, 
-						NhanVienDAO.getNguoiQuanLy("NV00000000"), 
-						tblNhanVien,
-						barChart
-						);
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
+				
+				int userSelection = fileChooser.showSaveDialog(this);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = fileChooser.getSelectedFile();
+					ToPDFController.xuatTKDTNV(
+							fileToSave.getAbsolutePath(), 
+							startDay, 
+							endDay, 
+							NhanVienDAO.getNguoiQuanLy("NV00000000"), 
+							tblNhanVien,
+							barChart
+							);
+				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

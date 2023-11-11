@@ -32,6 +32,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.CardLayout;
+import javax.swing.JButton;
 
 public class MainFrame {
 	
@@ -46,6 +47,7 @@ public class MainFrame {
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
+	public static final Color clrRed = new Color(207,42,39);
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
@@ -71,6 +73,9 @@ public class MainFrame {
 	private JPanel pnlSanPham;
 	private JLabel lblSanPham;
 	private JPanel pnlHoTro;
+	private JLabel lblUser;
+	private JPanel pnlDX;
+	private JButton btnDangXuat;
 
 	/**
 	 * Launch the application.
@@ -79,9 +84,11 @@ public class MainFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PnlDangNhap frame = new PnlDangNhap();
-                    frame.setVisible(true);
+//                    PnlDangNhap frame = new PnlDangNhap();
+//                    frame.setVisible(true);
 //                    checkAccessPermission();
+                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
+                	window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -260,7 +267,29 @@ public class MainFrame {
 		pnlCenter.setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlLogout = new JPanel();
+		pnlLogout.setBackground(new Color(58,90,64));
 		pnlNavBar.add(pnlLogout, BorderLayout.SOUTH);
+		pnlLogout.setLayout(new GridLayout(0, 1, 0, 5));
+		
+		lblUser = new JLabel("acc");
+		lblUser.setForeground(new Color(255, 255, 255));
+		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/user_circle_M.png")));
+		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		pnlLogout.add(lblUser);
+		
+		pnlDX = new JPanel();
+		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
+		pnlLogout.add(pnlDX);
+		pnlDX.setLayout(new BorderLayout(0, 0));
+		pnlDX.setBackground(new Color(58,90,64));
+		
+		btnDangXuat = new JButton("Đăng Xuất");
+		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
+		btnDangXuat.setForeground(new Color(255, 255, 255));
+		btnDangXuat.setBackground(clrRed);
+		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
+		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
+		pnlDX.add(btnDangXuat);
 		
 		pnlContent = new JPanel();
 		pnlCenter.add(pnlContent, BorderLayout.CENTER);
@@ -289,46 +318,10 @@ public class MainFrame {
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
-		//set nguoi quan ly
-		
-		
-//		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
-//		controller.setLbl(lblTitle);
-//		controller.setView("Giao Dien Chinh", pnlGDChinhContent, lblGDChinh);
-//		
-//		List<Nav> listItem = new ArrayList<>();
-//		listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
-//		listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
-//		listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
-//		listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
-//		listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
-//		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
-//		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-//		
-//		controller.setEvent(listItem);
-		
-		// Sau khi đăng nhập thành công và khởi tạo đối tượng NguoiQuanLy hoặc NhanVien
-//        checkAccessPermission();
+
 		
 	}
 	// Thêm phương thức kiểm tra quyền truy cập
-//	private void checkAccessPermission() {
-//		pnlThongKe.setVisible(false);
-//        pnlTraHang.setVisible(false);
-//        pnlNhanVien.setVisible(false);
-//        pnlNhaCungCap.setVisible(false);
-//        System.out.println("YES");
-//		
-//	    if (nv != null && nv instanceof NguoiQuanLy) {
-//	        // Hiển thị tất cả chức năng đối với Người Quản Lý
-//	    	pnlThongKe.setVisible(true);
-//	        pnlTraHang.setVisible(true);
-//	        pnlNhanVien.setVisible(true);
-//	        pnlNhaCungCap.setVisible(true);
-//
-//	        // ...
-//	    }
-//	}
 	private void checkAccessPermission() {
 		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
 		controller.setLbl(lblTitle);

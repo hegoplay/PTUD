@@ -24,6 +24,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
@@ -42,6 +43,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -500,21 +502,33 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 			}
 			if (o == btnMaPhieu) {
 				TraHangDAO.ThemPhieuTraHang(pth);
-				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công","Thông báo thành công",JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công", "Thông báo thành công",
+						JOptionPane.OK_OPTION);
 				clearFileds();
 			}
 			if (o == btnXuatPhieu) {
-				TraHangDAO.ThemPhieuTraHang(pth);
-				JOptionPane.showMessageDialog(this, "Thêm phiếu thành công","Thông báo thành công",JOptionPane.OK_OPTION);
-				pth.XuatPhieuTraHang("invoice.pdf");
-				clearFileds();
+				if (pth == null) {
+					throw new Exception("Chưa có phiếu trả hàng");
+				}
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");
+
+				int userSelection = fileChooser.showSaveDialog(this);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = fileChooser.getSelectedFile();
+					TraHangDAO.ThemPhieuTraHang(pth);
+					JOptionPane.showMessageDialog(this, "Thêm phiếu thành công", "Thông báo thành công",
+							JOptionPane.OK_OPTION);
+					pth.XuatPhieuTraHang(fileToSave.getAbsolutePath());
+					clearFileds();
+				}
 			}
 			LoadData();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(this, e1.getMessage(),"Thông báo lỗi",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, e1.getMessage(), "Thông báo lỗi", JOptionPane.WARNING_MESSAGE);
 		}
-		
+
 	}
 
 	private void deleteItem() throws Exception {
@@ -556,8 +570,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		if (hd == null) {
 			throw new Exception("Hóa đơn không tồn tại");
 		}
-		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), MainFrame.nql, hd.getKhachHang(),
-				new ArrayList<>());
+		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), MainFrame.nql,
+				hd.getKhachHang(), new ArrayList<>());
 		if (TraHangDAO.KiemTraTTPhieuTra("TH" + txtMaHD.getText().substring(2))) {
 			pth = null;
 			throw new Exception("Phiếu trả tồn tại");
@@ -662,7 +676,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				LoadData();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this, e1.getMessage(),"Thông báo lỗi",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, e1.getMessage(), "Thông báo lỗi", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}
