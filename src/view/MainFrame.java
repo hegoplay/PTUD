@@ -289,46 +289,10 @@ public class MainFrame {
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
-		//set nguoi quan ly
-		
-		
-//		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
-//		controller.setLbl(lblTitle);
-//		controller.setView("Giao Dien Chinh", pnlGDChinhContent, lblGDChinh);
-//		
-//		List<Nav> listItem = new ArrayList<>();
-//		listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
-//		listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
-//		listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
-//		listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
-//		listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
-//		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
-//		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-//		
-//		controller.setEvent(listItem);
-		
-		// Sau khi đăng nhập thành công và khởi tạo đối tượng NguoiQuanLy hoặc NhanVien
-//        checkAccessPermission();
+
 		
 	}
 	// Thêm phương thức kiểm tra quyền truy cập
-//	private void checkAccessPermission() {
-//		pnlThongKe.setVisible(false);
-//        pnlTraHang.setVisible(false);
-//        pnlNhanVien.setVisible(false);
-//        pnlNhaCungCap.setVisible(false);
-//        System.out.println("YES");
-//		
-//	    if (nv != null && nv instanceof NguoiQuanLy) {
-//	        // Hiển thị tất cả chức năng đối với Người Quản Lý
-//	    	pnlThongKe.setVisible(true);
-//	        pnlTraHang.setVisible(true);
-//	        pnlNhanVien.setVisible(true);
-//	        pnlNhaCungCap.setVisible(true);
-//
-//	        // ...
-//	    }
-//	}
 	private void checkAccessPermission() {
 		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
 		controller.setLbl(lblTitle);

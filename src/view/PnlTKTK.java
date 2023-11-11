@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -32,6 +33,8 @@ import entity.LishSuTon;
 import entity.SanPham;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import java.awt.Color;
@@ -268,16 +271,24 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 		}
 		if (e.getSource() == btnXuatFile) {
 			try {
-				ToPDFController.xuatTKTK(
-						"tktk.pdf", 
-						ldDauKy, 
-						ldCuoiKy,
-						MainFrame.getNguoiQuanLy() , 
-						tblCTTK, 
-						new int[] {Integer.parseInt( lblValTongSP.getText()),
-								Integer.parseInt( lblValDaBan.getText()),
-								Integer.parseInt( lblValNhapMoi.getText()),
-								Integer.parseInt( lblValConLai.getText())});
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
+				
+				int userSelection = fileChooser.showSaveDialog(this);
+				
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = fileChooser.getSelectedFile();
+					ToPDFController.xuatTKTK(
+							fileToSave.getAbsolutePath(), 
+							ldDauKy, 
+							ldCuoiKy,
+							MainFrame.getNguoiQuanLy() , 
+							tblCTTK, 
+							new int[] {Integer.parseInt( lblValTongSP.getText()),
+									Integer.parseInt( lblValDaBan.getText()),
+									Integer.parseInt( lblValNhapMoi.getText()),
+									Integer.parseInt( lblValConLai.getText())});
+				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

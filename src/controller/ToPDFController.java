@@ -351,4 +351,111 @@ public class ToPDFController {
 		document.close();
 		System.out.println("Generated");
 	}
+
+	public static void xuatTKCH(String path, LocalDate startDate, LocalDate endDate, NguoiQuanLy nql,
+			double[] values, JFreeChart lineChart, JFreeChart barChart) throws IOException {
+		PdfWriter pdfWriter = new PdfWriter(path);
+		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+		pdfDocument.setDefaultPageSize(PageSize.A4);
+
+		Document document = new Document(pdfDocument);
+		ImageData imageData = ImageDataFactory.create(MainFrame.class.getResource("/view/icon/shop_logo.png"));
+		Image image = new Image(imageData);
+
+		setFont();
+
+		float x = pdfDocument.getDefaultPageSize().getWidth() / 2;
+		float y = pdfDocument.getDefaultPageSize().getHeight() / 2;
+		image.setFixedPosition(x - image.getImageWidth() / 2, y - image.getImageHeight() / 2);
+		image.setOpacity(0.1f);
+		document.add(image);
+
+		// tao ra cac mang luu cac thông tin của 1 hàng
+
+		Paragraph onesp = new Paragraph("\n");
+		Border gb = new SolidBorder(Color.GRAY, 2f);
+
+		//Title
+		
+		Table header = new Table(twoColumnWidth2p1);
+		header.addCell(new Cell().add("Phiếu Thống Kê Doanh Thu Cửa Hàng").setFont(font).setFontSize(20).setBold()
+				.setBorder(Border.NO_BORDER));
+		Table timeCreate = new Table(twoColumnWidth);
+		timeCreate
+				.addCell(
+						getHeaderLeftTextCell("Ngày lập phiếu: ").setFontSize(10f).setTextAlignment(TextAlignment.LEFT))
+				.setVerticalAlignment(VerticalAlignment.BOTTOM);
+		timeCreate.addCell(getHeaderLeftTextCell(
+				LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")).toString())
+				.setFontSize(10f)).setVerticalAlignment(VerticalAlignment.BOTTOM);
+		header.addCell(
+				new Cell().add(timeCreate).setBorder(Border.NO_BORDER).setVerticalAlignment(VerticalAlignment.BOTTOM));
+		document.add(header);
+		Table divider = new Table(fullWidth);
+		Table tableDivider2 = new Table(fullWidth);
+		Border dgb = new DashedBorder(Color.GRAY, 0.5f);
+		document.add(tableDivider2.setBorder(dgb).setMarginTop(12f));
+		document.add(onesp);
+		// Thêm thông tin chung nhất
+		Table twoColTable = new Table(twoColumnWidth);
+		twoColTable.addCell(getHeaderLeftTextCell("Doanh Thu"));
+		twoColTable.addCell(getHeaderRightTextCell("Người thống kê"));
+		twoColTable.addCell(getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format( values[0])));
+		twoColTable.addCell(getHeaderRightTextCellValue(nql.getTen()));
+		// hàng 2
+		twoColTable.addCell(getHeaderLeftTextCell("Doanh số"));
+		twoColTable.addCell(getHeaderRightTextCell("Ngày đầu kỳ"));
+		twoColTable.addCell(getHeaderLeftTextCellValue((int)values[1] + ""));
+		twoColTable.addCell(getHeaderRightTextCellValue(MainFrame.timeFormatter.format(startDate)));
+
+		// hàng 3
+		twoColTable.addCell(getHeaderLeftTextCell("Lợi nhuậns"));
+		twoColTable.addCell(getHeaderRightTextCell("Ngày cuối kỳ"));
+		twoColTable.addCell(getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format(values[2])));
+		twoColTable.addCell(getHeaderRightTextCellValue(MainFrame.timeFormatter.format(endDate)));
+
+
+		document.add(twoColTable.setBorder(Border.NO_BORDER));
+
+		document.add(divider.setBorder(gb).setMarginBottom(10f));
+		
+		Paragraph productPara = new Paragraph("Biểu đồ đường thẳng doanh thu cửa hàng");
+		document.add(productPara.setBold().setFont(font));
+
+		PDFDocument doc = new PDFDocument();
+		Rectangle bounds = new Rectangle((int) pdfDocument.getDefaultPageSize().getWidth() - 100, 200);
+		Page page = doc.createPage(bounds);
+		PDFGraphics2D g2 = page.getGraphics2D();
+		lineChart.draw(g2, bounds);
+
+		PdfReader reader = new PdfReader(new ByteArrayInputStream(doc.getPDFBytes()));
+		PdfDocument chartDoc = new PdfDocument(reader);
+		PdfFormXObject chart1 = chartDoc.getFirstPage().copyAsFormXObject(pdfDocument);
+		Image chartImage = new Image(chart1);
+
+		
+		Paragraph chartParaph = new Paragraph("").add(chartImage);
+		document.add(chartParaph);
+		
+//		barChart
+		
+		document.add(new Paragraph("Biểu đồ cột sản phẩm").setBold().setFont(font));
+
+		PDFDocument doc1 = new PDFDocument();
+		Page page1 = doc1.createPage(new Rectangle((int) pdfDocument.getDefaultPageSize().getWidth() - 100, 200));
+		PDFGraphics2D g21 = page1.getGraphics2D();
+		barChart.draw(g21, bounds);
+
+		PdfReader reader1 = new PdfReader(new ByteArrayInputStream(doc1.getPDFBytes()));
+		PdfDocument chartDoc1 = new PdfDocument(reader1);
+		PdfFormXObject chart2 = chartDoc1.getFirstPage().copyAsFormXObject(pdfDocument);
+		Image chartImage1 = new Image(chart2);
+
+		
+		Paragraph chartParaph1 = new Paragraph("").add(chartImage1);
+		document.add(chartParaph1);
+		
+		document.close();
+		System.out.println("Generated");
+	}
 }
