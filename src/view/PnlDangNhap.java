@@ -140,7 +140,9 @@ public class PnlDangNhap extends JFrame {
 		        String taiKhoan = txtTaiKhoan.getText();
 		        String matKhau = textMatKhau.getText();
 
-		        if (taiKhoan.equals("ql001") && matKhau.equals("12345")) {
+		       	NhanVien nv = NhanVienDAO.getTKNV(taiKhoan,matKhau);
+		        
+		        if (nv!=null) {
 		            // Đăng nhập thành công là Người Quản Lý
 		        	// Đóng cửa sổ đăng nhập
 			        dispose();
@@ -148,7 +150,7 @@ public class PnlDangNhap extends JFrame {
 			        // Mở cửa sổ MainFrame
 			        EventQueue.invokeLater(() -> {
 			            try {
-			                MainFrame mainFrame = new MainFrame(NhanVienDAO.getNguoiQuanLy("NV00000000"));
+			                MainFrame mainFrame = new MainFrame(nv);
 			                mainFrame.frame.setVisible(true);
 			            } catch (Exception a) {
 			                a.printStackTrace();
@@ -161,43 +163,9 @@ public class PnlDangNhap extends JFrame {
 //		                ex.printStackTrace();
 //		            }
 
-		        } else if (taiKhoan.equals("nv001") && matKhau.equals("12345")) {
-		            // Đăng nhập thành công là Nhân Viên
-		        	// Đóng cửa sổ đăng nhập
-			        dispose();
-
-			        // Mở cửa sổ MainFrame
-			        EventQueue.invokeLater(() -> {
-			            try {
-			                MainFrame mainFrame = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
-			                mainFrame.frame.setVisible(true);
-			            } catch (Exception a) {
-			                a.printStackTrace();
-			            }
-			        });
-//		            try {
-//		                NhanVien nhanVien = new NhanVien("NV00000001"); // Thay đổi mã NV mặc định nếu cần
-//		                MainFrame.nv = nhanVien;
-//		            } catch (Exception ex) {
-//		                ex.printStackTrace();
-//		            }
-
 		        } else {
 		            JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
 		        }
-
-//		        // Đóng cửa sổ đăng nhập
-//		        dispose();
-//
-//		        // Mở cửa sổ MainFrame
-//		        EventQueue.invokeLater(() -> {
-//		            try {
-//		                MainFrame mainFrame = new MainFrame();
-//		                mainFrame.frame.setVisible(true);
-//		            } catch (Exception a) {
-//		                a.printStackTrace();
-//		            }
-//		        });
 		    }
 		});
 

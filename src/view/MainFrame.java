@@ -48,6 +48,7 @@ public class MainFrame {
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
+	public static final Color clrRed2 = new Color(234,153,153);
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
@@ -84,11 +85,11 @@ public class MainFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-//                    PnlDangNhap frame = new PnlDangNhap();
-//                    frame.setVisible(true);
+                    PnlDangNhap frame = new PnlDangNhap();
+                    frame.setVisible(true);
 //                    checkAccessPermission();
-                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
-                	window.frame.setVisible(true);
+//                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
+//                	window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -271,7 +272,7 @@ public class MainFrame {
 		pnlNavBar.add(pnlLogout, BorderLayout.SOUTH);
 		pnlLogout.setLayout(new GridLayout(0, 1, 0, 5));
 		
-		lblUser = new JLabel("acc");
+		lblUser = new JLabel(nv.getTen());
 		lblUser.setForeground(new Color(255, 255, 255));
 		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/user_circle_M.png")));
 		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
