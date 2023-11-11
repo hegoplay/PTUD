@@ -216,7 +216,7 @@ public class NhanVienDAO {
 	    }
 	    return dsNv;
 	}
-	public String tuPhatSinhMa() {
+	public static String tuPhatSinhMa() {
 	    // Get the current list of suppliers
 	    ArrayList<NhanVien> dsNV = getAllNhanVien();
 	    
@@ -227,6 +227,6 @@ public class NhanVienDAO {
 	    return String.format("NV%08d", soLuong);
 	}
 
-
+//	public
 
 }
