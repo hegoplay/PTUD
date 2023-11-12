@@ -36,6 +36,8 @@ import entity.NhanVien;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PnlNhanVien extends JPanel {
 
@@ -50,7 +52,7 @@ public class PnlNhanVien extends JPanel {
     private JTable table;
     private JTable table_1;
     private NhanVienDAO nv_dao;
-    private JTextField textField;
+    private JTextField textCuaHangQL;
     private JRadioButton rdbtnNam, rdbtnNu, rdbtnDangLam, rdbtnDaNghi;
     private JComboBox<String> comboBox;
 
@@ -130,6 +132,14 @@ public class PnlNhanVien extends JPanel {
         panel.add(scrollBar);
 
         textTimNV = new JTextField();
+        textTimNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textLuong.requestFocus();
+                }
+			}
+		});
         textTimNV.setColumns(10);
         textTimNV.setBounds(235, 34, 529, 32);
         panel.add(textTimNV);
@@ -191,7 +201,7 @@ public class PnlNhanVien extends JPanel {
 
                 // Set chức vụ
                 comboBox.setSelectedItem(chucVu);
-                textField.setText(cuaHangQL);
+                textCuaHangQL.setText(cuaHangQL);
             }
         });
 
@@ -255,11 +265,36 @@ public class PnlNhanVien extends JPanel {
         add(lblSDT);
 
         textSDT = new JTextField();
+        textSDT.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textLuong.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					textEmail.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textCuaHangQL.requestFocus();
+                }
+			}
+		});
         textSDT.setColumns(10);
         textSDT.setBounds(141, 112, 169, 32);
         add(textSDT);
 		
 		textTenNV = new JTextField();
+		textTenNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textEmail.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					textCuaHangQL.requestFocus();
+                }
+			}
+		});
 		textTenNV.setColumns(10);
 		textTenNV.setBounds(456, 54, 212, 32);
 		add(textTenNV);
@@ -307,22 +342,34 @@ public class PnlNhanVien extends JPanel {
 		
 		JLabel lblaCh = new JLabel("Địa chỉ:");
 		lblaCh.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblaCh.setBounds(322, 109, 75, 32);
+		lblaCh.setBounds(622, 109, 75, 32);
 		add(lblaCh);
-		
-		textDiaChi = new JTextField();
-		textDiaChi.setColumns(10);
-		textDiaChi.setBounds(393, 112, 333, 32);
-		add(textDiaChi);
 		
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblEmail.setBounds(736, 109, 55, 32);
+		lblEmail.setBounds(322, 109, 55, 32);
 		add(lblEmail);
 		
 		textEmail = new JTextField();
+		textEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textLuong.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					textDiaChi.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					textSDT.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textTenNV.requestFocus();
+                }
+			}
+		});
 		textEmail.setColumns(10);
-		textEmail.setBounds(801, 112, 228, 32);
+		textEmail.setBounds(384, 112, 228, 32);
 		add(textEmail);
 		
 		JLabel lblLuong = new JLabel("Lương:");
@@ -331,6 +378,23 @@ public class PnlNhanVien extends JPanel {
 		add(lblLuong);
 		
 		textLuong = new JTextField();
+		textLuong.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					textSDT.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					textCuaHangQL.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textEmail.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textTimNV.requestFocus();
+                }
+			}
+		});
 		textLuong.setColumns(10);
 		textLuong.setBounds(343, 168, 132, 32);
 		add(textLuong);
@@ -368,10 +432,41 @@ public class PnlNhanVien extends JPanel {
 		lblCuaHangQL.setBounds(678, 51, 128, 32);
 		add(lblCuaHangQL);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(801, 51, 228, 32);
-		add(textField);
+		textCuaHangQL = new JTextField();
+		textCuaHangQL.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textDiaChi.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					textTenNV.requestFocus();
+                }
+				
+			}
+		});
+		textCuaHangQL.setColumns(10);
+		textCuaHangQL.setBounds(801, 51, 228, 32);
+		add(textCuaHangQL);
+		
+		textDiaChi = new JTextField();
+		textDiaChi.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textLuong.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					textEmail.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textCuaHangQL.requestFocus();
+                }
+			}
+		});
+		textDiaChi.setBounds(696, 112, 333, 32);
+		add(textDiaChi);
+		textDiaChi.setColumns(10);
 		loadDataToTable();
 
 	}
@@ -421,7 +516,7 @@ public class PnlNhanVien extends JPanel {
         textLuong.setText("");
         rdbtnNam.setSelected(true);
         rdbtnDangLam.setSelected(true);
-        textField.setText("");
+        textCuaHangQL.setText("");
         textTimNV.setText("");
         
 //        clearTableData();
@@ -467,7 +562,7 @@ public class PnlNhanVien extends JPanel {
             textEmail.setText(nv.getEmail());
             textDiaChi.setText(nv.getDiaChi());
             textLuong.setText(String.valueOf(nv.getLuong()));
-            textField.setText(nv.getCuaHangQL());
+            textCuaHangQL.setText(nv.getCuaHangQL());
 
             // Set giới tính
             if (nv.isNam()) {
@@ -541,7 +636,7 @@ public class PnlNhanVien extends JPanel {
             String chucVu = (String) comboBox.getSelectedItem();
             boolean nam = rdbtnNam.isSelected();
             boolean dangLamViec = rdbtnDangLam.isSelected();
-            String cuaHangQL = textField.getText();
+            String cuaHangQL = textCuaHangQL.getText();
 
             // Tạo đối tượng NhanVien từ dữ liệu
             NhanVien nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, dangLamViec, nam, dangLamViec, cuaHangQL);
@@ -554,9 +649,9 @@ public class PnlNhanVien extends JPanel {
             clearForm();
         } catch (NumberFormatException ex) {
             // Xử lý nếu người dùng nhập không phải là số
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lương hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lương hợp lệ", "Lỗi", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -571,7 +666,7 @@ public class PnlNhanVien extends JPanel {
         String chucVu = (String) comboBox.getSelectedItem();
         boolean nam = rdbtnNam.isSelected();
         boolean dangLamViec = rdbtnDangLam.isSelected();
-        String cuaHangQL = textField.getText();
+        String cuaHangQL = textCuaHangQL.getText();
 
         // Tạo đối tượng NhanVien từ dữ liệu
 //        NhanVien nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, chucVu, nam, dangLamViec, cuaHangQL);
