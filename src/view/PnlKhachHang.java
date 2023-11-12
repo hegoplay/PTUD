@@ -97,6 +97,12 @@ public class PnlKhachHang extends JPanel {
 		                                                btnSuaKH.setForeground(new Color(255, 255, 255));
 		                                                btnSuaKH.addActionListener(new ActionListener() {
 		                                                    public void actionPerformed(ActionEvent e) {
+		                                                    	try {
+		                                        					suaThongTinKhachHang();
+		                                        				} catch (Exception e1) {
+		                                        					// TODO Auto-generated catch block
+		                                        					e1.printStackTrace();
+		                                        				}
 		                                                    }
 		                                                });
 		                                                btnSuaKH.setBackground(new Color(0, 128, 192));
