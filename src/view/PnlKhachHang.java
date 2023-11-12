@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
@@ -21,6 +23,12 @@ import com.toedter.components.JSpinField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
+import connectDB.ConnectDB;
+import dao.NhaCCDAO;
+import dao.KhachHangDAO;
+import entity.NhaCC;
+import entity.KhachHang;
+
 public class PnlKhachHang extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -32,11 +40,21 @@ public class PnlKhachHang extends JPanel {
     private JTable table;
     private JTextField textFTimKH;
     private JTable table_1;
+    private JRadioButton rdbtnNam;
+    private JRadioButton rdbtnNu;
+    private KhachHangDAO kh_dao;
 
     /**
      * Create the panel.
      */
     public PnlKhachHang() {
+    	try {
+			ConnectDB.getConection();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		kh_dao = new KhachHangDAO();
         setBackground(MainFrame.clrTheme);
         setLayout(null);
 		
@@ -63,6 +81,12 @@ public class PnlKhachHang extends JPanel {
 		                                        btnThemKH.setForeground(new Color(255, 255, 255));
 		                                        btnThemKH.addActionListener(new ActionListener() {
 		                                            public void actionPerformed(ActionEvent e) {
+		                                            	try {
+		                                					themMoiKhachHang();
+		                                				} catch (Exception e1) {
+		                                					// TODO Auto-generated catch block
+		                                					e1.printStackTrace();
+		                                				}
 		                                            }
 		                                        });
 		                                        btnThemKH.setBackground(new Color(0, 128, 192));
@@ -108,12 +132,12 @@ public class PnlKhachHang extends JPanel {
 		                                                                                panel.add(lblTenKH);
 		                                                                                lblTenKH.setFont(new Font("Tahoma", Font.BOLD, 17));
 		                                                                                
-		                                                                                JRadioButton rdbtnNam = new JRadioButton("Nam");
+		                                                                                rdbtnNam = new JRadioButton("Nam");
 		                                                                                rdbtnNam.setBounds(194, 304, 67, 31);
 		                                                                                panel.add(rdbtnNam);
 		                                                                                rdbtnNam.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		                                                                                
-		                                                                                JRadioButton rdbtnNu = new JRadioButton("Nữ");
+		                                                                                rdbtnNu = new JRadioButton("Nữ");
 		                                                                                rdbtnNu.setBounds(297, 304, 55, 31);
 		                                                                                panel.add(rdbtnNu);
 		                                                                                rdbtnNu.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -165,6 +189,12 @@ public class PnlKhachHang extends JPanel {
 		                                btnTimKH.setBackground(new Color(0, 128, 192));
 		                                btnTimKH.setBounds(614, 33, 103, 32);
 		                                panel_1.add(btnTimKH);
+		                                btnTimKH.addActionListener(new ActionListener() {
+		                                    public void actionPerformed(ActionEvent e) {
+		                                        // Gọi hàm làm mới ở đây
+		                                    	timKhachHang();
+		                        	            }
+		                        	        });
 		                                
 		                                textFTimKH = new JTextField();
 		                                textFTimKH.setColumns(10);
@@ -240,6 +270,181 @@ public class PnlKhachHang extends JPanel {
 		                                        lblTitle.setBounds(765, 27, 344, 39);
 		                                        add(lblTitle);
 		                                        lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
+		                                        
+		                                        loadDataToTable();
 
 	}
+
+	private void loadDataToTable() {
+		try {
+            // Lấy dữ liệu từ cơ sở dữ liệu hoặc từ nơi khác
+            ArrayList<KhachHang> danhSachKhachHang = KhachHangDAO.getAllKhachHang();
+
+            // Tạo một DefaultTableModel để hiển thị dữ liệu trên JTable
+            DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+            model.setRowCount(0); // Xóa tất cả dữ liệu cũ trên JTable
+
+            // Duyệt qua danh sách và thêm từng dòng dữ liệu vào model
+            for (KhachHang kh : danhSachKhachHang) {
+                model.addRow(new Object[]{
+                        kh.getMaKH(),
+                        kh.getTenKH(),
+                        kh.getDiaChi(),
+                        kh.getSdt(),
+                        kh.getNamSinh(),
+                        (kh.isGioiTinh() ? "Nam" : "Nữ"),
+                        // Thêm các trường khác tương ứng
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        }
+		
+	}
+	
+	private void clearForm() {
+        textMaKH.setText("");
+        textTenKH.setText("");
+        textDiaChi.setText("");
+        textSDT.setText("");
+        textNamSinh.setText("");
+        rdbtnNam.setSelected(true);
+        
+//        clearTableData();
+        loadDataToTable();
+        
+    }
+	
+	private void timKhachHang() {
+        // Lấy mã nhân viên từ text field
+        String maKH = textFTimKH.getText();
+
+        // Gọi hàm tìm kiếm từ DAO
+        ArrayList<KhachHang> dsKhachHang = kh_dao.findKhachHangByMa(maKH);
+
+        // Xóa dữ liệu cũ trong bảng
+        DefaultTableModel tableModel = (DefaultTableModel) table_1.getModel();
+        tableModel.setRowCount(0);
+
+        // Hiển thị thông tin nhân viên tìm được hoặc thông báo không tìm thấy
+        if (!dsKhachHang.isEmpty()) {
+            for (int i = 0; i < dsKhachHang.size(); i++) {
+                KhachHang kh = dsKhachHang.get(i);
+                tableModel.addRow(new Object[] {
+                    i + 1,
+                    kh.getMaKH(),
+                    kh.getTenKH(),
+                    kh.getDiaChi(),
+                    kh.getSdt(),
+                    kh.getNamSinh(),
+                    (kh.isGioiTinh() ? "Nam" : "Nữ"),
+                    // Thêm các trường khác tương ứng
+                });
+            }
+
+            // Nếu danh sách không rỗng, chỉ hiển thị thông tin của nhân viên đầu tiên trong danh sách
+            KhachHang kh = dsKhachHang.get(0);
+            textMaKH.setText(kh.getMaKH());
+            textTenKH.setText(kh.getTenKH());
+            textDiaChi.setText(kh.getDiaChi());
+            textSDT.setText(kh.getSdt());
+            textNamSinh.setText(String.valueOf(kh.getNamSinh()));
+
+            // Set giới tính
+            if (kh.isGioiTinh()) {
+                rdbtnNam.setSelected(true);
+            } else {
+                rdbtnNu.setSelected(true);
+            }
+
+            
+
+        } else {
+            // Nếu không tìm thấy, thông báo hoặc xử lý khác tùy ý
+            JOptionPane.showMessageDialog(this, "Không tìm thấy Khach Hang với mã: " + maKH, "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+	
+	private void themMoiKhachHang() throws Exception {
+		
+		
+//      //Lấy dữ liệu từ các text fields và combobox
+//      String maKH = kh_dao.tuPhatSinhMa();
+//      String tenNV = textTenKH.getText();
+//      String diaChi = textDiaChi.getText();
+//      String sdt = textSDT.getText();
+//      int namSinh = 2000;
+//      boolean nam = rdbtnNam.isSelected();
+//
+//      // Tạo đối tượng KhachHang từ dữ liệu
+//      KhachHang kh = new KhachHang(maKH, tenNV, diaChi, sdt, namSinh, nam);
+//
+//      // Gọi hàm thêm mới từ DAO
+//      kh_dao.addKhachHang(kh);
+//
+//      // Làm mới bảng
+//      loadDataToTable();
+//      clearForm();
+  	try {
+          // Lấy dữ liệu từ các text fields và combobox
+  		String maKH = kh_dao.tuPhatSinhMa();
+      String tenNV = textTenKH.getText();
+      String diaChi = textDiaChi.getText();
+      String sdt = textSDT.getText();
+      int namSinh = 0;
+      boolean nam = rdbtnNam.isSelected();
+
+//          // Kiểm tra và chuyển đổi giá trị từ textNamSInh
+//          String namSinhStr = textNamSinh.getText();
+//          if (!namSinhStr.isEmpty()) {
+//              int namSinhValue = i.parseDouble(namSinhStr);
+//
+//              // Kiểm tra nếu giá trị nam sinh lớn hơn 0
+//              if (namSinhValue > 0) {
+//                  namSinh = namSinhValue;
+//              } else {
+//                  throw new Exception("Vui lòng nhập số nam sinhlớn hơn 0");
+//              }
+//          } else {
+//              throw new Exception("Vui lòng nhập số lnam sinh");
+//          }
+
+
+
+          // Tạo đối tượng NhanVien từ dữ liệu
+          KhachHang kh = new KhachHang(maKH, tenNV, diaChi, sdt, namSinh, nam) ;
+
+          // Gọi hàm thêm mới từ DAO
+          kh_dao.addKhachHang(kh);
+
+          // Làm mới bảng
+          loadDataToTable();
+          clearForm();
+      } catch (NumberFormatException ex) {
+          // Xử lý nếu người dùng nhập không phải là số
+          JOptionPane.showMessageDialog(this, "Vui lòng nhập số lương hợp lệ", "Lỗi", JOptionPane.INFORMATION_MESSAGE);
+      } catch (Exception e) {
+          JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.INFORMATION_MESSAGE);
+      }
+  }
+    private void suaThongTinKhachHang() throws Exception {
+        // Lấy dữ liệu từ các text fields và combobox
+    String maKH = kh_dao.tuPhatSinhMa();
+    String tenNV = textTenKH.getText();
+    String diaChi = textDiaChi.getText();
+    String sdt = textSDT.getText();
+    int namSinh = 2000;
+    boolean nam = rdbtnNam.isSelected();
+
+        // Tạo đối tượng Khach Hang từ dữ liệu
+        KhachHang kh = new KhachHang(maKH, tenNV, diaChi, sdt, namSinh, nam);
+
+        // Gọi hàm cập nhật từ DAO
+        kh_dao.updateKhachHang(kh);
+
+        // Làm mới bảng
+        loadDataToTable();
+        clearForm();
+    }
 }

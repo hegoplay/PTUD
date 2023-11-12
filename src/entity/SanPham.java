@@ -51,6 +51,10 @@ public class SanPham {
 	public int hashCode() {
 		return Objects.hash(maSP);
 	}
+	// i dont sure about it, just for format of DAO_sanPham
+	public String getMaSP() {
+		return maSP;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

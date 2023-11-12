@@ -69,5 +69,32 @@ public class SanPhamDAO {
 		return lsp;
 	}
 	
+	public static boolean addSanPham(SanPham sp) {
+	    try {
+	        Connection con = ConnectDB.getConection();
+	        String sql = "INSERT INTO SanPham (maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, conKinhDoanh, isNam, ncc, hinhAnh, thue, lsp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement statement = con.prepareStatement(sql);
+	        statement.setString(1, sp.getMaSP());
+	        statement.setString(2, sp.getTenSP());
+	        statement.setDouble(3, sp.getGiaNhap());
+	        statement.setInt(4, sp.getSlTonKho());
+	        statement.setString(5, sp.getKichThuoc());
+	        statement.setString(6, sp.getMauSac());
+	        statement.setBoolean(7, sp.isConKinhDoanh());
+	        statement.setBoolean(8, sp.isNam());
+	        //statement.setLong(9, sp.getNhaCC());
+	        statement.setString(10, sp.getHinhAnh());
+	        statement.setFloat(11,sp.getThue());
+	        //statement.setString(12, sp.getLoaiSP());
+	        
+
+	        int rowsInserted = statement.executeUpdate();
+	        return rowsInserted > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	
 	
 }
