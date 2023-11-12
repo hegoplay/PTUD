@@ -86,6 +86,19 @@ public class MainFrame {
             }
         });
     }
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MainFrame window = new MainFrame();
+//					
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
@@ -276,6 +289,8 @@ public class MainFrame {
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
+		
+		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
 		
@@ -286,6 +301,21 @@ public class MainFrame {
 		pnlCenter.add(lblTitle, BorderLayout.NORTH);
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
+		
+//		JLabel lblNewLabel = new JLabel("   NhanVien001");
+//		lblNewLabel.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/profile-user.png")));
+//		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+//		lblNewLabel.setForeground(new Color(255, 255, 255));
+		
+//		lblNewLabel.setBounds(0, 528, 173, 42);
+//		pnlNavLists.add(lblNewLabel);
+//		
+//		JButton btnNewButton = new JButton("Đăng xuất\r\n");
+//		JButton btnDangXuat = new JButton("Dang xuat");
+//		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log-out.png")));
+//		btnDangXuat.setBackground(new Color(255, 0, 0));
+//		btnDangXuat.setBounds(27, 568, 118, 27);
+//		pnlNavLists.add(btnDangXuat);
 		
 		//set nguoi quan ly
 		
@@ -349,9 +379,7 @@ public class MainFrame {
 			listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
 			listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
 			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
-			listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
 			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
-			listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
 			controller.setEvent(listItem);
 
 	        // ...
