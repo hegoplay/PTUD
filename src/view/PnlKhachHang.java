@@ -30,7 +30,7 @@ public class PnlKhachHang extends JPanel {
     private JTextField textDiaChi;
     private JTextField textSDT;
     private JTable table;
-    private JTextField textField_1;
+    private JTextField textFTimKH;
     private JTable table_1;
 
     /**
@@ -166,10 +166,10 @@ public class PnlKhachHang extends JPanel {
 		                                btnTimKH.setBounds(614, 33, 103, 32);
 		                                panel_1.add(btnTimKH);
 		                                
-		                                textField_1 = new JTextField();
-		                                textField_1.setColumns(10);
-		                                textField_1.setBounds(194, 34, 410, 32);
-		                                panel_1.add(textField_1);
+		                                textFTimKH = new JTextField();
+		                                textFTimKH.setColumns(10);
+		                                textFTimKH.setBounds(194, 34, 410, 32);
+		                                panel_1.add(textFTimKH);
 		                                
 		                                JScrollPane scrollPane = new JScrollPane();
 		                                scrollPane.setBounds(10, 77, 707, 455);

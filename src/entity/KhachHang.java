@@ -40,6 +40,9 @@ public class KhachHang {
 			this.maKH = maKH;
 	}
 	
+	public String getMaKH() {
+		return maKH;
+	}
 	private void setMaKH() {
 		maKH = "KH" + sdt;
 	}

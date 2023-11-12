@@ -24,15 +24,15 @@ import javax.swing.JScrollPane;
 public class PnLSanPham extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private JTextField textMaKH;
+    private JTextField textMaSP;
     private JTable table;
-    private JTextField textField_1;
+    private JTextField textField_TimSP;
     private JTable table_1;
-    private JTextField textField;
-    private JTextField textField_4;
-    private JTextField textField_5;
-    private JTextField textField_6;
-    private JTextField textField_7;
+    private JTextField textField_SP;
+    private JTextField textField_GiaNhap;
+    private JTextField textField_SoLuong;
+    private JTextField textField_MauSac;
+    private JTextField textField_TrangThai;
 
     /**
      * Create the panel.
@@ -58,40 +58,40 @@ public class PnLSanPham extends JPanel {
 		                                panel.add(lblDiaChi);
 		                                lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		                                
-		                                        JButton btnThemKH = new JButton("Thêm ");
-		                                        btnThemKH.setBounds(34, 478, 91, 32);
-		                                        panel.add(btnThemKH);
-		                                        btnThemKH.setForeground(new Color(255, 255, 255));
-		                                        btnThemKH.addActionListener(new ActionListener() {
+		                                        JButton btnThemSP = new JButton("Thêm ");
+		                                        btnThemSP.setBounds(34, 478, 91, 32);
+		                                        panel.add(btnThemSP);
+		                                        btnThemSP.setForeground(new Color(255, 255, 255));
+		                                        btnThemSP.addActionListener(new ActionListener() {
 		                                            public void actionPerformed(ActionEvent e) {
 		                                            }
 		                                        });
-		                                        btnThemKH.setBackground(new Color(0, 128, 192));
+		                                        btnThemSP.setBackground(new Color(0, 128, 192));
 		                                        
-		                                                JButton btnSuaKH = new JButton("Sửa ");
-		                                                btnSuaKH.setBounds(141, 479, 91, 32);
-		                                                panel.add(btnSuaKH);
-		                                                btnSuaKH.setForeground(new Color(255, 255, 255));
-		                                                btnSuaKH.addActionListener(new ActionListener() {
+		                                                JButton btnSuaSP = new JButton("Sửa ");
+		                                                btnSuaSP.setBounds(141, 479, 91, 32);
+		                                                panel.add(btnSuaSP);
+		                                                btnSuaSP.setForeground(new Color(255, 255, 255));
+		                                                btnSuaSP.addActionListener(new ActionListener() {
 		                                                    public void actionPerformed(ActionEvent e) {
 		                                                    }
 		                                                });
-		                                                btnSuaKH.setBackground(new Color(0, 128, 192));
+		                                                btnSuaSP.setBackground(new Color(0, 128, 192));
 		                                                
-		                                                        JButton btnLamMoiKH = new JButton("Làm mới");
-		                                                        btnLamMoiKH.addActionListener(new ActionListener() {
+		                                                        JButton btnLamMoiSP = new JButton("Làm mới");
+		                                                        btnLamMoiSP.addActionListener(new ActionListener() {
 		                                                        	public void actionPerformed(ActionEvent e) {
 		                                                        	}
 		                                                        });
-		                                                        btnLamMoiKH.setBounds(246, 479, 91, 32);
-		                                                        panel.add(btnLamMoiKH);
-		                                                        btnLamMoiKH.setForeground(new Color(255, 255, 255));
-		                                                        btnLamMoiKH.setBackground(new Color(0, 128, 192));
+		                                                        btnLamMoiSP.setBounds(246, 479, 91, 32);
+		                                                        panel.add(btnLamMoiSP);
+		                                                        btnLamMoiSP.setForeground(new Color(255, 255, 255));
+		                                                        btnLamMoiSP.setBackground(new Color(0, 128, 192));
 		                                                        
-		                                                                textMaKH = new JTextField();
-		                                                                textMaKH.setBounds(143, 66, 132, 28);
-		                                                                panel.add(textMaKH);
-		                                                                textMaKH.setColumns(10);
+		                                                                textMaSP = new JTextField();
+		                                                                textMaSP.setBounds(143, 66, 132, 28);
+		                                                                panel.add(textMaSP);
+		                                                                textMaSP.setColumns(10);
 		                                                                                
 		                                                                                JRadioButton rdbtnNam = new JRadioButton("Nam");
 		                                                                                rdbtnNam.setBounds(172, 338, 67, 31);
@@ -113,10 +113,10 @@ public class PnLSanPham extends JPanel {
 		                                                                                lblTenSP.setBounds(13, 98, 120, 32);
 		                                                                                panel.add(lblTenSP);
 		                                                                                
-		                                                                                textField = new JTextField();
-		                                                                                textField.setColumns(10);
-		                                                                                textField.setBounds(143, 101, 205, 28);
-		                                                                                panel.add(textField);
+		                                                                                textField_SP = new JTextField();
+		                                                                                textField_SP.setColumns(10);
+		                                                                                textField_SP.setBounds(143, 101, 205, 28);
+		                                                                                panel.add(textField_SP);
 		                                                                                
 		                                                                                JLabel lblLoiSnPhm = new JLabel("Loại Sản Phẩm:");
 		                                                                                lblLoiSnPhm.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -133,40 +133,40 @@ public class PnLSanPham extends JPanel {
 		                                                                                lblGiaNhap.setBounds(9, 218, 124, 32);
 		                                                                                panel.add(lblGiaNhap);
 		                                                                                
-		                                                                                textField_4 = new JTextField();
-		                                                                                textField_4.setColumns(10);
-		                                                                                textField_4.setBounds(143, 216, 205, 28);
-		                                                                                panel.add(textField_4);
+		                                                                                textField_GiaNhap = new JTextField();
+		                                                                                textField_GiaNhap.setColumns(10);
+		                                                                                textField_GiaNhap.setBounds(143, 216, 205, 28);
+		                                                                                panel.add(textField_GiaNhap);
 		                                                                                
 		                                                                                JLabel lblSoLuong = new JLabel("Số Lượng:");
 		                                                                                lblSoLuong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		                                                                                lblSoLuong.setBounds(13, 259, 120, 32);
 		                                                                                panel.add(lblSoLuong);
 		                                                                                
-		                                                                                textField_5 = new JTextField();
-		                                                                                textField_5.setColumns(10);
-		                                                                                textField_5.setBounds(143, 258, 205, 28);
-		                                                                                panel.add(textField_5);
+		                                                                                textField_SoLuong = new JTextField();
+		                                                                                textField_SoLuong.setColumns(10);
+		                                                                                textField_SoLuong.setBounds(143, 258, 205, 28);
+		                                                                                panel.add(textField_SoLuong);
 		                                                                                
 		                                                                                JLabel lblMauSac = new JLabel("Màu Sắc");
 		                                                                                lblMauSac.setFont(new Font("Tahoma", Font.BOLD, 15));
 		                                                                                lblMauSac.setBounds(13, 297, 120, 32);
 		                                                                                panel.add(lblMauSac);
 		                                                                                
-		                                                                                textField_6 = new JTextField();
-		                                                                                textField_6.setColumns(10);
-		                                                                                textField_6.setBounds(143, 300, 205, 28);
-		                                                                                panel.add(textField_6);
+		                                                                                textField_MauSac = new JTextField();
+		                                                                                textField_MauSac.setColumns(10);
+		                                                                                textField_MauSac.setBounds(143, 300, 205, 28);
+		                                                                                panel.add(textField_MauSac);
 		                                                                                
 		                                                                                JLabel lblTrangThai = new JLabel("Trạng Thái:");
 		                                                                                lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
 		                                                                                lblTrangThai.setBounds(13, 369, 120, 32);
 		                                                                                panel.add(lblTrangThai);
 		                                                                                
-		                                                                                textField_7 = new JTextField();
-		                                                                                textField_7.setColumns(10);
-		                                                                                textField_7.setBounds(143, 372, 205, 28);
-		                                                                                panel.add(textField_7);
+		                                                                                textField_TrangThai = new JTextField();
+		                                                                                textField_TrangThai.setColumns(10);
+		                                                                                textField_TrangThai.setBounds(143, 372, 205, 28);
+		                                                                                panel.add(textField_TrangThai);
 		                                                                                
 		                                                                                JLabel lblNCC = new JLabel("Nhà Cung Cấp:");
 		                                                                                lblNCC.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -186,15 +186,15 @@ public class PnLSanPham extends JPanel {
 		                                                                                comboBoxKichThuoc.setBounds(143, 180, 205, 26);
 		                                                                                panel.add(comboBoxKichThuoc);
 		                                                                                
-		                                                                                JComboBox comboBoxKichThuoc_1 = new JComboBox();
-		                                                                                comboBoxKichThuoc_1.setBounds(143, 415, 205, 26);
-		                                                                                panel.add(comboBoxKichThuoc_1);
+		                                                                                JComboBox comboBox_NhaCC = new JComboBox();
+		                                                                                comboBox_NhaCC.setBounds(143, 415, 205, 26);
+		                                                                                panel.add(comboBox_NhaCC);
 		                                                                                
-		                                                                                JButton btnThemKH_1 = new JButton("Tạo");
-		                                                                                btnThemKH_1.setForeground(new Color(0, 0, 0));
-		                                                                                btnThemKH_1.setBackground(new Color(0, 128, 192));
-		                                                                                btnThemKH_1.setBounds(279, 63, 68, 32);
-		                                                                                panel.add(btnThemKH_1);
+		                                                                                JButton btnTaoSP = new JButton("Tạo");
+		                                                                                btnTaoSP.setForeground(new Color(0, 0, 0));
+		                                                                                btnTaoSP.setBackground(new Color(0, 128, 192));
+		                                                                                btnTaoSP.setBounds(279, 63, 68, 32);
+		                                                                                panel.add(btnTaoSP);
 		                                
 		                                JPanel panel_1 = new JPanel();
 		                                panel_1.setBounds(10, 89, 755, 542);
@@ -213,16 +213,16 @@ public class PnLSanPham extends JPanel {
 		                                lblTimKH.setBounds(20, 40, 116, 25);
 		                                panel_1.add(lblTimKH);
 		                                
-		                                JButton btnTimKH = new JButton("Tìm");
-		                                btnTimKH.setForeground(Color.WHITE);
-		                                btnTimKH.setBackground(new Color(0, 128, 192));
-		                                btnTimKH.setBounds(332, 33, 93, 32);
-		                                panel_1.add(btnTimKH);
+		                                JButton btnTimSP = new JButton("Tìm");
+		                                btnTimSP.setForeground(Color.WHITE);
+		                                btnTimSP.setBackground(new Color(0, 128, 192));
+		                                btnTimSP.setBounds(332, 33, 93, 32);
+		                                panel_1.add(btnTimSP);
 		                                
-		                                textField_1 = new JTextField();
-		                                textField_1.setColumns(10);
-		                                textField_1.setBounds(149, 34, 173, 31);
-		                                panel_1.add(textField_1);
+		                                textField_TimSP = new JTextField();
+		                                textField_TimSP.setColumns(10);
+		                                textField_TimSP.setBounds(149, 34, 173, 31);
+		                                panel_1.add(textField_TimSP);
 		                                
 		                                JScrollPane scrollPane = new JScrollPane();
 		                                scrollPane.setBounds(0, 77, 755, 465);
@@ -277,9 +277,9 @@ public class PnLSanPham extends JPanel {
 		                                lblTmTheoLoai.setBounds(475, 40, 116, 25);
 		                                panel_1.add(lblTmTheoLoai);
 		                                
-		                                JComboBox comboBox = new JComboBox();
-		                                comboBox.setBounds(601, 33, 116, 33);
-		                                panel_1.add(comboBox);
+		                                JComboBox comboBox_TimSP = new JComboBox();
+		                                comboBox_TimSP.setBounds(601, 33, 116, 33);
+		                                panel_1.add(comboBox_TimSP);
 		                                
 		                                        JLabel lblTitle = new JLabel("Quản Lý Sản Phẩm");
 		                                        lblTitle.setBounds(795, 28, 320, 39);
