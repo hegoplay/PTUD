@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,6 +19,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
+
+import dao.SanPhamDAO;
+import entity.SanPham;
+import entity.NhaCC;
+import entity.LoaiSP;
+import entity.NhaCC;
+
+
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
@@ -28,11 +37,16 @@ public class PnLSanPham extends JPanel {
     private JTable table;
     private JTextField textField_TimSP;
     private JTable table_1;
-    private JTextField textField_SP;
+    private JTextField textField_TenSP;
     private JTextField textField_GiaNhap;
     private JTextField textField_SoLuong;
     private JTextField textField_MauSac;
     private JTextField textField_TrangThai;
+    private JComboBox<LoaiSP> comboBoxLoaiSP;
+    private JComboBox<LoaiSP> comboBoxKichThuoc;
+    private JComboBox<NhaCC> comboBox_NhaCC;
+    private JRadioButton rdbtnNam;
+    private JRadioButton rdbtnNu;
 
     /**
      * Create the panel.
@@ -53,10 +67,10 @@ public class PnLSanPham extends JPanel {
 		                        panel.add(lblMaSP);
 		                        lblMaSP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		                        
-		                                JLabel lblDiaChi = new JLabel("Giới tính:");
-		                                lblDiaChi.setBounds(11, 333, 122, 32);
-		                                panel.add(lblDiaChi);
-		                                lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 15));
+		                                JLabel lblgioiTinh = new JLabel("Giới tính:");
+		                                lblgioiTinh.setBounds(11, 333, 122, 32);
+		                                panel.add(lblgioiTinh);
+		                                lblgioiTinh.setFont(new Font("Tahoma", Font.BOLD, 15));
 		                                
 		                                        JButton btnThemSP = new JButton("Thêm ");
 		                                        btnThemSP.setBounds(34, 478, 91, 32);
@@ -93,12 +107,12 @@ public class PnLSanPham extends JPanel {
 		                                                                panel.add(textMaSP);
 		                                                                textMaSP.setColumns(10);
 		                                                                                
-		                                                                                JRadioButton rdbtnNam = new JRadioButton("Nam");
+		                                                                                rdbtnNam = new JRadioButton("Nam");
 		                                                                                rdbtnNam.setBounds(172, 338, 67, 31);
 		                                                                                panel.add(rdbtnNam);
 		                                                                                rdbtnNam.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		                                                                                
-		                                                                                JRadioButton rdbtnNu = new JRadioButton("Nữ");
+		                                                                                rdbtnNu = new JRadioButton("Nữ");
 		                                                                                rdbtnNu.setBounds(275, 338, 55, 31);
 		                                                                                panel.add(rdbtnNu);
 		                                                                                rdbtnNu.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -113,10 +127,10 @@ public class PnLSanPham extends JPanel {
 		                                                                                lblTenSP.setBounds(13, 98, 120, 32);
 		                                                                                panel.add(lblTenSP);
 		                                                                                
-		                                                                                textField_SP = new JTextField();
-		                                                                                textField_SP.setColumns(10);
-		                                                                                textField_SP.setBounds(143, 101, 205, 28);
-		                                                                                panel.add(textField_SP);
+		                                                                                textField_TenSP = new JTextField();
+		                                                                                textField_TenSP.setColumns(10);
+		                                                                                textField_TenSP.setBounds(143, 101, 205, 28);
+		                                                                                panel.add(textField_TenSP);
 		                                                                                
 		                                                                                JLabel lblLoiSnPhm = new JLabel("Loại Sản Phẩm:");
 		                                                                                lblLoiSnPhm.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -178,15 +192,15 @@ public class PnLSanPham extends JPanel {
 		                                                                                lblHinhAnh.setBounds(13, 448, 120, 32);
 		                                                                                panel.add(lblHinhAnh);
 		                                                                                
-		                                                                                JComboBox comboBoxLoaiSP = new JComboBox();
+		                                                                                comboBoxLoaiSP = new JComboBox();
 		                                                                                comboBoxLoaiSP.setBounds(143, 139, 205, 26);
 		                                                                                panel.add(comboBoxLoaiSP);
 		                                                                                
-		                                                                                JComboBox comboBoxKichThuoc = new JComboBox();
+		                                                                                comboBoxKichThuoc = new JComboBox();
 		                                                                                comboBoxKichThuoc.setBounds(143, 180, 205, 26);
 		                                                                                panel.add(comboBoxKichThuoc);
 		                                                                                
-		                                                                                JComboBox comboBox_NhaCC = new JComboBox();
+		                                                                                comboBox_NhaCC = new JComboBox();
 		                                                                                comboBox_NhaCC.setBounds(143, 415, 205, 26);
 		                                                                                panel.add(comboBox_NhaCC);
 		                                                                                
@@ -285,6 +299,57 @@ public class PnLSanPham extends JPanel {
 		                                        lblTitle.setBounds(795, 28, 320, 39);
 		                                        add(lblTitle);
 		                                        lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
+		                                        loadDataToTable();
 
 	}
+	private void loadDataToTable() {
+		try {
+            // Lấy dữ liệu từ cơ sở dữ liệu hoặc từ nơi khác
+            ArrayList<SanPham> danhSachSanPham = SanPhamDAO.getAllSanPham();
+
+            // Tạo một DefaultTableModel để hiển thị dữ liệu trên JTable
+            DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+            model.setRowCount(0); // Xóa tất cả dữ liệu cũ trên JTable
+
+            // Duyệt qua danh sách và thêm từng dòng dữ liệu vào model
+            for (SanPham sp : danhSachSanPham) {
+                model.addRow(new Object[]{
+                        sp.getMaSP(),
+                        sp.getTenSP(),
+                        sp.getLoaiSP(),
+                        sp.getKichThuoc(),
+                        sp.getGiaNhap(),
+                        sp.getSlTonKho(),
+                        sp.getMauSac(),
+                        (sp.isNam() ? "Nam" : "Nữ"),
+                        (sp.isConKinhDoanh() ? "Con" : "Khong"),
+                        sp.getNhaCC(),
+                        sp.getHinhAnh()
+                        // Thêm các trường khác tương ứng
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        }
+		
+	}
+	
+	private void clearForm() {
+        textMaSP.setText("");
+        textField_TenSP.setText("");
+        comboBoxLoaiSP.setSelectedItem(-1);
+        comboBoxKichThuoc.setSelectedItem(-1);
+        textField_GiaNhap.setText("");
+        textField_SoLuong.setText("");
+        textField_MauSac.setText("");
+        rdbtnNam.setSelected(true);
+        comboBox_NhaCC.setSelectedItem(-1);
+        //no idea in image.
+        
+//        clearTableData();
+        loadDataToTable();
+        
+    }
+	
 }
