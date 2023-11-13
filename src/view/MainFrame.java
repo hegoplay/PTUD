@@ -29,8 +29,11 @@ import java.awt.Graphics;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.CardLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame {
 	
@@ -45,6 +48,7 @@ public class MainFrame {
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
+	public static final Color clrRed = new Color(207,42,39);
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
@@ -69,6 +73,9 @@ public class MainFrame {
 	private JPanel pnlSanPham;
 	private JLabel lblSanPham;
 	private JPanel pnlHoTro;
+	private JButton btnDangXuat;
+	private JPanel pnlDX;
+	private final JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -77,6 +84,7 @@ public class MainFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+//                    PnlThongKe frame = new PnlThongKe();
                     PnlDangNhap frame = new PnlDangNhap();
                     frame.setVisible(true);
 //                    checkAccessPermission();
@@ -90,7 +98,7 @@ public class MainFrame {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
-//					MainFrame window = new MainFrame();
+//					MainFrame window = new MainFrame(null);
 //					
 //					window.frame.setVisible(true);
 //				} catch (Exception e) {
@@ -107,6 +115,7 @@ public class MainFrame {
 	public MainFrame(NhanVien nv) {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
 		this.nv = nv;
+		this.lblNewLabel = new JLabel();
 		
 		initialize();
 		checkAccessPermission();
@@ -147,9 +156,10 @@ public class MainFrame {
 		pnlNavLists.setBackground(new Color(58,90,64));
 		pnlNavLists.setBorder(new EmptyBorder(16, 0, 0, 0));
 		pnlNavBar.add(pnlNavLists, BorderLayout.CENTER);
-		pnlNavLists.setLayout(new GridLayout(9, 1, 0, 15));
+		pnlNavLists.setLayout(null);
 		
 		JPanel pnlBanHang = new JPanel();
+		pnlBanHang.setBounds(0, 17, 203, 46);
 		pnlBanHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlBanHang);
 		pnlBanHang.setLayout(new BorderLayout(0, 0));
@@ -163,6 +173,7 @@ public class MainFrame {
 		pnlBanHang.add(lblBanHang);
 		
 		pnlKhachHang = new JPanel();
+		pnlKhachHang.setBounds(0, 78, 203, 46);
 		pnlKhachHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlKhachHang);
 		pnlKhachHang.setLayout(new BorderLayout(0, 0));
@@ -176,6 +187,7 @@ public class MainFrame {
 		pnlKhachHang.add(lblKhachHang);
 		
 		pnlSanPham = new JPanel();
+		pnlSanPham.setBounds(0, 139, 203, 46);
 		pnlSanPham.setBackground(clrTheme);
 		pnlNavLists.add(pnlSanPham);
 		pnlSanPham.setLayout(new BorderLayout(0, 0));
@@ -189,6 +201,7 @@ public class MainFrame {
 		pnlSanPham.add(lblSanPham);
 		
 		pnlNhaCungCap = new JPanel();
+		pnlNhaCungCap.setBounds(0, 200, 203, 46);
 		pnlNhaCungCap.setBackground(clrTheme);
 		pnlNavLists.add(pnlNhaCungCap);
 		pnlNhaCungCap.setLayout(new BorderLayout(0, 0));
@@ -202,6 +215,7 @@ public class MainFrame {
 		pnlNhaCungCap.add(lblNhaCungCap);
 		
 		pnlNhanVien = new JPanel();
+		pnlNhanVien.setBounds(0, 261, 203, 46);
 		pnlNhanVien.setBackground(clrTheme);
 		pnlNavLists.add(pnlNhanVien);
 		pnlNhanVien.setLayout(new BorderLayout(0, 0));
@@ -215,6 +229,7 @@ public class MainFrame {
 		pnlNhanVien.add(lblNhanVien);
 		
 		pnlThongKe = new JPanel();
+		pnlThongKe.setBounds(0, 322, 203, 46);
 		pnlThongKe.setBackground(clrTheme);
 		pnlNavLists.add(pnlThongKe);
 		pnlThongKe.setLayout(new BorderLayout(0, 0));
@@ -228,6 +243,7 @@ public class MainFrame {
 		pnlThongKe.add(lblThngK);
 		
 		pnlTraHang = new JPanel();
+		pnlTraHang.setBounds(0, 383, 203, 46);
 		pnlTraHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlTraHang);
 		pnlTraHang.setLayout(new BorderLayout(0, 0));
@@ -241,6 +257,7 @@ public class MainFrame {
 		pnlTraHang.add(lblTraHang);
 		
 		pnlHoTro = new JPanel();
+		pnlHoTro.setBounds(0, 444, 203, 46);
 		pnlHoTro.setBackground(clrTheme);
 		pnlNavLists.add(pnlHoTro);
 		pnlHoTro.setLayout(new BorderLayout(0, 0));
@@ -252,6 +269,12 @@ public class MainFrame {
 		lblHoTro.setForeground(Color.DARK_GRAY);
 		lblHoTro.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pnlHoTro.add(lblHoTro);
+		
+		lblNewLabel.setForeground(new Color(255, 255, 255));
+		lblNewLabel.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/profile-user.png")));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblNewLabel.setBounds(21, 546, 159, 41);
+		pnlNavLists.add(lblNewLabel);
 		
 
 		Image imgBG = Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/view/icon/background_img.png"));
@@ -299,6 +322,28 @@ public class MainFrame {
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 60));
 		pnlCenter.add(lblTitle, BorderLayout.NORTH);
+		
+		pnlDX = new JPanel();
+		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
+		pnlLogout.add(pnlDX);
+		pnlDX.setLayout(new BorderLayout(0, 0));
+		pnlDX.setBackground(new Color(58,90,64));
+		
+		btnDangXuat = new JButton("Đăng Xuất");
+		btnDangXuat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.dispose();
+				PnlDangNhap frame = new PnlDangNhap();
+                frame.setVisible(true);
+			}
+		});
+		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
+		btnDangXuat.setForeground(new Color(255, 255, 255));
+		btnDangXuat.setBackground(clrRed);
+		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
+		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
+		pnlDX.add(btnDangXuat);
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
@@ -372,6 +417,7 @@ public class MainFrame {
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
 		
 		controller.setEvent(listItem);
+		lblNewLabel.setText("" + nv.getMaNhanVien());
 		
 	    if (nv != null && nv instanceof NguoiQuanLy) {
 	        // Hiển thị tất cả chức năng đối với Người Quản Lý
@@ -381,9 +427,15 @@ public class MainFrame {
 			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
 			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 			controller.setEvent(listItem);
+			lblNewLabel.setText(" " + ((NguoiQuanLy) nv).getMaQuanLy());
 
 	        // ...
 	    }
 	}
+//	if (nv instanceof NhanVien) {
+//        lblNewLabel.setText("  " + nv.getMaNhanVien());
+//    } else if (nv instanceof NguoiQuanLy) {
+//        lblNewLabel.setText("  " + ((NguoiQuanLy) nv).getMaQuanLy());
+//    }
 	
 }
