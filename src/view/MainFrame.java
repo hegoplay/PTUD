@@ -79,6 +79,8 @@ public class MainFrame {
 	private JLabel lblUser;
 	private JPanel pnlDX;
 	private JButton btnDangXuat;
+	private JPanel pnlBanHang;
+	private JLabel lblBanHang;
 
 	/**
 	 * Launch the application.
@@ -156,12 +158,12 @@ public class MainFrame {
 		pnlNavBar.add(pnlNavLists, BorderLayout.CENTER);
 		pnlNavLists.setLayout(new GridLayout(9, 1, 0, 15));
 		
-		JPanel pnlBanHang = new JPanel();
+		pnlBanHang = new JPanel();
 		pnlBanHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlBanHang);
 		pnlBanHang.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblBanHang = new JLabel("Bán Hàng");
+		lblBanHang = new JLabel("Bán Hàng");
 		lblBanHang.setLabelFor(pnlBanHang);
 		lblBanHang.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBanHang.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/cart_icon.png")));
@@ -318,8 +320,8 @@ public class MainFrame {
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
-//		PnlLapHoaDon pnlBanHangContent = new PnlLapHoaDon();
-//		pnlContent.add(pnlBanHangContent,"Ban Hang"); ????
+		PnlLHD pnlBanHangContent = new PnlLHD();
+		pnlContent.add(pnlBanHangContent,"Ban Hang");
 		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
@@ -349,7 +351,7 @@ public class MainFrame {
 		listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
 		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-		
+		listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
 		controller.setEvent(listItem);
 		
 	    if (nv != null && nv instanceof NguoiQuanLy) {
