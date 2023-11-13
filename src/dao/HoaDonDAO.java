@@ -244,4 +244,35 @@ public class HoaDonDAO {
 		return res;
 	}
 
+	public static ArrayList<HoaDon> getAllHoaDon() throws Exception {
+	    ArrayList<HoaDon> dsHoaDon = new ArrayList<>();
+
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement statement = con.prepareStatement("SELECT * FROM HoaDon");
+	         ResultSet rs = statement.executeQuery()) {
+
+	        while (rs.next()) {
+	            String maHD = rs.getString("maHD");
+	            LocalDateTime ngayLapHD = rs.getTimestamp("ngayLapHD").toLocalDateTime();
+	            String maNV = rs.getString("maNV");
+	            String maKH = rs.getString("maKH");
+	            float khuyenMai = rs.getFloat("coKhuyenMai");
+	            double tienKhachDua = rs.getDouble("tienKhachDua");
+	            double tongHoaDon = rs.getDouble("tongHoaDon");
+	            String ghiChu = rs.getString("ghiChu");
+
+	            NhanVien nv = NhanVienDAO.getNhanVien(maNV);
+	            KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+	            ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
+
+	            dsHoaDon.add(new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai, tienKhachDua, list));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return dsHoaDon;
+	}
+	
 }

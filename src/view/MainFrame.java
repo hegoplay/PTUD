@@ -49,6 +49,8 @@ public class MainFrame {
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
 	public static final Color clrRed2 = new Color(234,153,153);
+	public static final Color clrPnlColor = new Color(7, 55, 99);
+	public static final Color clrLblColor = Color.white;   
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
@@ -137,6 +139,14 @@ public class MainFrame {
 		pnlLogo.setLayout(new BorderLayout(0, 0));
 		JLabel lblLogo = new JLabel(logo,JLabel.CENTER);
 		lblLogo.setLabelFor(pnlLogo);
+		
+//		ImageIcon logo = new ImageIcon(MainFrame.class.getResource("/view/icon/icon_logoAM.png"));
+//		Image img = logo.getImage();
+//		Image newImg = img.getScaledInstance(145,64, java.awt.Image.SCALE_SMOOTH);
+//		logo = new ImageIcon(newImg);
+//
+//		JLabel lblLogo = new JLabel(logo, JLabel.CENTER);
+//		
 		pnlLogo.add(lblLogo);
 		
 		
@@ -307,6 +317,9 @@ public class MainFrame {
 		
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
+		
+//		PnlLapHoaDon pnlBanHangContent = new PnlLapHoaDon();
+//		pnlContent.add(pnlBanHangContent,"Ban Hang"); ????
 		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");

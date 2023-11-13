@@ -30,7 +30,7 @@ public class NhanVienDAO {
                 boolean dangLamViec = rs.getBoolean(9);
                 String cuaHangQL = rs.getString(12);
 
-                if (chucVu) {
+                if (!chucVu) {
                     nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, chucVu, isNam, dangLamViec, cuaHangQL);
                 } else {
                     nv = new NguoiQuanLy(maNV, tenNV, sdt, email, diaChi, luong, chucVu, isNam, dangLamViec, cuaHangQL);
