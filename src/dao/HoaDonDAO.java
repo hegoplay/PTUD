@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 import connectDB.ConnectDB;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
@@ -273,5 +275,48 @@ public class HoaDonDAO {
 
 	    return dsHoaDon;
 	}
-
+	
+	public static String taoMaHD() {
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement stGetNumCount = con.prepareStatement("SELECT count(*) FROM HoaDon");
+	    ) {
+	        String maHD = "HD";
+	        ResultSet rs = stGetNumCount.executeQuery();
+	        
+	        if (rs.next() && rs.getInt(1) < 1e8) {
+	        	return maHD + String.format("%04d", rs.getInt(1));
+	        }
+	        else {
+	        	return null;
+	        }
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null; 
+	}
+	
+	public static boolean themHD(HoaDon k) {
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement stmt = con.prepareStatement(
+	                 "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) " +
+	                         "VALUES (?, ?, ?, ?, ?, ?)")) {
+	        stmt.setString(1, k.getMaHD());
+	        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(k.getNgayLapHD());
+	        stmt.setTimestamp(2, timestamp);
+	        stmt.setString(3, k.getNhanVien().getMaNV());
+	        stmt.setString(4, k.getKhachHang().getMaKH());
+	        stmt.setDouble(5, k.getKhuyenMai());
+	        stmt.setDouble(6, k.getTienKhachDua());
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        if (e.getSQLState().equals("23505")) {
+	            JOptionPane.showMessageDialog(null, "Mã HD bị trùng");
+	        } else {
+	            e.printStackTrace();
+	        }
+	        return false;
+	    }
+	    return true;
+	}
 }

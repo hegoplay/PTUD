@@ -35,7 +35,7 @@ public class KhachHangDAO {
 		KhachHang kh = null;
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select maKH from KhachHang where sdt = ?";
+			String sql = "Select * from KhachHang where sdt = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, sdt);
 			ResultSet rs = statement.executeQuery();
@@ -54,4 +54,5 @@ public class KhachHangDAO {
 		}
 		return kh;
 	}
+	
 }
