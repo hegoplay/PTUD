@@ -55,6 +55,7 @@ public class TblNhanVien extends JTable{
 		};
 		this.setModel(model);
 		sorter = new TableRowSorter<TableModel>(model);
+		this.setRowSorter(sorter);
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
 		sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
 		sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
