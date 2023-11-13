@@ -1,0 +1,2 @@
+insert into HoaDon
+values ('HD00000000',GETDATE(),'NV00000000','KH0947842274',0)

@@ -15,15 +15,18 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import controller.ToPDFController;
 import dao.HoaDonDAO;
 import dao.SanPhamDAO;
 import dao.TraHangDAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
+import entity.NguoiQuanLy;
 import entity.PhieuTraHang;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Color;
@@ -31,6 +34,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,6 +69,8 @@ public class PnlTKCH extends JPanel implements ActionListener {
 	private int type;
 	private JFreeChart lineChart;
 	private ArrayList<Entry<String, Integer>> lists;
+	private JButton btnXBC;
+	private JFreeChart barChart;
 
 	/**
 	 * Create the panel.
@@ -88,7 +95,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		cmbDay.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pnlTitle.add(cmbDay);
 
-		JButton btnXBC = new JButton("Xuất báo cáo");
+		btnXBC = new JButton("Xuất báo cáo");
 		btnXBC.setBackground(MainFrame.clrCyan4);
 		btnXBC.setForeground(Color.WHITE);
 		btnXBC.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -161,25 +168,38 @@ public class PnlTKCH extends JPanel implements ActionListener {
 
 		LoadData();
 		cmbDay.addActionListener(this);
+		btnXBC.addActionListener(this);
 	}
 
 	private void LoadData() {
+		String timeTitle = "Giờ";
 		pnlTables.removeAll();
 		startDay = LocalDateTime.now().with(LocalTime.MIDNIGHT);
 		endDay = LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT);
 		type =0;
 		switch ((String) cmbDay.getSelectedItem()) {
 			case "Tháng": {
-				startDay = startDay.minusMonths(1);
+				startDay = startDay.withDayOfMonth(1);
+				endDay = startDay.plusMonths(1);
 				type = 1;
+				timeTitle = "Ngày";
 				break;
 			}
 			case "Kỳ": {
-				startDay = startDay.minusMonths(3);
+				startDay = startDay.withDayOfYear(1);
+				System.out.println(startDay);
+				endDay = startDay;
+				while (endDay.isBefore(LocalDateTime.now())) {
+					endDay = endDay.plusMonths(3);
+				}
+				startDay = endDay.minusMonths(3);
+				timeTitle = "Tháng";
 				break;
 			}
 			case "Năm": {
-				startDay = startDay.minusYears(1);
+				startDay = startDay.withDayOfYear(1);
+				endDay = startDay.plusYears(1);
+				timeTitle = "Kỳ";
 				break;
 			}
 		}
@@ -237,21 +257,23 @@ public class PnlTKCH extends JPanel implements ActionListener {
 // Xu ly du lieu tren dataset		
 
 		lineChart = ChartFactory.createXYLineChart("So sánh doanh thu",
-				"Thời gian", "doanh thu", createLineDataset(), PlotOrientation.VERTICAL, true, true, false);
+				"Thời gian (" + timeTitle + ")", "doanh thu", createLineDataset(), PlotOrientation.VERTICAL, true, true, false);
 		ChartPanel linePanel = new ChartPanel(lineChart);
 		linePanel.setMouseZoomable(false);
 		linePanel.setDisplayToolTips(true);
 		pnlTables.add(linePanel,BorderLayout.CENTER);
 		linePanel.setLayout(new BorderLayout(0, 0));
 		
-		JFreeChart barChart = ChartFactory.createBarChart("Top 5 sản phẩm bán dạy", "Sản phẩm",
-				"", createDataset(), PlotOrientation.VERTICAL, true, true, false);
+		barChart = ChartFactory.createBarChart("Top 5 sản phẩm bán dạy", "Sản phẩm",
+				"Doanh thu", createDataset(), PlotOrientation.VERTICAL, true, true, false);
 		ChartPanel chartPanel = new ChartPanel(barChart);
 		chartPanel.setMouseZoomable(false);
 		chartPanel.setDisplayToolTips(true);
 		pnlTables.add(chartPanel,BorderLayout.CENTER);
 		chartPanel.setLayout(new BorderLayout(0, 0));
 		pnlTables.revalidate();
+		
+		
 		
 	}
 
@@ -278,7 +300,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			series1 = new XYSeries("Doanh thu hôm nay");
 			series2 = new XYSeries("Doanh thu hôm qua");
 			ArrayList<HoaDon> lists = HoaDonDAO.GetHoaDonInDate(startDay.minusDays(1).toLocalDate(), endDay.minusDays(1).toLocalDate());
-			final int step = 6;
+			final int step = 3;
 			for(int i = 0; i <24;i+=step) {
 				double res = 0;
 				for (HoaDon hd : hdList) {
@@ -384,7 +406,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 						res += hd.TinhTongTien();
 					}
 				}
-				series1.add(i+step,res);
+				series1.add((i+step)/step,res);
 				res = 0;
 				for (HoaDon hd : lists) {
 					if (hd.getNgayLapHD().isAfter(startDay.minusYears(1).plusMonths(i)) && 
@@ -392,7 +414,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 						res += hd.TinhTongTien();
 					}
 				}
-				series2.add(i+step,res);
+				series2.add((i+step)/step,res);
 			}
 		}
 		dataset.addSeries(series1);
@@ -406,6 +428,31 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		if (e.getSource() == cmbDay) {
 			LoadData();
+		}
+		if (e.getSource() == btnXBC) {
+			try {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
+				
+				int userSelection = fileChooser.showSaveDialog(this);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File fileToSave = fileChooser.getSelectedFile();
+				ToPDFController.xuatTKCH(
+						fileToSave.getAbsolutePath(), 
+						startDay.toLocalDate(), 
+						endDay.toLocalDate(), 
+						(NguoiQuanLy)MainFrame.nv, 
+						new double[] {
+								Double.parseDouble(lblValueDoanhThu.getText().replace(",", "")),
+								Double.parseDouble(lblValueDoanhSo.getText().replace(",", "")),
+								Double.parseDouble(lblValueLoiNhuan.getText().replace(",", ""))}, 
+						lineChart, 
+						barChart);
+				}
+			} catch (NumberFormatException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

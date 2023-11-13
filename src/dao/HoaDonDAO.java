@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -220,12 +221,16 @@ public class HoaDonDAO {
 		double res = 0;
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "select sum(tongHoaDon) from HoaDon hd \r\n"
-					+ "where maNV = ? and (ngayLapHD between ? and ?)";
-			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setDate(2, Date.valueOf(startDate));
-			statement.setDate(3, Date.valueOf(endDate));
-			statement.setString(1, nv.getMaNV());
+			String sql = "select dbo.getTongDTNV (?,?,?)";
+//			PreparedStatement statement = con.prepareStatement(sql);
+//			statement.setDate(2, Date.valueOf(startDate));
+//			statement.setDate(3, Date.valueOf(endDate));
+//			statement.setString(1, nv.getMaNV());
+			int i = 0;
+			CallableStatement statement = con.prepareCall(sql);
+			statement.setString(++i, nv.getMaNV());
+			statement.setDate(++i, Date.valueOf(startDate));
+			statement.setDate(++i, Date.valueOf(endDate));
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				res = rs.getDouble(1);

@@ -19,6 +19,7 @@ import entity.NhanVien;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,6 @@ import javax.swing.SwingConstants;
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 public class MainFrame {
 	
 	
@@ -49,8 +49,12 @@ public class MainFrame {
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
+
+	public static final Color clrRed2 = new Color(234,153,153);
+
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
 	
 	public JFrame frame;
 	private JPanel pnlNhanVien;
@@ -75,7 +79,8 @@ public class MainFrame {
 	private JPanel pnlHoTro;
 	private JButton btnDangXuat;
 	private JPanel pnlDX;
-	private final JLabel lblNewLabel;
+//	private final JLabel lblNewLabel;
+	private JLabel lblUser;
 
 	/**
 	 * Launch the application.
@@ -88,6 +93,8 @@ public class MainFrame {
                     PnlDangNhap frame = new PnlDangNhap();
                     frame.setVisible(true);
 //                    checkAccessPermission();
+//                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
+//                	window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -114,8 +121,7 @@ public class MainFrame {
 	 */
 	public MainFrame(NhanVien nv) {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
-		this.nv = nv;
-		this.lblNewLabel = new JLabel();
+		MainFrame.nv = nv;
 		
 		initialize();
 		checkAccessPermission();
@@ -270,11 +276,11 @@ public class MainFrame {
 		lblHoTro.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pnlHoTro.add(lblHoTro);
 		
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/profile-user.png")));
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblNewLabel.setBounds(21, 546, 159, 41);
-		pnlNavLists.add(lblNewLabel);
+//		lblUser.setForeground(new Color(255, 255, 255));
+//		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/profile-user.png")));
+//		lblUser.setFont(new Font("Tahoma", Font.BOLD, 17));
+//		lblUser.setBounds(21, 546, 159, 41);
+//		pnlNavLists.add(lblUser);
 		
 
 		Image imgBG = Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/view/icon/background_img.png"));
@@ -294,7 +300,29 @@ public class MainFrame {
 		pnlCenter.setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlLogout = new JPanel();
+		pnlLogout.setBackground(new Color(58,90,64));
 		pnlNavBar.add(pnlLogout, BorderLayout.SOUTH);
+		pnlLogout.setLayout(new GridLayout(0, 1, 0, 5));
+		
+		lblUser = new JLabel(nv.getTen());
+		lblUser.setForeground(new Color(255, 255, 255));
+		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/user_circle_M.png")));
+		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
+		pnlLogout.add(lblUser);
+		
+		pnlDX = new JPanel();
+		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
+		pnlLogout.add(pnlDX);
+		pnlDX.setLayout(new BorderLayout(0, 0));
+		pnlDX.setBackground(new Color(58,90,64));
+		
+		btnDangXuat = new JButton("Đăng Xuất");
+		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
+		btnDangXuat.setForeground(new Color(255, 255, 255));
+		btnDangXuat.setBackground(clrRed);
+		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
+		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
+		pnlDX.add(btnDangXuat);
 		
 		pnlContent = new JPanel();
 		pnlCenter.add(pnlContent, BorderLayout.CENTER);
@@ -347,61 +375,9 @@ public class MainFrame {
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
-//		JLabel lblNewLabel = new JLabel("   NhanVien001");
-//		lblNewLabel.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/profile-user.png")));
-//		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
-//		lblNewLabel.setForeground(new Color(255, 255, 255));
-		
-//		lblNewLabel.setBounds(0, 528, 173, 42);
-//		pnlNavLists.add(lblNewLabel);
-//		
-//		JButton btnNewButton = new JButton("Đăng xuất\r\n");
-//		JButton btnDangXuat = new JButton("Dang xuat");
-//		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log-out.png")));
-//		btnDangXuat.setBackground(new Color(255, 0, 0));
-//		btnDangXuat.setBounds(27, 568, 118, 27);
-//		pnlNavLists.add(btnDangXuat);
-		
-		//set nguoi quan ly
-		
-		
-//		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
-//		controller.setLbl(lblTitle);
-//		controller.setView("Giao Dien Chinh", pnlGDChinhContent, lblGDChinh);
-//		
-//		List<Nav> listItem = new ArrayList<>();
-//		listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
-//		listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
-//		listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
-//		listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
-//		listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
-//		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
-//		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-//		
-//		controller.setEvent(listItem);
-		
-		// Sau khi đăng nhập thành công và khởi tạo đối tượng NguoiQuanLy hoặc NhanVien
-//        checkAccessPermission();
 		
 	}
 	// Thêm phương thức kiểm tra quyền truy cập
-//	private void checkAccessPermission() {
-//		pnlThongKe.setVisible(false);
-//        pnlTraHang.setVisible(false);
-//        pnlNhanVien.setVisible(false);
-//        pnlNhaCungCap.setVisible(false);
-//        System.out.println("YES");
-//		
-//	    if (nv != null && nv instanceof NguoiQuanLy) {
-//	        // Hiển thị tất cả chức năng đối với Người Quản Lý
-//	    	pnlThongKe.setVisible(true);
-//	        pnlTraHang.setVisible(true);
-//	        pnlNhanVien.setVisible(true);
-//	        pnlNhaCungCap.setVisible(true);
-//
-//	        // ...
-//	    }
-//	}
 	private void checkAccessPermission() {
 		ChuyenManHinhController controller = new ChuyenManHinhController(pnlContent,clrTheme,clrBtnHover);
 		controller.setLbl(lblTitle);
@@ -417,7 +393,7 @@ public class MainFrame {
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
 		
 		controller.setEvent(listItem);
-		lblNewLabel.setText("" + nv.getMaNhanVien());
+		lblUser.setText("" + nv.getMaNhanVien());
 		
 	    if (nv != null && nv instanceof NguoiQuanLy) {
 	        // Hiển thị tất cả chức năng đối với Người Quản Lý
@@ -427,7 +403,7 @@ public class MainFrame {
 			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
 			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 			controller.setEvent(listItem);
-			lblNewLabel.setText(" " + ((NguoiQuanLy) nv).getMaQuanLy());
+			lblUser.setText(" " + ((NguoiQuanLy) nv).getMaQuanLy());
 
 	        // ...
 	    }
@@ -437,5 +413,10 @@ public class MainFrame {
 //    } else if (nv instanceof NguoiQuanLy) {
 //        lblNewLabel.setText("  " + ((NguoiQuanLy) nv).getMaQuanLy());
 //    }
+
+	public static NguoiQuanLy getNguoiQuanLy() {
+		// TODO Auto-generated method stub
+		return NhanVienDAO.getNguoiQuanLy("NV00000000");
+	}
 	
 }
