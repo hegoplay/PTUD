@@ -354,6 +354,11 @@ public class MainFrame {
 		PnlLHD pnlBanHangContent = new PnlLHD();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 
+		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
+		pnlContent.add(pnlKhachHangContent, "Khach Hang");
+		
+		PnLSanPham pnlSanPhamContent = new PnLSanPham();
+		pnlContent.add(pnlSanPhamContent, "San Pham");
 		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
