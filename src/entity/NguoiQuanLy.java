@@ -52,4 +52,10 @@ public class NguoiQuanLy extends NhanVien{
 	public boolean xoaNhanVien(NhanVien nv) {
 		return dsNhanVien.remove(nv);
 	}
+
+	public String getMaQuanLy() {
+		// TODO Auto-generated method stub
+		return "QuanLy001";
+	}
+
 }
