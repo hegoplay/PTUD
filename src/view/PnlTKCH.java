@@ -74,8 +74,9 @@ public class PnlTKCH extends JPanel implements ActionListener {
 
 	/**
 	 * Create the panel.
+	 * @throws Exception 
 	 */
-	public PnlTKCH() {
+	public PnlTKCH() throws Exception {
 		setBackground(MainFrame.clrTheme);
 		setBorder(new EmptyBorder(10, 30, 10, 30));
 		setLayout(new BorderLayout(0, 0));
@@ -171,7 +172,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		btnXBC.addActionListener(this);
 	}
 
-	private void LoadData() {
+	private void LoadData() throws Exception {
 		String timeTitle = "Giờ";
 		pnlTables.removeAll();
 		startDay = LocalDateTime.now().with(LocalTime.MIDNIGHT);
@@ -291,7 +292,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		return dataset;
 	}
 	
-	private XYDataset createLineDataset() {
+	private XYDataset createLineDataset() throws Exception {
 		final String soLuongtxt = "Số lượng";
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries series1 = new XYSeries("");
@@ -306,7 +307,12 @@ public class PnlTKCH extends JPanel implements ActionListener {
 				for (HoaDon hd : hdList) {
 					if (hd.getNgayLapHD().isAfter(startDay.plusHours(i)) && 
 							hd.getNgayLapHD().isBefore(startDay.plusHours(i+step))) {
-						res += hd.TinhTongTien();
+						try {
+							res += hd.TinhTongTien();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 				series1.add(i+step, res);
@@ -315,7 +321,12 @@ public class PnlTKCH extends JPanel implements ActionListener {
 					if (hd.getNgayLapHD().isAfter(startDay.minusDays(1).plusHours(i)) && 
 							hd.getNgayLapHD().isBefore(startDay.minusDays(1).plusHours(i+step))) {
 						
-						res += hd.TinhTongTien();
+						try {
+							res += hd.TinhTongTien();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 				series2.add(i+step, res);
@@ -427,7 +438,12 @@ public class PnlTKCH extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == cmbDay) {
-			LoadData();
+			try {
+				LoadData();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		if (e.getSource() == btnXBC) {
 			try {

@@ -31,4 +31,40 @@ public class KhachHangDAO {
 		}
 		return kh;
 	}
+	public static String getTenKHbySDT(String sdt) {
+		String tenKH = "";
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "Select tenKH from KhachHang where sdt = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, sdt);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				tenKH = rs.getString(1);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tenKH;
+	}
+	public static String getMaKHbySDT(String sdt) {
+		String maKH = "";
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "Select maKH from KhachHang where sdt = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, sdt);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				maKH = rs.getString(1);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return maKH;
+	}
 }

@@ -232,6 +232,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		btnTim.addActionListener(this);
 //		JPanel panel = new JPanel();
 //		pnlTitle.add(panel, BorderLayout.CENTER);
+		
 	}
 
 	private void LoadTable() {

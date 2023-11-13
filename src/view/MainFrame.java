@@ -48,7 +48,8 @@ public class MainFrame {
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
-	
+	public static final Color clrPnlColor = new Color(7, 55, 99);
+	public static final Color clrLblColor = Color.white;
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
 	
@@ -65,6 +66,7 @@ public class MainFrame {
 	private JPanel pnlContent;
 	private JLabel lblTitle;
 	private JLabel lblGDChinh;
+	private JLabel lblBanHang;
 	public static NguoiQuanLy nql;
     public static NhanVien nv;
     PnlGDChinh pnlGDChinhContent;
@@ -75,6 +77,7 @@ public class MainFrame {
 	private JPanel pnlHoTro;
 	private JLabel lblUser;
 	private JPanel pnlDX;
+	private JPanel pnlBanHang;
 	private JButton btnDangXuat;
 
 	/**
@@ -99,8 +102,9 @@ public class MainFrame {
 	/**
 	 * Create the application.
 	 * @param nguoiQuanLy 
+	 * @throws Exception 
 	 */
-	public MainFrame(NhanVien nv) {
+	public MainFrame(NhanVien nv) throws Exception {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
 		this.nv = nv;
 		
@@ -110,8 +114,9 @@ public class MainFrame {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws Exception 
 	 */
-	private void initialize() {
+	private void initialize() throws Exception {
 		
 		
 		frame = new JFrame();
@@ -145,12 +150,12 @@ public class MainFrame {
 		pnlNavBar.add(pnlNavLists, BorderLayout.CENTER);
 		pnlNavLists.setLayout(new GridLayout(9, 1, 0, 15));
 		
-		JPanel pnlBanHang = new JPanel();
+		pnlBanHang = new JPanel();
 		pnlBanHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlBanHang);
 		pnlBanHang.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblBanHang = new JLabel("Bán Hàng");
+		lblBanHang = new JLabel("Bán Hàng");
 		lblBanHang.setLabelFor(pnlBanHang);
 		lblBanHang.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBanHang.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/cart_icon.png")));
@@ -310,6 +315,9 @@ public class MainFrame {
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
 		
+		pnlQLBanHang pnlBanHangContent = new pnlQLBanHang();
+		pnlContent.add(pnlBanHangContent,"Ban Hang");
+		
 		lblTitle = new JLabel("New label");
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -335,22 +343,24 @@ public class MainFrame {
 		listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
 		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
+		listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
 		
 		controller.setEvent(listItem);
-		
-	    if (nv != null && nv instanceof NguoiQuanLy) {
-	        // Hiển thị tất cả chức năng đối với Người Quản Lý
-	    	listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
-			listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
-			listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
-			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
-			listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
-			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
-			listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-			controller.setEvent(listItem);
-
-	        // ...
-	    }
+//		
+//	    if (nv != null && nv instanceof NguoiQuanLy) {
+//	        // Hiển thị tất cả chức năng đối với Người Quản Lý
+//	    	listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
+//			listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
+//			listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
+//			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
+//			listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
+//			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
+//			listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
+//			listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
+//			controller.setEvent(listItem);
+//
+//	        // ...
+//	    }
 	}
 
 	public static NguoiQuanLy getNguoiQuanLy() {

@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
@@ -189,7 +190,45 @@ public class NhanVienDAO {
 	    }
 	    return false;
 	}
+	
+	public static String getTenNVByMaNV(String maNV) {
+	    String tenNV = null;
+	    try {
+	        Connection con = ConnectDB.getConection();
+	        String sql = "SELECT tenNV FROM NhanVien WHERE maNV = ?";
+	        try (PreparedStatement statement = con.prepareStatement(sql)) {
+	            statement.setString(1, maNV);
+	            try (ResultSet rs = statement.executeQuery()) {
+	                if (rs.next()) {
+	                    tenNV = rs.getString("tenNV");
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return tenNV;
+	}
 
+	
+	public static String getMaNVbyUserName(String userName) {
+	    String maNV = null;
+	    try {
+	        Connection con = ConnectDB.getConection();
+	        String sql = "SELECT maNV FROM NhanVien WHERE userName = ?";
+	        try (PreparedStatement statement = con.prepareStatement(sql)) {
+	            statement.setString(1, userName);
+	            try (ResultSet rs = statement.executeQuery()) {
+	                if (rs.next()) {
+	                    maNV = rs.getString("maNV");
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return maNV;
+	}
 	public static ArrayList<NhanVien> findNhanVienByMa(String maNV) {
 	    ArrayList<NhanVien> dsNv = new ArrayList<>();
 	    try (Connection con = ConnectDB.getConection();

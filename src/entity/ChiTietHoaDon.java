@@ -63,5 +63,7 @@ public class ChiTietHoaDon {
 	public double TinhTienGoc() {
 		return sanPham.getGiaNhap() * soLuong;
 	}
-	
+	public int setTangSLView(int soLuong) {
+		return soLuong;
+	}
 }
