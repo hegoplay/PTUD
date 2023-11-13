@@ -103,7 +103,7 @@ public class MainFrame {
 	 */
 	public MainFrame(NhanVien nv) {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
-		this.nv = nv;
+		MainFrame.nv = nv;
 		
 		initialize();
 		checkAccessPermission();

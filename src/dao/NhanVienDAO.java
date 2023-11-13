@@ -242,7 +242,12 @@ public class NhanVienDAO {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
             	String maNV = rs.getString(1);
-                nv = getNhanVien(maNV);
+            	boolean chucVu = rs.getBoolean("chucVu");
+            	if (chucVu) {
+            		nv = getNguoiQuanLy(maNV);
+            	}
+            	else 
+            		nv = getNhanVien(maNV);
             }
 
         } catch (Exception e) {
