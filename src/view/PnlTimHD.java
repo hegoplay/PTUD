@@ -39,6 +39,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -233,7 +235,23 @@ public class PnlTimHD extends JPanel implements ActionListener{
         ArrayList<HoaDon> dsHoaDon = HoaDonDAO.getAllHoaDon();
         updateDSHDTable(dsHoaDon);
 
-
+        table_1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = table_1.getSelectedRow();
+                    if (selectedRow != -1) {
+                        String maHD = (String) table_1.getValueAt(selectedRow, 1);
+                        try {
+                            showChiTietHoaDon(maHD);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        
         dateChooser.setDate(null);
 
         btnLamMoi.addActionListener(this);
@@ -373,6 +391,7 @@ public class PnlTimHD extends JPanel implements ActionListener{
 
 //Xử lí combobox tổng tiền        
         comboBox.setSelectedIndex(0);
+        comboBox.setSelectedItem("");
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
