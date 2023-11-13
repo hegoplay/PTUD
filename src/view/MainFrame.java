@@ -43,13 +43,18 @@ public class MainFrame {
 	public static final Color clrBtnHover = new Color(221,161,94);
 	public static final Color clrTblBg = new Color(255,217,102);
 	public static final Color clrGrey1 = new Color(51,51,51);
+	public static final Color clrGrey = new Color(160,160,160);
 	public static final Color clrYellow2 = new Color(255,229,153);
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
 	public static final Color clrPnlColor = new Color(7, 55, 99);
+	public static final Color clrBtn = new Color(69, 129, 142);
+	public static final Color clrPnlDTCa = new Color(252, 223, 135);
+	public static final Color clrTableCT = new Color(201, 228, 228);
 	public static final Color clrLblColor = Color.white;
+	public static final Color clrBlack = Color.BLACK;
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
 	
@@ -367,5 +372,8 @@ public class MainFrame {
 		// TODO Auto-generated method stub
 		return NhanVienDAO.getNguoiQuanLy("NV00000000");
 	}
-	
+	public static NhanVien getNhanVienLogin() {
+		String maNV =  NhanVienDAO.getMaNVbyUserName("linh");
+		return NhanVienDAO.getNhanVien("NV00000003");
+	}
 }
