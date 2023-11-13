@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 import connectDB.ConnectDB;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
@@ -243,5 +245,77 @@ public class HoaDonDAO {
 		}
 		return res;
 	}
+	
+	public static ArrayList<HoaDon> getAllHoaDon() throws Exception {
+	    ArrayList<HoaDon> dsHoaDon = new ArrayList<>();
 
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement statement = con.prepareStatement("SELECT * FROM HoaDon");
+	         ResultSet rs = statement.executeQuery()) {
+
+	        while (rs.next()) {
+	            String maHD = rs.getString("maHD");
+	            LocalDateTime ngayLapHD = rs.getTimestamp("ngayLapHD").toLocalDateTime();
+	            String maNV = rs.getString("maNV");
+	            String maKH = rs.getString("maKH");
+	            float khuyenMai = rs.getFloat("coKhuyenMai");
+	            double tienKhachDua = rs.getDouble("tienKhachDua");
+	            double tongHoaDon = rs.getDouble("tongHoaDon");
+
+	            NhanVien nv = NhanVienDAO.getNhanVien(maNV);
+	            KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+	            ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
+
+	            dsHoaDon.add(new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai, tienKhachDua, list));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return dsHoaDon;
+	}
+	public static String taoMaHD() {
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement stGetNumCount = con.prepareStatement("SELECT count(*) FROM HoaDon");
+	    ) {
+	        String maHD = "HD";
+	        ResultSet rs = stGetNumCount.executeQuery();
+	        
+	        if (rs.next() && rs.getInt(1) < 1e8) {
+	        	return maHD + String.format("%04d", rs.getInt(1));
+	        }
+	        else {
+	        	return null;
+	        }
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null; 
+	}
+	
+	public static boolean themHD(HoaDon k) {
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement stmt = con.prepareStatement(
+	                 "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) " +
+	                         "VALUES (?, ?, ?, ?, ?, ?)")) {
+	        stmt.setString(1, k.getMaHD());
+	        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(k.getNgayLapHD());
+	        stmt.setTimestamp(2, timestamp);
+	        stmt.setString(3, k.getNhanVien().getMaNV());
+	        stmt.setString(4, k.getKhachHang().getMaKH());
+	        stmt.setDouble(5, k.getKhuyenMai());
+	        stmt.setDouble(6, k.getTienKhachDua());
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        if (e.getSQLState().equals("23505")) {
+	            JOptionPane.showMessageDialog(null, "Mã HD bị trùng");
+	        } else {
+	            e.printStackTrace();
+	        }
+	        return false;
+	    }
+	    return true;
+	}
 }

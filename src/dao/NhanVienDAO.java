@@ -30,7 +30,7 @@ public class NhanVienDAO {
                 boolean dangLamViec = rs.getBoolean(9);
                 String cuaHangQL = rs.getString(12);
 
-                if (chucVu) {
+                if (!chucVu) {
                     nv = new NhanVien(maNV, tenNV, sdt, email, diaChi, luong, chucVu, isNam, dangLamViec, cuaHangQL);
                 } else {
                     nv = new NguoiQuanLy(maNV, tenNV, sdt, email, diaChi, luong, chucVu, isNam, dangLamViec, cuaHangQL);
@@ -225,6 +225,35 @@ public class NhanVienDAO {
 	    
 	    // Format the new ID with leading zeros
 	    return String.format("NV%08d", soLuong);
+	}
+
+	public static NhanVien getTKNV(String taiKhoan, String matKhau) {
+		// TODO Auto-generated method stub
+		NhanVien nv = null;
+        try {
+            Connection con = ConnectDB.getConection();
+            String sql = "select * from NhanVien nv \r\n"
+            		+ "inner join TaiKhoan tk on nv.userName = tk.userName\r\n"
+            		+ "where tk.userName = ? and password = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            int i = 0;
+            statement.setString(++i, taiKhoan);
+            statement.setString(++i,matKhau);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+            	String maNV = rs.getString(1);
+            	boolean chucVu = rs.getBoolean("chucVu");
+            	if (chucVu) {
+            		nv = getNguoiQuanLy(maNV);
+            	}
+            	else 
+            		nv = getNhanVien(maNV);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nv;
 	}
 
 //	public

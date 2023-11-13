@@ -48,6 +48,9 @@ public class MainFrame {
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
+	public static final Color clrRed2 = new Color(234,153,153);
+	public static final Color clrPnlColor = new Color(7, 55, 99);
+	public static final Color clrLblColor = Color.white;   
 	
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
@@ -76,6 +79,8 @@ public class MainFrame {
 	private JLabel lblUser;
 	private JPanel pnlDX;
 	private JButton btnDangXuat;
+	private JPanel pnlBanHang;
+	private JLabel lblBanHang;
 
 	/**
 	 * Launch the application.
@@ -84,11 +89,11 @@ public class MainFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-//                    PnlDangNhap frame = new PnlDangNhap();
-//                    frame.setVisible(true);
+                    PnlDangNhap frame = new PnlDangNhap();
+                    frame.setVisible(true);
 //                    checkAccessPermission();
-                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
-                	window.frame.setVisible(true);
+//                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
+//                	window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -102,7 +107,7 @@ public class MainFrame {
 	 */
 	public MainFrame(NhanVien nv) {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
-		this.nv = nv;
+		MainFrame.nv = nv;
 		
 		initialize();
 		checkAccessPermission();
@@ -136,6 +141,14 @@ public class MainFrame {
 		pnlLogo.setLayout(new BorderLayout(0, 0));
 		JLabel lblLogo = new JLabel(logo,JLabel.CENTER);
 		lblLogo.setLabelFor(pnlLogo);
+		
+//		ImageIcon logo = new ImageIcon(MainFrame.class.getResource("/view/icon/icon_logoAM.png"));
+//		Image img = logo.getImage();
+//		Image newImg = img.getScaledInstance(145,64, java.awt.Image.SCALE_SMOOTH);
+//		logo = new ImageIcon(newImg);
+//
+//		JLabel lblLogo = new JLabel(logo, JLabel.CENTER);
+//		
 		pnlLogo.add(lblLogo);
 		
 		
@@ -145,12 +158,12 @@ public class MainFrame {
 		pnlNavBar.add(pnlNavLists, BorderLayout.CENTER);
 		pnlNavLists.setLayout(new GridLayout(9, 1, 0, 15));
 		
-		JPanel pnlBanHang = new JPanel();
+		pnlBanHang = new JPanel();
 		pnlBanHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlBanHang);
 		pnlBanHang.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblBanHang = new JLabel("Bán Hàng");
+		lblBanHang = new JLabel("Bán Hàng");
 		lblBanHang.setLabelFor(pnlBanHang);
 		lblBanHang.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBanHang.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/cart_icon.png")));
@@ -271,7 +284,7 @@ public class MainFrame {
 		pnlNavBar.add(pnlLogout, BorderLayout.SOUTH);
 		pnlLogout.setLayout(new GridLayout(0, 1, 0, 5));
 		
-		lblUser = new JLabel("acc");
+		lblUser = new JLabel(nv.getTen());
 		lblUser.setForeground(new Color(255, 255, 255));
 		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/user_circle_M.png")));
 		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
@@ -307,6 +320,9 @@ public class MainFrame {
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
+		PnlLHD pnlBanHangContent = new PnlLHD();
+		pnlContent.add(pnlBanHangContent,"Ban Hang");
+		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
 		
@@ -335,7 +351,7 @@ public class MainFrame {
 		listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
 		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-		
+		listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
 		controller.setEvent(listItem);
 		
 	    if (nv != null && nv instanceof NguoiQuanLy) {
