@@ -50,18 +50,18 @@ import entity.PhieuTraHang;
 import view.MainFrame;
 
 public class ToPDFController {
-	static float oneCol = 570f;
-	static float twocol = oneCol / 2;
-	static float threecol = oneCol / 3;
-	static float twocol150 = twocol + 150f;
-	static float twoColumnWidth[] = { twocol, twocol };
-	static float twocolumnWidth150[] = { twocol150, twocol };
-	static float twoColumnWidth2p1[] = { threecol * 2, threecol };
-	static float threeColumnWidth[] = { threecol, threecol, threecol };
-	static float sixColumnWidth[] = { threecol / 2 + 45f, threecol / 2 + 70f, threecol / 2, threecol / 2, threecol / 2,
+	public static float oneCol = 570f;
+	public static float twocol = oneCol / 2;
+	public static float threecol = oneCol / 3;
+	public static float twocol150 = twocol + 150f;
+	public static float twoColumnWidth[] = { twocol, twocol };
+	public static float twocolumnWidth150[] = { twocol150, twocol };
+	public static float twoColumnWidth2p1[] = { threecol * 2, threecol };
+	public static float threeColumnWidth[] = { threecol, threecol, threecol };
+	public static float sixColumnWidth[] = { threecol / 2 + 45f, threecol / 2 + 70f, threecol / 2, threecol / 2, threecol / 2,
 			threecol / 2 + 45f };
-	static float fullWidth[] = { threecol * 3 };
-	static PdfFont font;
+	public static float fullWidth[] = { threecol * 3 };
+	public static PdfFont font;
 
 //	
 	public static void setFont() throws IOException {

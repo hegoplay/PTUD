@@ -50,9 +50,12 @@ public class MainFrame {
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
-	public static final Color clrRed2 = new Color(234,153,153);
 	public static final Color clrPnlColor = new Color(7, 55, 99);
-	public static final Color clrLblColor = Color.white;   
+	public static final Color clrBtn = new Color(69, 129, 142);
+	public static final Color clrPnlDTCa = new Color(252, 223, 135);
+	public static final Color clrTableCT = new Color(201, 228, 228);
+	public static final Color clrLblColor = Color.white;
+	public static final Color clrBlack = Color.BLACK; 
 
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
@@ -121,8 +124,9 @@ public class MainFrame {
 	/**
 	 * Create the application.
 	 * @param nguoiQuanLy 
+	 * @throws Exception 
 	 */
-	public MainFrame(NhanVien nv) {
+	public MainFrame(NhanVien nv) throws Exception {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
 		MainFrame.nv = nv;
 		
@@ -132,8 +136,9 @@ public class MainFrame {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws Exception 
 	 */
-	private void initialize() {
+	private void initialize() throws Exception {
 		
 		
 		frame = new JFrame();
@@ -337,7 +342,7 @@ public class MainFrame {
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
-		PnlLHD pnlBanHangContent = new PnlLHD();
+		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 
 		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
