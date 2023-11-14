@@ -321,20 +321,6 @@ public class MainFrame {
 		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		pnlLogout.add(lblUser);
 		
-		pnlDX = new JPanel();
-		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
-		pnlLogout.add(pnlDX);
-		pnlDX.setLayout(new BorderLayout(0, 0));
-		pnlDX.setBackground(new Color(58,90,64));
-		
-		btnDangXuat = new JButton("Đăng Xuất");
-		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
-		btnDangXuat.setForeground(new Color(255, 255, 255));
-		btnDangXuat.setBackground(clrRed);
-		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
-		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
-		pnlDX.add(btnDangXuat);
-		
 		pnlContent = new JPanel();
 		pnlCenter.add(pnlContent, BorderLayout.CENTER);
 		pnlContent.setLayout(new CardLayout(0, 0));
@@ -411,7 +397,7 @@ public class MainFrame {
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
 		listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
 		controller.setEvent(listItem);
-		lblUser.setText("" + nv.getMaNhanVien());
+		lblUser.setText(nv.getTen());
 		
 	    if (nv != null && nv instanceof NguoiQuanLy) {
 	        // Hiển thị tất cả chức năng đối với Người Quản Lý
@@ -421,7 +407,6 @@ public class MainFrame {
 			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
 			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 			controller.setEvent(listItem);
-			lblUser.setText(" " + ((NguoiQuanLy) nv).getMaQuanLy());
 
 	        // ...
 	    }
@@ -432,9 +417,5 @@ public class MainFrame {
 //        lblNewLabel.setText("  " + ((NguoiQuanLy) nv).getMaQuanLy());
 //    }
 
-	public static NguoiQuanLy getNguoiQuanLy() {
-		// TODO Auto-generated method stub
-		return NhanVienDAO.getNguoiQuanLy("NV00000000");
-	}
 	
 }
