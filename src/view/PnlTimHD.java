@@ -464,7 +464,29 @@ public class PnlTimHD extends JPanel implements ActionListener{
 	}
 
 
+	private void showChiTietHoaDon(String maHD) throws Exception {
+	    // Gọi phương thức để lấy chi tiết hóa đơn từ mã hóa đơn
+	    ArrayList<ChiTietHoaDon> dsCTHD = hoaDon.GetDSCTHD(maHD);
 
+	    // Xóa dữ liệu cũ trong bảng chi tiết hóa đơn
+	    DefaultTableModel chiTietModel = (DefaultTableModel) table.getModel();
+	    chiTietModel.setRowCount(0);
+	    DecimalFormat decimalFormat = new DecimalFormat("###,###,### VNĐ");
+
+	    // Hiển thị chi tiết hóa đơn trong bảng chi tiết hóa đơn
+	    int stt = 1;
+	    for (ChiTietHoaDon cthd : dsCTHD) {
+	        model.addRow(new Object[]{
+	            stt++,
+	            cthd.getSanPham().getMaSP(),
+	            cthd.getSanPham().getTenSP(),
+	            cthd.getSanPham().TinhGiaBan(),
+	            cthd.getSoLuong(),
+	            decimalFormat.format(cthd.TinhThanhTien() )
+	        });
+	    }
+	}
+	
 //Xử lý btn Làm mới
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
