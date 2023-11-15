@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
@@ -64,6 +65,25 @@ public class NhanVienDAO {
         return nv;
     }
 
+	public static String getMaNVbyUserName(String userName) {
+	    String maNV = null;
+	    try {
+	        Connection con = ConnectDB.getConection();
+	        String sql = "SELECT maNV FROM NhanVien WHERE userName = ?";
+	        try (PreparedStatement statement = con.prepareStatement(sql)) {
+	            statement.setString(1, userName);
+	            try (ResultSet rs = statement.executeQuery()) {
+	                if (rs.next()) {
+	                    maNV = rs.getString("maNV");
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return maNV;
+	}
+	
 	public static NguoiQuanLy getNguoiQuanLy(String maNQL) {
 		NguoiQuanLy nv = null;
 		try {
