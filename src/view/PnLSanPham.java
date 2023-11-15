@@ -105,6 +105,7 @@ public class PnLSanPham extends JPanel {
 		textMaSP.setBounds(143, 66, 132, 28);
 		panel.add(textMaSP);
 		textMaSP.setColumns(10);
+		textMaSP.setEditable(false);
 
 		rdbtnNam = new JRadioButton("Nam");
 		rdbtnNam.setBounds(172, 338, 67, 31);

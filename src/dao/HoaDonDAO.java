@@ -283,7 +283,7 @@ public class HoaDonDAO {
 	        ResultSet rs = stGetNumCount.executeQuery();
 	        
 	        if (rs.next() && rs.getInt(1) < 1e8) {
-	        	return maHD + String.format("%04d", rs.getInt(1));
+	        	return maHD + String.format("%08d", rs.getInt(1) + 1);
 	        }
 	        else {
 	        	return null;
@@ -298,7 +298,7 @@ public class HoaDonDAO {
 	public static boolean themHD(HoaDon k) {
 	    try (Connection con = ConnectDB.getConection();
 	         PreparedStatement stmt = con.prepareStatement(
-	                 "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) " +
+	                 "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua) " +
 	                         "VALUES (?, ?, ?, ?, ?, ?)")) {
 	        stmt.setString(1, k.getMaHD());
 	        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(k.getNgayLapHD());
@@ -308,6 +308,17 @@ public class HoaDonDAO {
 	        stmt.setDouble(5, k.getKhuyenMai());
 	        stmt.setDouble(6, k.getTienKhachDua());
 	        stmt.executeUpdate();
+//	        for (ChiTietHoaDon ct : k.getDsCTHD()) {
+////	        	        					            String sql2 = "INSERT INTO ChiTietHoaDon (maSP, hoaDon, soLuong) VALUES (?, ?, ?)";
+////	        						            statement2 = con.prepareStatement(sql2);
+////	        					            statement2.setString(1, ct.getSanPham().getMaSP());
+////	        						            statement2.setString(2, maHD);
+////	        					            statement2.setInt(3, ct.getSoLuong());
+////	        					            statement2.executeUpdate();
+////	        					        };
+//	        	
+//	        }
+//	        con.commit();
 	    } catch (SQLException e) {
 	        if (e.getSQLState().equals("23505")) {
 	            JOptionPane.showMessageDialog(null, "Mã HD bị trùng");

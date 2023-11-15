@@ -121,8 +121,9 @@ public class MainFrame {
 	/**
 	 * Create the application.
 	 * @param nguoiQuanLy 
+	 * @throws Exception 
 	 */
-	public MainFrame(NhanVien nv) {
+	public MainFrame(NhanVien nv) throws Exception {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
 		MainFrame.nv = nv;
 		
@@ -132,8 +133,9 @@ public class MainFrame {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws Exception 
 	 */
-	private void initialize() {
+	private void initialize() throws Exception {
 		
 		
 		frame = new JFrame();
@@ -337,7 +339,7 @@ public class MainFrame {
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
-		PnlLHD pnlBanHangContent = new PnlLHD();
+		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 
 		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
