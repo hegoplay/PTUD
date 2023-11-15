@@ -56,9 +56,9 @@ public class PnlNhaCC extends JPanel {
 		setLayout(null);
 		
 		JLabel lblTitle = new JLabel("NHÀ CUNG CẤP");
-		lblTitle.setBounds(420, 11, 248, 39);
+		lblTitle.setBounds(420, 15, 280, 28);
 		add(lblTitle);
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 28));
 		
 		JLabel lblMaNhaCC = new JLabel("Mã Nhà cung cấp:");
 		lblMaNhaCC.setFont(new Font("Tahoma", Font.BOLD, 17));

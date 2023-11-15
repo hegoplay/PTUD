@@ -44,15 +44,18 @@ public class MainFrame {
 	public static final Color clrBtnHover = new Color(221,161,94);
 	public static final Color clrTblBg = new Color(255,217,102);
 	public static final Color clrGrey1 = new Color(51,51,51);
+	public static final Color clrGrey = new Color(160,160,160);
 	public static final Color clrYellow2 = new Color(255,229,153);
 	public static final Color clrCyan2 = new Color(162,196,201);
 	public static final Color clrBlue4 = new Color(89,126,170);
 	public static final Color clrBlue6 = new Color(7,55,99);
 	public static final Color clrRed = new Color(207,42,39);
-
-	public static final Color clrRed2 = new Color(234,153,153);
 	public static final Color clrPnlColor = new Color(7, 55, 99);
-	public static final Color clrLblColor = Color.white;   
+	public static final Color clrBtn = new Color(69, 129, 142);
+	public static final Color clrPnlDTCa = new Color(252, 223, 135);
+	public static final Color clrTableCT = new Color(201, 228, 228);
+	public static final Color clrLblColor = Color.white;
+	public static final Color clrBlack = Color.BLACK; 
 
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
@@ -121,8 +124,9 @@ public class MainFrame {
 	/**
 	 * Create the application.
 	 * @param nguoiQuanLy 
+	 * @throws Exception 
 	 */
-	public MainFrame(NhanVien nv) {
+	public MainFrame(NhanVien nv) throws Exception {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
 		MainFrame.nv = nv;
 		
@@ -132,8 +136,9 @@ public class MainFrame {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws Exception 
 	 */
-	private void initialize() {
+	private void initialize() throws Exception {
 		
 		
 		frame = new JFrame();
@@ -321,20 +326,6 @@ public class MainFrame {
 		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		pnlLogout.add(lblUser);
 		
-		pnlDX = new JPanel();
-		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
-		pnlLogout.add(pnlDX);
-		pnlDX.setLayout(new BorderLayout(0, 0));
-		pnlDX.setBackground(new Color(58,90,64));
-		
-		btnDangXuat = new JButton("Đăng Xuất");
-		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
-		btnDangXuat.setForeground(new Color(255, 255, 255));
-		btnDangXuat.setBackground(clrRed);
-		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
-		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
-		pnlDX.add(btnDangXuat);
-		
 		pnlContent = new JPanel();
 		pnlCenter.add(pnlContent, BorderLayout.CENTER);
 		pnlContent.setLayout(new CardLayout(0, 0));
@@ -351,9 +342,14 @@ public class MainFrame {
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
-		PnlLHD pnlBanHangContent = new PnlLHD();
+		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 
+		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
+		pnlContent.add(pnlKhachHangContent, "Khach Hang");
+		
+		PnLSanPham pnlSanPhamContent = new PnLSanPham();
+		pnlContent.add(pnlSanPhamContent, "San Pham");
 		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
@@ -406,7 +402,7 @@ public class MainFrame {
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
 		listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
 		controller.setEvent(listItem);
-		lblUser.setText("" + nv.getMaNhanVien());
+		lblUser.setText(nv.getTen());
 		
 	    if (nv != null && nv instanceof NguoiQuanLy) {
 	        // Hiển thị tất cả chức năng đối với Người Quản Lý
@@ -416,7 +412,6 @@ public class MainFrame {
 			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
 			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 			controller.setEvent(listItem);
-			lblUser.setText(" " + ((NguoiQuanLy) nv).getMaQuanLy());
 
 	        // ...
 	    }
@@ -427,9 +422,5 @@ public class MainFrame {
 //        lblNewLabel.setText("  " + ((NguoiQuanLy) nv).getMaQuanLy());
 //    }
 
-	public static NguoiQuanLy getNguoiQuanLy() {
-		// TODO Auto-generated method stub
-		return NhanVienDAO.getNguoiQuanLy("NV00000000");
-	}
 	
 }

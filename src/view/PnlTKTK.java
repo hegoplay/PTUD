@@ -30,6 +30,7 @@ import dao.HoaDonDAO;
 import dao.LSTTonDAO;
 import dao.TraHangDAO;
 import entity.LishSuTon;
+import entity.NguoiQuanLy;
 import entity.SanPham;
 
 import javax.swing.JButton;
@@ -282,7 +283,7 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 							fileToSave.getAbsolutePath(), 
 							ldDauKy, 
 							ldCuoiKy,
-							MainFrame.getNguoiQuanLy() , 
+							(NguoiQuanLy)MainFrame.nv , 
 							tblCTTK, 
 							new int[] {Integer.parseInt( lblValTongSP.getText()),
 									Integer.parseInt( lblValDaBan.getText()),

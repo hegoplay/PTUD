@@ -6,9 +6,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
@@ -21,6 +23,200 @@ import entity.NhanVien;
 import entity.SanPham;
 
 public class HoaDonDAO {
+	
+	public static ArrayList<HoaDon> getHoaDonByMaNVinToDay(String maNV) {
+        ArrayList<HoaDon> listHoaDon = new ArrayList<>();
+
+        try (Connection con = ConnectDB.getConection();
+             PreparedStatement stmt = con.prepareStatement("SELECT * FROM HoaDon WHERE maNV = ? AND CAST(ngayLapHD AS DATE) = ?");
+        ) {
+            LocalDate ngayHienHanh = LocalDate.now();
+            stmt.setString(1, maNV);
+            stmt.setDate(2, java.sql.Date.valueOf(ngayHienHanh));
+
+            try (ResultSet rs = stmt.executeQuery()) {                  
+        	        while (rs.next()) {
+        	            String maHD = rs.getString("maHD");
+        	            LocalDateTime ngayLapHD = rs.getTimestamp("ngayLapHD").toLocalDateTime();
+        	            String mNV = rs.getString("maNV");
+        	            String maKH = rs.getString("maKH");
+        	            float khuyenMai = rs.getFloat("coKhuyenMai");
+        	            double tienKhachDua = rs.getDouble("tienKhachDua");
+        	            String ghiChu = rs.getString("ghiChu");
+
+        	            NhanVien nv = NhanVienDAO.getNhanVien(mNV);
+        	            KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+        	            ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
+
+        	            listHoaDon.add(new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai, tienKhachDua, list));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listHoaDon;
+	}	
+	
+	public static boolean ThemHD(HoaDon hdon) throws Exception {
+	    Connection con = ConnectDB.getConection();
+	    con.setAutoCommit(false);
+
+	    PreparedStatement statement1 = null;
+	    PreparedStatement statement2 = null;
+
+	    try {
+	        String sql1 = "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	        statement1 = con.prepareStatement(sql1);
+	        statement1.setString(1, hdon.getMaHD());
+	        statement1.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+	        statement1.setString(3, hdon.getNhanVien().getMaNV());
+	        statement1.setString(4, hdon.getKhachHang().getMaKH());
+	        statement1.setFloat(5, hdon.getKhuyenMai());
+	        statement1.setDouble(6, hdon.getTienKhachDua());
+	        statement1.setDouble(7, hdon.TinhTongTien());
+	        statement1.executeUpdate();
+	        // Lấy maHD vừa được tạo
+	        String maHD = hdon.getMaHD();
+
+	        // Thêm chi tiết hóa đơn
+	        for (ChiTietHoaDon ct : hdon.getDsCTHD()) {
+	            String sql2 = "INSERT INTO ChiTietHoaDon (maSP, hoaDon, soLuong) VALUES (?, ?, ?)";
+	            statement2 = con.prepareStatement(sql2);
+	            statement2.setString(1, ct.getSanPham().getMaSP());
+	            statement2.setString(2, maHD);
+	            statement2.setInt(3, ct.getSoLuong());
+	            statement2.executeUpdate();
+	        }
+
+	        // Commit transaction nếu mọi thứ thành công
+	        con.commit();
+	        return true;
+	    } catch (SQLException e) {
+	        // In hoặc xử lý lỗi
+	        e.printStackTrace();
+
+	        // Rollback transaction nếu có lỗi
+	        try {
+	            con.rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	        return false;
+	    } finally {
+	        try {
+	            // Đặt lại chế độ tự động commit
+	            con.setAutoCommit(true);
+
+	            // Đóng các statement
+	            if (statement1 != null) {
+	                statement1.close();
+	            }
+	            if (statement2 != null) {
+	                statement2.close();
+	            }
+	            // Đóng kết nối
+	            con.close();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	}
+	
+	public static ArrayList<ChiTietHoaDon> getDSCTHDFromList(ArrayList<HoaDon> listHoaDon) {
+	    ArrayList<ChiTietHoaDon> listDSCTHD = new ArrayList<>();
+
+	    for (HoaDon hoaDon : listHoaDon) {
+	        // Lấy danh sách chi tiết hóa đơn từ mỗi hóa đơn
+	        ArrayList<ChiTietHoaDon> dsCTHD = hoaDon.getDsCTHD();
+	        listDSCTHD.addAll(dsCTHD);
+	    }
+
+	    return listDSCTHD;
+	}
+	
+	public static double getDoanhThuNgayTheoMaNV(String maNV) {
+	    double tongDoanhThu = 0;
+
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement stmt = con.prepareStatement(
+	                 "SELECT SUM(tongHoaDon) AS tongDoanhThu FROM HoaDon WHERE maNV = ? AND CAST(ngayLapHD AS DATE) = ?"
+	         );
+	    ) {
+	        LocalDate ngayHienHanh = LocalDate.now();
+	        stmt.setString(1, maNV);
+	        stmt.setDate(2, java.sql.Date.valueOf(ngayHienHanh));
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                tongDoanhThu = rs.getDouble("tongDoanhThu");
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return tongDoanhThu;
+	}
+	
+	public static double getTongTienByMaHD(String maHD) {
+	    double tongTien = 0;
+
+	    try (Connection con = ConnectDB.getConection();
+	         PreparedStatement statement = con.prepareStatement("SELECT tongHoaDon FROM HoaDon WHERE maHD = ?")) {
+
+	        statement.setString(1, maHD);
+	        ResultSet rs = statement.executeQuery();
+
+	        if (rs.next()) {
+	            tongTien = rs.getDouble("tongHoaDon");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return tongTien;
+	}
+	// Phương thức lấy khuyến mãi của hoa đơn theo maHD
+    public static double getKhuyenMaiByMaHD(String maHD) throws SQLException {
+        double khuyenMai = 0;
+        float km = 0;
+
+        try (Connection con = ConnectDB.getConection();
+             PreparedStatement statement = con.prepareStatement("SELECT coKhuyenMai FROM HoaDon WHERE maHD = ?");
+        ) {
+            statement.setString(1, maHD);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    km = rs.getFloat("coKhuyenMai");
+                    khuyenMai = (getTongTienByMaHD(maHD)/(1-km))*km;
+                }
+            }
+        }
+
+        return khuyenMai;
+    }
+	
+	public static ArrayList<ChiTietHoaDon> processDSCTHD(ArrayList<ChiTietHoaDon> listDSCTHD) throws Exception {
+	    Map<String, ChiTietHoaDon> mapChiTietHoaDon = new HashMap<>();
+	    for (ChiTietHoaDon chiTietHoaDon : listDSCTHD) {
+	        String maSP = chiTietHoaDon.getSanPham().getMaSP();
+
+	        // Kiểm tra xem mã sản phẩm đã tồn tại trong Map chưa
+	        if (mapChiTietHoaDon.containsKey(maSP)) {
+	            // tồn tại, tăng số lượng lên 1
+	            ChiTietHoaDon existingChiTiet = mapChiTietHoaDon.get(maSP);
+	            existingChiTiet.tangSoLuong (existingChiTiet.getSoLuong() + 1);
+	        } else {
+	            // Nếu chưa tồn tại
+	            mapChiTietHoaDon.put(maSP, chiTietHoaDon);
+	        }
+	    }
+	    return new ArrayList<>(mapChiTietHoaDon.values());
+	}
+	
 	public static HoaDon GetHoaDon(String maHD) {
 		HoaDon hd = null;
 		try {
@@ -283,7 +479,7 @@ public class HoaDonDAO {
 	        ResultSet rs = stGetNumCount.executeQuery();
 	        
 	        if (rs.next() && rs.getInt(1) < 1e8) {
-	        	return maHD + String.format("%04d", rs.getInt(1));
+	        	return maHD + String.format("%08d", rs.getInt(1) + 1);
 	        }
 	        else {
 	        	return null;
@@ -298,7 +494,7 @@ public class HoaDonDAO {
 	public static boolean themHD(HoaDon k) {
 	    try (Connection con = ConnectDB.getConection();
 	         PreparedStatement stmt = con.prepareStatement(
-	                 "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) " +
+	                 "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua) " +
 	                         "VALUES (?, ?, ?, ?, ?, ?)")) {
 	        stmt.setString(1, k.getMaHD());
 	        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(k.getNgayLapHD());
@@ -308,6 +504,17 @@ public class HoaDonDAO {
 	        stmt.setDouble(5, k.getKhuyenMai());
 	        stmt.setDouble(6, k.getTienKhachDua());
 	        stmt.executeUpdate();
+//	        for (ChiTietHoaDon ct : k.getDsCTHD()) {
+////	        	        					            String sql2 = "INSERT INTO ChiTietHoaDon (maSP, hoaDon, soLuong) VALUES (?, ?, ?)";
+////	        						            statement2 = con.prepareStatement(sql2);
+////	        					            statement2.setString(1, ct.getSanPham().getMaSP());
+////	        						            statement2.setString(2, maHD);
+////	        					            statement2.setInt(3, ct.getSoLuong());
+////	        					            statement2.executeUpdate();
+////	        					        };
+//	        	
+//	        }
+//	        con.commit();
 	    } catch (SQLException e) {
 	        if (e.getSQLState().equals("23505")) {
 	            JOptionPane.showMessageDialog(null, "Mã HD bị trùng");

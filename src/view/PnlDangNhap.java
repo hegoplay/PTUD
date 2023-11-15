@@ -143,7 +143,7 @@ public class PnlDangNhap extends JFrame {
 		txtTaiKhoan.setBounds(421, 288, 423, 33);
 		contentPane.add(txtTaiKhoan);
 		txtTaiKhoan.setColumns(10);
-		txtTaiKhoan.setText("ql001");
+		txtTaiKhoan.setText("khoi");
 		
 		textMatKhau = new JPasswordField();
 		textMatKhau.addKeyListener(new KeyAdapter() {
@@ -158,7 +158,7 @@ public class PnlDangNhap extends JFrame {
 		textMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		textMatKhau.setColumns(10);
 		textMatKhau.setBounds(421, 351, 423, 33);
-		textMatKhau.setText("12345");
+		textMatKhau.setText("abc");
 		contentPane.add(textMatKhau);
 		
 		JLabel lblTaiKhoan = new JLabel("Nhập mã người dùng:");

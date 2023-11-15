@@ -16,6 +16,7 @@ import dao.TraHangDAO;
 import entity.ChiTietHoaDon;
 import entity.ChiTietTraHang;
 import entity.HoaDon;
+import entity.NguoiQuanLy;
 import entity.PhieuTraHang;
 import entity.SanPham;
 
@@ -526,7 +527,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 			LoadData();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(this, e1.getMessage(), "Thông báo lỗi", JOptionPane.WARNING_MESSAGE);
+//			JOptionPane.showMessageDialog(this, e1.getMessage(), "Thông báo lỗi", JOptionPane.WARNING_MESSAGE);
+			e1.printStackTrace();
 		}
 
 	}
@@ -570,7 +572,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 		if (hd == null) {
 			throw new Exception("Hóa đơn không tồn tại");
 		}
-		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), MainFrame.nql,
+		pth = new PhieuTraHang("TH" + txtMaHD.getText().substring(2), hd, LocalDate.now(), (NguoiQuanLy)MainFrame.nv,
 				hd.getKhachHang(), new ArrayList<>());
 		if (TraHangDAO.KiemTraTTPhieuTra("TH" + txtMaHD.getText().substring(2))) {
 			pth = null;
