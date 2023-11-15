@@ -36,7 +36,6 @@ public class PnlDangNhap extends JFrame {
 	private JTextField txtTaiKhoan;
 	private JTextField textMatKhau;
 	protected Object frame;
-	private JPasswordField passwordField;
 	private NguoiQuanLy nguoiQL;
 	private NhanVien nv;
 
@@ -214,10 +213,6 @@ public class PnlDangNhap extends JFrame {
 		lblNewLabel_1.setIcon(new ImageIcon(PnlDangNhap.class.getResource("/view/icon/hinhanhgiaodienchinh.png")));
 		lblNewLabel_1.setBounds(0, 0, 1296, 745);
 		contentPane.add(lblNewLabel_1);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(422, 351, 7, 20);
-		contentPane.add(passwordField);
 	}
 	
 	private void login() {

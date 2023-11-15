@@ -527,8 +527,8 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 			LoadData();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-//			JOptionPane.showMessageDialog(this, e1.getMessage(), "Thông báo lỗi", JOptionPane.WARNING_MESSAGE);
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(this, e1.getMessage(), "Thông báo lỗi", JOptionPane.WARNING_MESSAGE);
+//			e1.printStackTrace();
 		}
 
 	}

@@ -209,6 +209,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		double tongTongTien = 0;
 		double tongTienHoan = 0;
 		double tongTienGoc = 0;
+		double tongTienSPPTH = 0; //Tổng tiền sản phẩm phải trả
 		for (HoaDon hd : hdList) {
 			tongTongTien += hd.TinhTongTien();
 			tongTienGoc += hd.TinhTongTienGoc();
@@ -216,10 +217,11 @@ public class PnlTKCH extends JPanel implements ActionListener {
 
 		for (PhieuTraHang pth : pthList) {
 			tongTienHoan += pth.TinhTienTra();
+			tongTienSPPTH += pth.TinhTongTienGoc();
 		}
 
-		lblValueDoanhThu.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienHoan));
-		lblValueLoiNhuan.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienGoc - tongTienHoan));
+		lblValueDoanhThu.setText(new DecimalFormat("###,###").format(tongTongTien));
+		lblValueLoiNhuan.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienGoc));
 		lblValueDoanhSo.setText(HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate()).size() + "");
 
 		Map<String,Integer> SPMap = new TreeMap<>();
