@@ -514,13 +514,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 					throw new Exception("Chưa có phiếu trả hàng");
 				}
 				JFileChooser fileChooser = new JFileChooser();
-				String path = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		    	String []path1 = path.split("/");
-		    	String finPath = "";
-		    	for (int i = 0 ; i < path1.length - 1; i++) {
-		    		finPath += path1[i] + "/";
-		    	}
-				fileChooser.setCurrentDirectory(new File(finPath + "pdf"));
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");
 				
 				

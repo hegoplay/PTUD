@@ -299,7 +299,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 			try {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
-				
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				int userSelection = fileChooser.showSaveDialog(this);
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File fileToSave = fileChooser.getSelectedFile();

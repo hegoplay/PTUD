@@ -93,7 +93,7 @@ where maSP = 'SP00000626';
 
 select * from SanPham where maSP = 'SP00000626'
 select * from ChiTietHoaDon
-select * from PhieuTraHang
+select * from HoaDon
 
 delete from PhieuTraHang where maPhieu = 'TH00000006'
 

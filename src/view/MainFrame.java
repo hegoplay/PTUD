@@ -60,6 +60,8 @@ public class MainFrame {
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
 	
+	public static String PdfPath = "";
+	
 	public JFrame frame;
 	private JPanel pnlNhanVien;
 	private JPanel pnlThongKe;
@@ -139,6 +141,7 @@ public class MainFrame {
 	 * @throws Exception 
 	 */
 	private void initialize() throws Exception {
+		
 		
 		
 		frame = new JFrame();
@@ -384,6 +387,13 @@ public class MainFrame {
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
+		String path = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    	String []path1 = path.split("/");
+    	String finPath = "";
+    	for (int i = 0 ; i < path1.length - 1; i++) {
+    		finPath += path1[i] + "/";
+    	}
+    	PdfPath = finPath + "/pdf";
 		
 	}
 	// Thêm phương thức kiểm tra quyền truy cập

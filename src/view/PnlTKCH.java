@@ -434,6 +434,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		if (e.getSource() == btnXBC) {
 			try {
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
 				
 				int userSelection = fileChooser.showSaveDialog(this);

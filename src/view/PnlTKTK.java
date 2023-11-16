@@ -273,6 +273,7 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 		if (e.getSource() == btnXuatFile) {
 			try {
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
 				
 				int userSelection = fileChooser.showSaveDialog(this);
