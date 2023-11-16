@@ -66,7 +66,7 @@ public class HoaDonDAO {
 	    PreparedStatement statement2 = null;
 
 	    try {
-	        String sql1 = "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	        String sql1 = "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	        statement1 = con.prepareStatement(sql1);
 	        statement1.setString(1, hdon.getMaHD());
 	        statement1.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));

@@ -87,7 +87,16 @@ ON SanPham (maSP);
 --insert into SanPham(maSP,tenSP,giaNhap,slTonKho,kichThuoc,mauSac,isNam,ConKinhDoanh,maLoaiSP,hinhAnh,MaNCC) 
 --select * from cleaned_wm_aom
 
-select * from SanPham where maLoaiSP = 'SOR'
+UPDATE SanPham
+SET slTonKho = 100
+where maSP = 'SP00000626';
+
+select * from SanPham where maSP = 'SP00000626'
+select * from ChiTietHoaDon
+select * from PhieuTraHang
+
+delete from PhieuTraHang where maPhieu = 'TH00000006'
+
 select count(*) from SanPham
 select distinct maLoaiSP,tenLoai from SanPham 
 left join LoaiSP on SanPham.maLoaiSP = LoaiSP.maLoai
@@ -96,3 +105,4 @@ left join LoaiSP on SanPham.maLoaiSP = LoaiSP.maLoai
 --update SanPham
 --set hinhAnh = 'https://static.zara.net/photos///2023/I/0/2/p/0495/311/406/2/w/495/0495311406_6_3_1.jpg?ts=1684231099656'
 --where maSP = 'SP00000083'
+

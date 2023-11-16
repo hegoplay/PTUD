@@ -551,7 +551,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		else if(o.equals(btnXuat)) {
 			try {
 				HoaDon hoad = getThongTinCreateHD();
-				hd.ThemHD(hoad);
+				HoaDonDAO.ThemHD(hoad);
 				JOptionPane.showMessageDialog(this, "Lập hóa đơn thành công", "Thông báo thành công",
 						JOptionPane.OK_OPTION);
 				lamMoi();
@@ -786,10 +786,15 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	private void timSDT() {
 		// TODO Auto-generated method stub
 		String sdt = txtTim.getText().trim();
-		String tenKHTimDuoc = KhachHangDAO.getKHBySDT(sdt).getTenKH();
+		KhachHang kh = KhachHangDAO.getKHBySDT(sdt);
+		if(kh==null) {
+			JOptionPane.showMessageDialog(this, "Khách hàng không tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		String tenKHTimDuoc = kh.getTenKH();
 	    if (tenKHTimDuoc.isEmpty()) {
 	        // Số điện thoại không hợp lệ hoặc không tồn tại 
-	        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ hoặc không tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+	        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ ", "Thông báo", JOptionPane.WARNING_MESSAGE);
 	    } else {
 	        txtKH.setText(tenKHTimDuoc);
 	    }
