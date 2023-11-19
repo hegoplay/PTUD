@@ -187,7 +187,6 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			}
 			case "Kỳ": {
 				startDay = startDay.withDayOfYear(1);
-				System.out.println(startDay);
 				endDay = startDay;
 				while (endDay.isBefore(LocalDateTime.now())) {
 					endDay = endDay.plusMonths(3);
@@ -203,9 +202,11 @@ public class PnlTKCH extends JPanel implements ActionListener {
 				break;
 			}
 		}
+		System.out.println("1");
 		hdList = HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate());
+		System.out.println("2");
 		pthList = TraHangDAO.GetPTHInDate(startDay.toLocalDate(), endDay.toLocalDate());
-
+		System.out.println("3");
 		double tongTongTien = 0;
 		double tongTienHoan = 0;
 		double tongTienGoc = 0;
@@ -225,19 +226,22 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		lblValueDoanhSo.setText(HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate()).size() + "");
 
 		Map<String,Integer> SPMap = new TreeMap<>();
-
+		
+		System.out.println("YES");
 		
 		for (HoaDon hd : hdList) {
 			for (ChiTietHoaDon cthd : hd.getDsCTHD()) {
-				if (SPMap.containsKey(cthd.getSanPham().getMaSP())) {
-					SPMap.replace(cthd.getSanPham().getMaSP(),
-							SPMap.get(cthd.getSanPham().getMaSP()) + cthd.getSoLuong());
+				Integer cnt = SPMap.get(cthd.getSanPham().getMaSP());
+				if (cnt!=null) {
+					SPMap.put(cthd.getSanPham().getMaSP(),cnt + cthd.getSoLuong());
 				} else {
 					SPMap.put(cthd.getSanPham().getMaSP(), cthd.getSoLuong());
 				}
 				
 			}
 		}
+		
+		
 		
 		lists = new ArrayList<Map.Entry<String, Integer>>();
 		
@@ -254,7 +258,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			}
 			
 		});
-		
+		System.out.println("YES");
 
 // Xu ly du lieu tren dataset		
 

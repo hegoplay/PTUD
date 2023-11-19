@@ -402,7 +402,7 @@ public class HoaDonDAO {
 				float khuyenMai = rs.getFloat(5);
 				double tienKhachDua = rs.getDouble(6);
 				NhanVien nv = NhanVienDAO.getNhanVien(maNV);
-				KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+				KhachHang kh = new KhachHang(maKH);
 				ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
 				hd = new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai,tienKhachDua, list);
 				res.add(hd);

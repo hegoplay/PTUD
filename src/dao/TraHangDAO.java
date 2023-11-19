@@ -107,9 +107,9 @@ public class TraHangDAO {
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				String maPhieu = rs.getString(1);
-				KhachHang kh = KhachHangDAO.getKhachHang(rs.getString(2));
+				KhachHang kh = new KhachHang(rs.getString(2));
 				NguoiQuanLy nql = NhanVienDAO.getNguoiQuanLy(rs.getString(3));
-				HoaDon hd = HoaDonDAO.GetHoaDon(rs.getString(4));
+				HoaDon hd = new HoaDon(rs.getString(4));
 				LocalDate ngayTraHang = rs.getTimestamp(5).toLocalDateTime().toLocalDate();
 				ArrayList<ChiTietTraHang> ctth = GetCTTH(maPhieu);
 				PhieuTraHang pth = new PhieuTraHang(maPhieu, hd, ngayTraHang, nql, kh, ctth);
