@@ -335,13 +335,13 @@ public class MainFrame {
 		
 		PnlThongKe pnlThongKeContent = new PnlThongKe();
 		pnlContent.add(pnlThongKeContent, "Thong Ke");
+		System.out.println("YES");
 		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
 		
 		PnlNhanVien pnlNhanVienContent = new PnlNhanVien();
 		pnlContent.add(pnlNhanVienContent, "Nhan Vien");
-		
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
@@ -387,6 +387,11 @@ public class MainFrame {
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
+		SetPDFPath();
+		
+	}
+	private void SetPDFPath() {
+		// TODO Auto-generated method stub
 		String path = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     	String []path1 = path.split("/");
     	String finPath = "";
@@ -394,7 +399,6 @@ public class MainFrame {
     		finPath += path1[i] + "/";
     	}
     	PdfPath = finPath + "/pdf";
-		
 	}
 	// Thêm phương thức kiểm tra quyền truy cập
 	private void checkAccessPermission() {

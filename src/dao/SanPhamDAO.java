@@ -110,7 +110,9 @@ public class SanPhamDAO {
 		ArrayList<SanPham> lists= new ArrayList<>();
 		try {
 			Connection con = ConnectDB.getConection();
-			String sql = "Select * from SanPham";
+			String sql = "Select * from SanPham"
+					+ " inner join NhaCC on SanPham.MaNCC = NhaCC.maNCC"
+					+ " inner join LoaiSP on LoaiSP.maLoai = SanPham.maLoaiSP";
 			PreparedStatement statement = con.prepareStatement(sql);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
@@ -126,10 +128,8 @@ public class SanPhamDAO {
 				String hinhAnh = rs.getNString(10);
 				String maNCC = rs.getString(11);
 				float thue = rs.getFloat(12);
-				NhaCC ncc = NhaCCDAO.GetNhaCC(maNCC);
-				LoaiSP lsp = SanPhamDAO.GetLoaiSP(maLoaiSP);
-
-
+				NhaCC ncc = new NhaCC(maNCC, rs.getString(14), rs.getNString(15), rs.getString(16));
+				LoaiSP lsp = new LoaiSP(maLoaiSP, rs.getNString(18), rs.getBoolean(19));
 				SanPham sp = new SanPham(maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, conKinhDoanh, isNam, ncc, hinhAnh, thue, lsp);
 				lists.add(sp);
 

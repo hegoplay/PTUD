@@ -73,6 +73,10 @@ begin
 end;
 
 
+select * from HoaDon hd 
+		inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon
+		inner join SanPham sp on sp.maSP = ct.maSP
+delete from HoaDon where maHD = 'HD00000006'
 go
 
 DECLARE @startDate datetime = GETDATE() - 3;

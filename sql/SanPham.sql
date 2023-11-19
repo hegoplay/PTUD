@@ -106,3 +106,12 @@ left join LoaiSP on SanPham.maLoaiSP = LoaiSP.maLoai
 --set hinhAnh = 'https://static.zara.net/photos///2023/I/0/2/p/0495/311/406/2/w/495/0495311406_6_3_1.jpg?ts=1684231099656'
 --where maSP = 'SP00000083'
 
+DECLARE @i int = 0
+
+WHILE @i < (select count(*) from SanPham)
+BEGIN
+    update SanPham
+	set thue = 0
+	where maSP = concat('SP', (SELECT FORMAT(@i, '00000000')))
+    SET @i = @i + 1
+END

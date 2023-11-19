@@ -75,6 +75,7 @@ public class HoaDonDAO {
 	        statement1.setFloat(5, hdon.getKhuyenMai());
 	        statement1.setDouble(6, hdon.getTienKhachDua());
 	        statement1.setDouble(7, hdon.TinhTongTien());
+	        System.out.println(hdon.TinhTongTien());
 	        statement1.executeUpdate();
 	        // Lấy maHD vừa được tạo
 	        String maHD = hdon.getMaHD();

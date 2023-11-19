@@ -246,30 +246,7 @@ public class PnLSanPham extends JPanel {
 		table_1.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		table_1.setModel(new DefaultTableModel(
 				new Object[][] { { null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, "", null, null, null },
-						{ null, null, null, null, null, null, null, "", null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null }, },
+						},
 				new String[] { "M\u00E3 S\u1EA3n Ph\u1EA9m", "T\u00EAn S\u1EA3n Ph\u1EA9m",
 						"Lo\u1EA1i S\u1EA3n Ph\u1EA9m", "K\u00EDch Th\u01B0\u1EDBc", "Gi\u00E1 Nh\u1EADp",
 						"S\u1ED1 L\u01B0\u1EE3ng", "M\u00E0u S\u1EAFc", "Gi\u1EDBi T\u00EDnh", "Tr\u1EA1ng Th\u00E1i",
@@ -305,7 +282,6 @@ public class PnLSanPham extends JPanel {
 		try {
 			// Lấy dữ liệu từ cơ sở dữ liệu hoặc từ nơi khác
 			ArrayList<SanPham> danhSachSanPham = SanPhamDAO.getAllSanPham();
-
 			// Tạo một DefaultTableModel để hiển thị dữ liệu trên JTable
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setRowCount(0); // Xóa tất cả dữ liệu cũ trên JTable
