@@ -336,23 +336,34 @@ public class MainFrame {
 		PnlThongKe pnlThongKeContent = new PnlThongKe();
 		pnlContent.add(pnlThongKeContent, "Thong Ke");
 		
+		System.out.println("Thong Ke");
 		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
+		
+		System.out.println("Tra Hang");
 		
 		PnlNhanVien pnlNhanVienContent = new PnlNhanVien();
 		pnlContent.add(pnlNhanVienContent, "Nhan Vien");
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
+		System.out.println("Nha Cung Cap");
+		
 		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 
+		System.out.println("Ban Hang");
+		
 		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
 		pnlContent.add(pnlKhachHangContent, "Khach Hang");
 		
+		System.out.println("Khach Hang");
+		
 		PnLSanPham pnlSanPhamContent = new PnLSanPham();
 		pnlContent.add(pnlSanPhamContent, "San Pham");
+		
+		System.out.println("San Pham");
 		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");

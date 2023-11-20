@@ -240,17 +240,17 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 		
 //		them su kien cac btn
 		
+		setJDate();
 		dateDauKy.getDateEditor().addPropertyChangeListener(this);
-		
+		dateCuoiKy.getDateEditor().addPropertyChangeListener(this);
 //		cai dat ngay mac dinh cua lich
 		
 		
-		dateCuoiKy.setDate(new Date());
-		dateDauKy.setDate(new Date());
-		setJDate();
+		
 		btnTim.addActionListener(this);
 		txtTimTheoTen.addKeyListener(this);
 		btnXuatFile.addActionListener(this);
+		
 	}
 	
 	
@@ -262,10 +262,13 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 		dateCuoiKy.setMaxSelectableDate(new Date());
 		dateDauKy.setMaxSelectableDate(new Date());
 		dateCuoiKy.setMinSelectableDate(dateDauKy.getDate());
+		dateCuoiKy.setDate(new Date());
+		dateDauKy.setDate(new Date());
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		// TODO Auto-generated method stub
 		if (e.getSource() == btnTim) {
 			TimSP();
@@ -316,17 +319,26 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		Object obj = evt.getSource();
-		if (obj == dateDauKy.getDateEditor()) {
-			
-			dateCuoiKy.setMinSelectableDate(dateDauKy.getDate());
+		if (dateDauKy.getDate() == null || dateCuoiKy.getDate() == null) {
+			return;
 		}
-		LoadTable();
+		if (obj == dateDauKy.getDateEditor() &&  !dateDauKy.getDate().toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate().equals(ldDauKy)) {
+			SetDate();
+			dateCuoiKy.setMinSelectableDate(dateDauKy.getDate());
+			LoadTable();
+			
+		}
+		else if(obj==dateCuoiKy.getDateEditor() && !dateCuoiKy.getDate().toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate().plusDays(1).equals(ldCuoiKy)) {
+			SetDate();
+			LoadTable();
+		}
 	}
 
-	private void LoadTable() {
-		tblCTTK.removeAllRow();
-		// TODO Auto-generated method stub
-//		dateDauKy.getDate() = dateDauKy.getDate() == null ? LocalDate.now() : dateDauKy.getDate()
+	private void SetDate() {
 		if (dateDauKy.getDate() == null) {
 			ldDauKy = LocalDate.now().plusYears(10);
 		}
@@ -344,6 +356,12 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 				.atZone(ZoneId.systemDefault())
 				.toLocalDate();
 		ldCuoiKy = ldCuoiKy.plusDays(1);
+	}
+	
+	private void LoadTable() {
+		tblCTTK.removeAllRow();
+		// TODO Auto-generated method stub
+//		dateDauKy.getDate() = dateDauKy.getDate() == null ? LocalDate.now() : dateDauKy.getDate()
 		
 		dsSP = HoaDonDAO.GetSanPhamInDate(ldDauKy,ldCuoiKy);
 		for (SanPham sp : LSTTonDAO.GetSanPhamInDate(ldDauKy, ldCuoiKy)) {

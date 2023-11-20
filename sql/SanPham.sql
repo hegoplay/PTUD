@@ -91,7 +91,7 @@ UPDATE SanPham
 SET slTonKho = 100
 where maSP = 'SP00000626';
 
-select * from SanPham where maSP = 'SP00000626'
+select * from SanPham where maSP = 'SP00000062'
 select * from ChiTietHoaDon
 select * from HoaDon
 
@@ -115,3 +115,31 @@ BEGIN
 	where maSP = concat('SP', (SELECT FORMAT(@i, '00000000')))
     SET @i = @i + 1
 END
+
+
+USE [QLyCHAM]
+GO
+/****** Object:  Trigger [dbo].[trg_ThemtongHD]    Script Date: 11/19/2023 4:34:57 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create trigger [dbo].[trg_ThemtongHD]
+on [dbo].[ChiTietHoaDon]
+after insert
+as
+begin
+	declare @maSP varchar(10) = (select SanPham.maSP from SanPham join inserted on inserted.maSP = SanPham.maSP) 
+	declare @productCount int =  (select soLuong from inserted)
+	declare @currentProductCount int = (select slTonKho from SanPham where maSP = @maSP)
+	if @productCount > @currentProductCount
+	begin;
+		throw 51000, 'so luong san pham nhap lon hon so luong san pham cho phep',1;
+	end;
+	update SanPham
+	set slTonKho = slTonKho - @productCount
+	where maSP = @maSP;
+end;
+
+
+Select * from SanPham inner join NhaCC on SanPham.MaNCC = NhaCC.maNCC inner join LoaiSP on LoaiSP.maLoai = SanPham.maLoaiSP

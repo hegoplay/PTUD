@@ -202,11 +202,8 @@ public class PnlTKCH extends JPanel implements ActionListener {
 				break;
 			}
 		}
-		System.out.println("1");
 		hdList = HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate());
-		System.out.println("2");
 		pthList = TraHangDAO.GetPTHInDate(startDay.toLocalDate(), endDay.toLocalDate());
-		System.out.println("3");
 		double tongTongTien = 0;
 		double tongTienHoan = 0;
 		double tongTienGoc = 0;
@@ -227,7 +224,6 @@ public class PnlTKCH extends JPanel implements ActionListener {
 
 		Map<String,Integer> SPMap = new TreeMap<>();
 		
-		System.out.println("YES");
 		
 		for (HoaDon hd : hdList) {
 			for (ChiTietHoaDon cthd : hd.getDsCTHD()) {
@@ -258,7 +254,6 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			}
 			
 		});
-		System.out.println("YES");
 
 // Xu ly du lieu tren dataset		
 
