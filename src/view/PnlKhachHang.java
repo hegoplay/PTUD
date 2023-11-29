@@ -234,6 +234,23 @@ public class PnlKhachHang extends JPanel {
 		                                ));
 		                                table_1.getColumnModel().getColumn(2).setPreferredWidth(94);
 		                                scrollPane.setViewportView(table_1);
+		                                table_1.addMouseListener(new java.awt.event.MouseAdapter() {
+		                        		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		                        		        int selectedRow = table_1.getSelectedRow();
+
+		                        		        // Đảm bảo rằng một hàng thực sự đã được chọn
+		                        		        if(selectedRow != -1) {
+		                        		            // Lấy dữ liệu từ hàng đã chọn và đặt nó vào các trường nhập liệu
+		                        		        	textMaKH.setText(table_1.getValueAt(selectedRow, 0).toString());
+		                        		        	textMaKH.setText(table_1.getValueAt(selectedRow, 0).toString());
+		                        		            textTenKH.setText(table_1.getValueAt(selectedRow, 1).toString());
+		                        		            textDiaChi.setText(table_1.getValueAt(selectedRow, 2).toString());
+		                        		            textNamSinh.setText(table_1.getValueAt(selectedRow, 3).toString());
+		                        		            textSDT.setText(table_1.getValueAt(selectedRow, 4).toString());
+		                        		            // Tiếp tục với các trường nhập liệu khác
+		                        		        }
+		                        		    }
+		                        		});
 		                                
 		                                        JLabel lblTitle = new JLabel("Quản Lý Khách Hàng");
 		                                        lblTitle.setBounds(765, 27, 344, 39);
