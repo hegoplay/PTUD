@@ -647,7 +647,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				lblNgayHD.setText(hd.getNgayLapHD().format(DateTimeFormatter.ofPattern("dd/MM/yyyyy")));
 				txtMaPhieu.setText("TH" + txtMaHD.getText().substring(2));
 				lblValueTongCong.setText(formatter.format(hd.TinhThanhTien()) + "VNĐ");
-				lblValueKM.setText("-" + formatter.format(hd.TinhTongKhuyenMai()) + "VNĐ");
+				lblValueKM.setText("-" + formatter.format(hd.TinhGTKhuyenMai()) + "VNĐ");
 				lblValueTongTien.setText(formatter.format(hd.TinhTongTien()) + "VNĐ");
 			}
 

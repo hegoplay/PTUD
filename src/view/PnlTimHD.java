@@ -321,7 +321,7 @@ public class PnlTimHD extends JPanel implements ActionListener{
 			private void findData() {
 				String maKH = txtKH.getText().trim();
 //				khachHang = new KhachHangDAO();
-				String tenKH = khachHang.getKhachHang(maKH).getTenKH();
+				String tenKH = KhachHangDAO.getKhachHang(maKH).getTenKH();
 				DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 				// Tạo một bộ lọc để lấy các dòng có giá trị maNV trùng với text
 				RowFilter<Object, Object> filter = RowFilter.regexFilter(tenKH, 2);

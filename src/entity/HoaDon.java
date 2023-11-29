@@ -292,7 +292,7 @@ public class HoaDon {
 		threeColTable41.addCell(ToPDFController.getHeaderLeftTextCellValue("Khuyễn mãi:").setTextAlignment(TextAlignment.CENTER));
 		threeColTable41.addCell(
 				ToPDFController.getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format(
-						this.TinhTongKhuyenMai())).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
+						this.TinhGTKhuyenMai())).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
 		document.add(threeColTable41);
 		
 		Table threeColTable5 = new Table(threeColumnWidth);
@@ -351,7 +351,7 @@ public class HoaDon {
 	}
 	
 	public double TinhTongTien() {
-		return TinhThanhTien() - TinhTongKhuyenMai();
+		return TinhThanhTien() - TinhGTKhuyenMai();
 	}
 	public double TinhThanhTien() {
 		double total = 0;
@@ -360,13 +360,7 @@ public class HoaDon {
 		}
 		return total;
 	}
-	public double TinhTienTraLai(double tienNhap) {
-		//Tiền nhập có cần phải lưu hay không 
-//		Liên quan thiết kế sql nên cần trả lời đúng :v
-//		Nhớ nhắn lên zalo nếu đã đọc đến phần này
-		return 0;
-	}
-	public int soLuongSP() {
+	public int TinhSoLuongSP() {
 		// ? phuong thuc tinh tong so luong san pham cua 1 hoa don
 		int soLuong = 0;
 		for (ChiTietHoaDon x : dsCTHD) {
@@ -374,7 +368,7 @@ public class HoaDon {
 		}
 		return soLuong;
 	}
-	public double TinhTongKhuyenMai() {
+	public double TinhGTKhuyenMai() {
 		//phuong thuc tinh tong khuyen mai
 		return TinhThanhTien() * khuyenMai;
 	}
