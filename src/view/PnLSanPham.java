@@ -151,7 +151,6 @@ public class PnLSanPham extends JPanel {
 		textField_GiaNhap.setColumns(10);
 		textField_GiaNhap.setBounds(143, 216, 205, 28);
 		panel.add(textField_GiaNhap);
-
 		JLabel lblSoLuong = new JLabel("Số Lượng:");
 		lblSoLuong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblSoLuong.setBounds(13, 259, 120, 32);
@@ -283,6 +282,25 @@ public class PnLSanPham extends JPanel {
 		table_1.getColumnModel().getColumn(6).setPreferredWidth(49);
 		table_1.getColumnModel().getColumn(7).setPreferredWidth(56);
 		scrollPane.setViewportView(table_1);
+		table_1.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int selectedRow = table_1.getSelectedRow();
+
+		        // Đảm bảo rằng một hàng thực sự đã được chọn
+		        if(selectedRow != -1) {
+		            // Lấy dữ liệu từ hàng đã chọn và đặt nó vào các trường nhập liệu
+		        	textField_TimSP.setText(table_1.getValueAt(selectedRow, 0).toString());
+		            textMaSP.setText(table_1.getValueAt(selectedRow, 0).toString());
+		            textField_TenSP.setText(table_1.getValueAt(selectedRow, 1).toString());
+		            textField_GiaNhap.setText(table_1.getValueAt(selectedRow, 4).toString());
+		            textField_SoLuong.setText(table_1.getValueAt(selectedRow, 5).toString());
+		            textField_MauSac.setText(table_1.getValueAt(selectedRow, 6).toString());
+		            textField_TrangThai.setText(table_1.getValueAt(selectedRow, 8).toString());
+		            // Tiếp tục với các trường nhập liệu khác
+		        }
+		    }
+		});
+
 
 		JLabel lblTmTheoLoai = new JLabel("Tìm theo loại:");
 		lblTmTheoLoai.setFont(new Font("Tahoma", Font.BOLD, 17));
