@@ -21,6 +21,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
 
 import dao.SanPhamDAO;
+import dao.NhaCCDAO;
 import entity.SanPham;
 import entity.NhaCC;
 import entity.LoaiSP;
@@ -42,8 +43,9 @@ public class PnLSanPham extends JPanel {
 	private JTextField textField_MauSac;
 	private JTextField textField_TrangThai;
 	private JComboBox<LoaiSP> comboBoxLoaiSP;
-	private JComboBox<LoaiSP> comboBoxKichThuoc;
+	private JComboBox<SanPham> comboBoxKichThuoc;
 	private JComboBox<NhaCC> comboBox_NhaCC;
+	private JComboBox<LoaiSP> comboBox_TimSP;
 	private JRadioButton rdbtnNam;
 	private JRadioButton rdbtnNu;
 
@@ -196,12 +198,17 @@ public class PnLSanPham extends JPanel {
 		panel.add(comboBoxLoaiSP);
 
 		comboBoxKichThuoc = new JComboBox();
+		comboBoxKichThuoc.setModel(new DefaultComboBoxModel(new String[] {"XS", "S", "M", "L", "XL", "XXL"}));
 		comboBoxKichThuoc.setBounds(143, 180, 205, 26);
 		panel.add(comboBoxKichThuoc);
+		comboBoxKichThuoc.setSelectedItem(-1);
 
+		
 		comboBox_NhaCC = new JComboBox();
 		comboBox_NhaCC.setBounds(143, 415, 205, 26);
 		panel.add(comboBox_NhaCC);
+		themNhaCCToComboBox();
+		
 
 		JButton btnTaoSP = new JButton("Tạo");
 		btnTaoSP.setForeground(new Color(0, 0, 0));
@@ -286,18 +293,41 @@ public class PnLSanPham extends JPanel {
 		    public void mouseClicked(java.awt.event.MouseEvent evt) {
 		        int selectedRow = table_1.getSelectedRow();
 
-		        // Đảm bảo rằng một hàng thực sự đã được chọn
-		        if(selectedRow != -1) {
-		            // Lấy dữ liệu từ hàng đã chọn và đặt nó vào các trường nhập liệu
-		        	textField_TimSP.setText(table_1.getValueAt(selectedRow, 0).toString());
-		            textMaSP.setText(table_1.getValueAt(selectedRow, 0).toString());
-		            textField_TenSP.setText(table_1.getValueAt(selectedRow, 1).toString());
-		            textField_GiaNhap.setText(table_1.getValueAt(selectedRow, 4).toString());
-		            textField_SoLuong.setText(table_1.getValueAt(selectedRow, 5).toString());
-		            textField_MauSac.setText(table_1.getValueAt(selectedRow, 6).toString());
-		            textField_TrangThai.setText(table_1.getValueAt(selectedRow, 8).toString());
-		            // Tiếp tục với các trường nhập liệu khác
-		        }
+		        // Check before toString
+		        String maSP = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 0).toString() : "";
+		        String tenSP = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 1).toString() : "";
+		        String loaiSP = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 2).toString() : "";
+		        String kichThuoc = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
+		        String giaNhap = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
+		        String soLuong = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 5).toString() : "";
+		        String mauSac = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 6).toString() : "";
+		        String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 7).toString() : "";
+		        String trangThai = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 8).toString() : "";
+		        String nhaCC = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 9).toString() : "";
+		        
+		        
+		        //Display on Textfield
+		        textField_TimSP.setText(maSP);
+		        textMaSP.setText(maSP);
+		        textField_TenSP.setText(tenSP);
+		        textField_GiaNhap.setText(giaNhap);
+		        textField_SoLuong.setText(soLuong);
+		        textField_MauSac.setText(mauSac);
+		        textField_TrangThai.setText(trangThai);
+		        
+		        //set radiobutton
+		        if (gioiTinh.equals("Nam")) {
+		        	rdbtnNam.setSelected(true);
+                } else {
+                	rdbtnNam.setSelected(false);
+                	rdbtnNu.setSelected(true);
+                }
+		     // set combobox
+		        comboBoxLoaiSP.setSelectedItem(loaiSP);
+                comboBoxKichThuoc.setSelectedItem(kichThuoc);
+                comboBox_NhaCC.setSelectedItem(nhaCC);
+                comboBox_TimSP.setSelectedItem(loaiSP);
+		        
 		    }
 		});
 
@@ -307,7 +337,7 @@ public class PnLSanPham extends JPanel {
 		lblTmTheoLoai.setBounds(475, 40, 116, 25);
 		panel_1.add(lblTmTheoLoai);
 
-		JComboBox comboBox_TimSP = new JComboBox();
+		comboBox_TimSP = new JComboBox();
 		comboBox_TimSP.setBounds(601, 33, 116, 33);
 		panel_1.add(comboBox_TimSP);
 
@@ -317,6 +347,12 @@ public class PnLSanPham extends JPanel {
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
 		loadDataToTable();
 
+	}
+	public void themNhaCCToComboBox() {
+		ArrayList<NhaCC> dsNCC = NhaCCDAO.getAllNCC();
+	    for (NhaCC ncc : dsNCC) {
+	        comboBox_NhaCC.addItem(ncc);
+	    }
 	}
 
 	private void loadDataToTable() {
