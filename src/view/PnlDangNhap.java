@@ -66,40 +66,41 @@ public class PnlDangNhap extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(PnlDangNhap.class.getResource("/view/icon/logogdchinh-removebg-preview.png")));
+		lblNewLabel
+				.setIcon(new ImageIcon(PnlDangNhap.class.getResource("/view/icon/logogdchinh-removebg-preview.png")));
 		lblNewLabel.setBounds(339, 0, 543, 229);
 		contentPane.add(lblNewLabel);
-		
+
 		JLabel lblDangNhapHeThong = new JLabel("ĐĂNG NHẬP HỆ THỐNG");
 		lblDangNhapHeThong.setForeground(new Color(255, 255, 255));
 		lblDangNhapHeThong.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblDangNhapHeThong.setBounds(482, 223, 296, 54);
 		contentPane.add(lblDangNhapHeThong);
-		
+
 		txtTaiKhoan = new JTextField();
 		txtTaiKhoan.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					String taiKhoan = txtTaiKhoan.getText();
-			        String matKhau = textMatKhau.getText();
+					String matKhau = textMatKhau.getText();
 
-			        if (taiKhoan.equals("ql001") && matKhau.equals("12345")) {
-			            // Đăng nhập thành công là Người Quản Lý
-			        	// Đóng cửa sổ đăng nhập
-				        dispose();
+					if (taiKhoan.equals("ql001") && matKhau.equals("12345")) {
+						// Đăng nhập thành công là Người Quản Lý
+						// Đóng cửa sổ đăng nhập
+						dispose();
 
-				        // Mở cửa sổ MainFrame
-				        EventQueue.invokeLater(() -> {
-				            try {
-				                MainFrame mainFrame = new MainFrame(NhanVienDAO.getNguoiQuanLy("NV00000000"));
-				                mainFrame.frame.setVisible(true);
-				            } catch (Exception a) {
-				                a.printStackTrace();
-				            }
-				        });
+						// Mở cửa sổ MainFrame
+						EventQueue.invokeLater(() -> {
+							try {
+								MainFrame mainFrame = new MainFrame(NhanVienDAO.getNguoiQuanLy("NV00000000"));
+								mainFrame.frame.setVisible(true);
+							} catch (Exception a) {
+								a.printStackTrace();
+							}
+						});
 //			            try {
 //			                NguoiQuanLy nguoiQuanLy = new NguoiQuanLy("NV00000000"); // Thay đổi mã NV mặc định nếu cần
 //			                MainFrame.nql = nguoiQuanLy;
@@ -107,20 +108,20 @@ public class PnlDangNhap extends JFrame {
 //			                ex.printStackTrace();
 //			            }
 
-			        } else if (taiKhoan.equals("nv001") && matKhau.equals("12345")) {
-			            // Đăng nhập thành công là Nhân Viên
-			        	// Đóng cửa sổ đăng nhập
-				        dispose();
+					} else if (taiKhoan.equals("nv001") && matKhau.equals("12345")) {
+						// Đăng nhập thành công là Nhân Viên
+						// Đóng cửa sổ đăng nhập
+						dispose();
 
-				        // Mở cửa sổ MainFrame
-				        EventQueue.invokeLater(() -> {
-				            try {
-				                MainFrame mainFrame = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
-				                mainFrame.frame.setVisible(true);
-				            } catch (Exception a) {
-				                a.printStackTrace();
-				            }
-				        });
+						// Mở cửa sổ MainFrame
+						EventQueue.invokeLater(() -> {
+							try {
+								MainFrame mainFrame = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
+								mainFrame.frame.setVisible(true);
+							} catch (Exception a) {
+								a.printStackTrace();
+							}
+						});
 //			            try {
 //			                NhanVien nhanVien = new NhanVien("NV00000001"); // Thay đổi mã NV mặc định nếu cần
 //			                MainFrame.nv = nhanVien;
@@ -128,13 +129,13 @@ public class PnlDangNhap extends JFrame {
 //			                ex.printStackTrace();
 //			            }
 
-			        } else {
-			            JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không đúng", "Lỗi", JOptionPane.INFORMATION_MESSAGE);
-			        }
+					} else {
+						JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không đúng", "Lỗi",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textMatKhau.requestFocus();
 				}
-				else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    textMatKhau.requestFocus();
-                }
 			}
 		});
 		txtTaiKhoan.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -143,43 +144,45 @@ public class PnlDangNhap extends JFrame {
 		contentPane.add(txtTaiKhoan);
 		txtTaiKhoan.setColumns(10);
 		txtTaiKhoan.setText("khoi");
-		
+
 		textMatKhau = new JPasswordField();
 		textMatKhau.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-			        login();
-					}
+					login();
 				}
-			});
+			}
+		});
 		textMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		textMatKhau.setColumns(10);
 		textMatKhau.setBounds(421, 351, 423, 33);
-		textMatKhau.setText("abc");
+		textMatKhau.setText("abcABC123");
 		contentPane.add(textMatKhau);
-		
+
 		JLabel lblTaiKhoan = new JLabel("Nhập mã người dùng:");
 		lblTaiKhoan.setForeground(new Color(255, 255, 255));
 		lblTaiKhoan.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblTaiKhoan.setBounds(195, 289, 199, 33);
 		contentPane.add(lblTaiKhoan);
-		
+
 		JLabel lblDangNhap = new JLabel("Mật khẩu:");
 		lblDangNhap.setForeground(new Color(255, 255, 255));
 		lblDangNhap.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblDangNhap.setBounds(195, 348, 199, 33);
 		contentPane.add(lblDangNhap);
-		
+
 		JLabel lblQuenMK = new JLabel("Quên mật khẩu?");
 		lblQuenMK.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Vui lòng liên hệ người quản lí để khôi phục lại mật khẩu!\nHotline: 0782505434", "Quên mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+						"Vui lòng liên hệ người quản lí để khôi phục lại mật khẩu!\nHotline: 0782505434",
+						"Quên mật khẩu", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		
+
 		lblQuenMK.setForeground(new Color(255, 255, 255));
 		lblQuenMK.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblQuenMK.setBounds(701, 399, 126, 33);
@@ -196,17 +199,17 @@ public class PnlDangNhap extends JFrame {
 //		        }
 //		    }
 //		});
-		
+
 		JButton btnDangNhap = new JButton("Đăng nhập");
 		btnDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnDangNhap.setBackground(new Color(64, 128, 128));
 		btnDangNhap.setBounds(545, 443, 161, 42);
 		contentPane.add(btnDangNhap);
-		
+
 		btnDangNhap.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	login();
-		    }
+			public void actionPerformed(ActionEvent e) {
+				login();
+			}
 		});
 
 		JLabel lblNewLabel_1 = new JLabel("");
@@ -214,37 +217,39 @@ public class PnlDangNhap extends JFrame {
 		lblNewLabel_1.setBounds(0, 0, 1296, 745);
 		contentPane.add(lblNewLabel_1);
 	}
-	
+
 	private void login() {
 		String taiKhoan = txtTaiKhoan.getText();
-        String matKhau = textMatKhau.getText();
+		String matKhau = textMatKhau.getText();
+		
+		try {
+			TaiKhoan tk = NhanVienDAO.getTKNV(taiKhoan, matKhau);
+			if (tk == null) {
+				throw new Exception("Tài khoản hoặc mật khẩu không đúng");
+			}
+			if (tk.getNhanVien().isDangLamViec() == false) {
+				throw new Exception("Nhân viên hiện tại không làm việc");
+			}
+			// Đăng nhập thành công là Người Quản Lý
+			// Đóng cửa sổ đăng nhập
+			dispose();
 
-       	NhanVien nv = NhanVienDAO.getTKNV(taiKhoan,matKhau);
-        
-        if (nv!=null) {
-            // Đăng nhập thành công là Người Quản Lý
-        	// Đóng cửa sổ đăng nhập
-	        dispose();
+			// Mở cửa sổ MainFrame
+			EventQueue.invokeLater(() -> {
+				try {
+					MainFrame mainFrame = new MainFrame(tk.getNhanVien());
+					mainFrame.frame.setVisible(true);
+				} catch (Exception a) {
+					a.printStackTrace();
+				}
+			});
 
-	        // Mở cửa sổ MainFrame
-	        EventQueue.invokeLater(() -> {
-	            try {
-	                MainFrame mainFrame = new MainFrame(nv);
-	                mainFrame.frame.setVisible(true);
-	            } catch (Exception a) {
-	                a.printStackTrace();
-	            }
-	        });
-//            try {
-//                NguoiQuanLy nguoiQuanLy = new NguoiQuanLy("NV00000000"); // Thay đổi mã NV mặc định nếu cần
-//                MainFrame.nql = nguoiQuanLy;
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Lỗi",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không đúng", "Lỗi", JOptionPane.INFORMATION_MESSAGE);
-        }
 	}
-	
+
 }

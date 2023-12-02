@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.NguoiQuanLy;
 import entity.NhaCC;
 import entity.NhanVien;
+import entity.TaiKhoan;
 
 public class NhanVienDAO {
 	public static NhanVien getNhanVien(String maNV) {
@@ -247,8 +250,9 @@ public class NhanVienDAO {
 	    return String.format("NV%08d", soLuong);
 	}
 
-	public static NhanVien getTKNV(String taiKhoan, String matKhau) {
+	public static TaiKhoan getTKNV(String taiKhoan, String matKhau) {
 		// TODO Auto-generated method stub
+		TaiKhoan tk = null;
 		NhanVien nv = null;
         try {
             Connection con = ConnectDB.getConection();
@@ -262,18 +266,22 @@ public class NhanVienDAO {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
             	String maNV = rs.getString(1);
+            	LocalDate ngayLap = rs.getDate("ngayLapTK")
+            		      .toLocalDate();
             	boolean chucVu = rs.getBoolean("chucVu");
             	if (chucVu) {
             		nv = getNguoiQuanLy(maNV);
+            		System.out.println(nv);
             	}
             	else 
             		nv = getNhanVien(maNV);
+            	tk = new TaiKhoan(taiKhoan, matKhau, ngayLap, nv);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return nv;
+        return tk;
 	}
 
 //	public
