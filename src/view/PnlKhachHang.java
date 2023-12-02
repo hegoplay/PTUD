@@ -234,21 +234,36 @@ public class PnlKhachHang extends JPanel {
 		                                ));
 		                                table_1.getColumnModel().getColumn(2).setPreferredWidth(94);
 		                                scrollPane.setViewportView(table_1);
-		                                table_1.addMouseListener(new java.awt.event.MouseAdapter() {
+		                        		table_1.addMouseListener(new java.awt.event.MouseAdapter() {
 		                        		    public void mouseClicked(java.awt.event.MouseEvent evt) {
 		                        		        int selectedRow = table_1.getSelectedRow();
 
-		                        		        // Đảm bảo rằng một hàng thực sự đã được chọn
-		                        		        if(selectedRow != -1) {
-		                        		            // Lấy dữ liệu từ hàng đã chọn và đặt nó vào các trường nhập liệu
-		                        		        	textMaKH.setText(table_1.getValueAt(selectedRow, 0).toString());
-		                        		        	textMaKH.setText(table_1.getValueAt(selectedRow, 0).toString());
-		                        		            textTenKH.setText(table_1.getValueAt(selectedRow, 1).toString());
-		                        		            textDiaChi.setText(table_1.getValueAt(selectedRow, 2).toString());
-		                        		            textNamSinh.setText(table_1.getValueAt(selectedRow, 3).toString());
-		                        		            textSDT.setText(table_1.getValueAt(selectedRow, 4).toString());
-		                        		            // Tiếp tục với các trường nhập liệu khác
-		                        		        }
+		                        		        // Check before toString
+		                        		        String maKH = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 0).toString() : "";
+		                        		        String tenKH = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 1).toString() : "";
+		                        		        String diaChi = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 2).toString() : "";
+		                        		        String namSinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
+		                        		        String sdt = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
+		                        		        String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 5).toString() : "";
+		                        		        
+		                        		        
+		                        		        //Display on Textfield
+		                        		        textFTimKH.setText(maKH);
+		                        		        textMaKH.setText(maKH);
+		                        		        textTenKH.setText(tenKH);
+		                        		        textDiaChi.setText(diaChi);
+		                        		        textNamSinh.setText(namSinh);
+		                        		        textSDT.setText(sdt);
+		                        		        
+		                        		        //set radiobutton
+		                        		        if (gioiTinh.equals("Nam")) {
+		                        		        	rdbtnNam.setSelected(true);
+		                        		        	rdbtnNu.setSelected(false);
+		                                        } else {
+		                                        	rdbtnNam.setSelected(false);
+		                                        	rdbtnNu.setSelected(true);
+		                                        }
+		                        		      
 		                        		    }
 		                        		});
 		                                
@@ -342,6 +357,7 @@ public class PnlKhachHang extends JPanel {
                 rdbtnNam.setSelected(true);
             } else {
                 rdbtnNu.setSelected(true);
+                rdbtnNam.setSelected(false);
             }
 
             

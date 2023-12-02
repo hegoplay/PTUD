@@ -21,6 +21,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
 
 import dao.SanPhamDAO;
+import dao.LoaiSPDAO;
 import dao.NhaCCDAO;
 import entity.SanPham;
 import entity.NhaCC;
@@ -196,6 +197,7 @@ public class PnLSanPham extends JPanel {
 		comboBoxLoaiSP = new JComboBox();
 		comboBoxLoaiSP.setBounds(143, 139, 205, 26);
 		panel.add(comboBoxLoaiSP);
+		themLoaiSPToComboBox();
 
 		comboBoxKichThuoc = new JComboBox();
 		comboBoxKichThuoc.setModel(new DefaultComboBoxModel(new String[] {"XS", "S", "M", "L", "XL", "XXL"}));
@@ -205,6 +207,7 @@ public class PnLSanPham extends JPanel {
 
 		
 		comboBox_NhaCC = new JComboBox();
+		comboBox_NhaCC.setModel(new DefaultComboBoxModel(new String[] {"ZARA", "Mando", "An Phước",}));
 		comboBox_NhaCC.setBounds(143, 415, 205, 26);
 		panel.add(comboBox_NhaCC);
 		themNhaCCToComboBox();
@@ -243,6 +246,7 @@ public class PnLSanPham extends JPanel {
 		textField_TimSP.setColumns(10);
 		textField_TimSP.setBounds(149, 34, 173, 31);
 		panel_1.add(textField_TimSP);
+		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 77, 755, 465);
@@ -323,10 +327,12 @@ public class PnLSanPham extends JPanel {
                 	rdbtnNu.setSelected(true);
                 }
 		     // set combobox
-		        comboBoxLoaiSP.setSelectedItem(loaiSP);
+		        
+//		        comboBox_TimSP.setSelectedItem(loaiSP);
                 comboBoxKichThuoc.setSelectedItem(kichThuoc);
                 comboBox_NhaCC.setSelectedItem(nhaCC);
-                comboBox_TimSP.setSelectedItem(loaiSP);
+                comboBoxLoaiSP.setSelectedItem(loaiSP);
+                
 		        
 		    }
 		});
@@ -337,9 +343,7 @@ public class PnLSanPham extends JPanel {
 		lblTmTheoLoai.setBounds(475, 40, 116, 25);
 		panel_1.add(lblTmTheoLoai);
 
-		comboBox_TimSP = new JComboBox();
-		comboBox_TimSP.setBounds(601, 33, 116, 33);
-		panel_1.add(comboBox_TimSP);
+		
 
 		JLabel lblTitle = new JLabel("Quản Lý Sản Phẩm");
 		lblTitle.setBounds(795, 28, 320, 39);
@@ -354,6 +358,15 @@ public class PnLSanPham extends JPanel {
 	        comboBox_NhaCC.addItem(ncc);
 	    }
 	}
+	
+	public void themLoaiSPToComboBox() {
+		ArrayList<LoaiSP> dsLSP = LoaiSPDAO.getAllLSP();
+	    for (LoaiSP lsp : dsLSP) {
+	        comboBoxLoaiSP.addItem(lsp);
+	        
+	    }
+	}
+	
 
 	private void loadDataToTable() {
 		try {
