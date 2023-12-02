@@ -362,11 +362,14 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 		tblCTTK.removeAllRow();
 		// TODO Auto-generated method stub
 //		dateDauKy.getDate() = dateDauKy.getDate() == null ? LocalDate.now() : dateDauKy.getDate()
-		
+//		Lấy các sản phẩm trong hóa đơn có trong ngày cần kiểm tra
 		dsSP = HoaDonDAO.GetSanPhamInDate(ldDauKy,ldCuoiKy);
+//		Thêm các sản phẩm được nhập mới trong ngày
 		for (SanPham sp : LSTTonDAO.GetSanPhamInDate(ldDauKy, ldCuoiKy)) {
-			dsSP.add(sp);
+			if (!dsSP.contains(sp))
+				dsSP.add(sp);
 		}
+//		Sắp xếp mã sản phẩm tăng dần
 		dsSP.sort(new Comparator<SanPham>() {
 
 			@Override
@@ -381,6 +384,7 @@ public class PnlTKTK extends JPanel implements ActionListener, PropertyChangeLis
 		int tongTang = 0;
 		int tongBan = 0;
 		int tongSanPham = 0;
+		
 		for (SanPham x :dsSP) {
 			int slTang = LSTTonDAO.GetSLTang(x, ldDauKy, ldCuoiKy);
 			int slBan = HoaDonDAO.GetSLSanPham(x, ldDauKy, ldCuoiKy);

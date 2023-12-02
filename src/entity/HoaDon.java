@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -36,8 +37,8 @@ public class HoaDon {
 	
 	
 	public HoaDon(String maHD, LocalDateTime ngayLapHD, NhanVien nhanVien, KhachHang khachHang, float khuyenMai,
-			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
-		this.maHD = maHD;
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) throws Exception {
+		this.setMaHD(maHD);
 		try {
 			this.setNgayLapHD(ngayLapHD);
 		} catch (Exception e) {
@@ -50,9 +51,10 @@ public class HoaDon {
 		this.setTienKhachDua(tienKhachDua);
 		this.setDsCTHD(dsCTHD);
 	}
+	
 	public HoaDon(String maHD, LocalDateTime ngayLapHD, NhanVien nhanVien, KhachHang khachHang,
-			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
-		this.maHD = maHD;
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) throws Exception {
+		this.setMaHD(maHD);;
 		try {
 			this.setNgayLapHD(ngayLapHD);
 		} catch (Exception e) {
@@ -66,8 +68,8 @@ public class HoaDon {
 		this.setDsCTHD(dsCTHD);
 	}
 	public HoaDon(String maHD, NhanVien nhanVien, KhachHang khachHang,
-			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
-		this.maHD = maHD;
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) throws Exception {
+		this.setMaHD(maHD);;
 		try {
 			this.setNgayLapHD(LocalDateTime.now());
 		} catch (Exception e) {
@@ -101,6 +103,15 @@ public class HoaDon {
 	}
 	public String getMaHD() {
 		return maHD;
+	}
+	private void setMaHD(String maHD) throws Exception {
+		String pattern = "HD[0-9]{8}$";
+		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		boolean check = p.matcher(maHD).find();
+		if (!check)
+			throw new Exception("Mã hóa đơn không đúng định dạng");
+		else
+			this.maHD = maHD;
 	}
 	public LocalDateTime getNgayLapHD() {
 		return ngayLapHD;

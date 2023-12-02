@@ -218,7 +218,7 @@ public class HoaDonDAO {
 	    return new ArrayList<>(mapChiTietHoaDon.values());
 	}
 	
-	public static HoaDon GetHoaDon(String maHD) {
+	public static HoaDon GetHoaDon(String maHD) throws Exception {
 		HoaDon hd = null;
 		try {
 			Connection con = ConnectDB.getConection();

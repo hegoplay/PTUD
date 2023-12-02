@@ -559,7 +559,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-	            JOptionPane.showMessageDialog(null, "Lỗi khi thêm và xuất hóa đơn!");
+	           JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		}
 		else if(o.equals(btnLamMoi)) {
@@ -614,10 +614,20 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		HoaDon newHoaDon = null;
 	    String maHD = txtMaHD.getText().trim();
 	    
+	    ArrayList<ChiTietHoaDon> dsCTHD =taoDSChiTietHD();
+	    
+	    if (dsCTHD.size()==0) {
+	    	throw new Exception("Hóa đơn không được rỗng");
+	    }
+	    
         LocalDateTime ngayLapHD =LocalDateTime.now();
 
 
 	    String sdt = txtTim.getText().trim();
+//	    cái này phải tìm thấy số điện thoại của khách hàng
+	    if(sdt.equalsIgnoreCase("")) {
+	    	throw new Exception("Nhân viên phải nhập số điện thoại của khách hàng");
+	    }
 	    String maKH = KhachHangDAO.getKHBySDT(sdt).getMaKH(); 
 	    KhachHang newKh = KhachHangDAO.getKhachHang(maKH);
 
@@ -629,15 +639,14 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 
         // Loại bỏ các ký tự không phải số từ chuỗi
         
-	 
-
-        
 	    String tienDuaStr = txtTienDua.getText();
 
         String td = tienDuaStr.replaceAll("[^0-9]", "");
+        if (td.compareToIgnoreCase("") == 0) {
+        	throw new Exception("Tiền đưa không được rỗng");
+        }
 	    double tienDua = Double.parseDouble( td );
 
-	    ArrayList<ChiTietHoaDon> dsCTHD =taoDSChiTietHD();
 
 	    newHoaDon = new HoaDon(maHD, ngayLapHD, MainFrame.nv, newKh, km, tienDua, dsCTHD);
 	    return newHoaDon;
