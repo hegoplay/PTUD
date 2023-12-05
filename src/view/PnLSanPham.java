@@ -90,6 +90,8 @@ public class PnLSanPham extends JPanel {
 		btnSuaSP.setForeground(new Color(255, 255, 255));
 		btnSuaSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				// no idea in image.
 			}
 		});
 		btnSuaSP.setBackground(new Color(0, 128, 192));
@@ -97,6 +99,7 @@ public class PnLSanPham extends JPanel {
 		JButton btnLamMoiSP = new JButton("Làm mới");
 		btnLamMoiSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				clearForm();
 			}
 		});
 		btnLamMoiSP.setBounds(246, 479, 91, 32);
@@ -322,6 +325,7 @@ public class PnLSanPham extends JPanel {
 		        //set radiobutton
 		        if (gioiTinh.equals("Nam")) {
 		        	rdbtnNam.setSelected(true);
+		        	rdbtnNu.setSelected(false);
                 } else {
                 	rdbtnNam.setSelected(false);
                 	rdbtnNu.setSelected(true);
@@ -395,17 +399,20 @@ public class PnLSanPham extends JPanel {
 	private void clearForm() {
 		textMaSP.setText("");
 		textField_TenSP.setText("");
-		comboBoxLoaiSP.setSelectedItem(-1);
-		comboBoxKichThuoc.setSelectedItem(-1);
+		comboBoxLoaiSP.setSelectedIndex(-1);
+		comboBoxKichThuoc.setSelectedIndex(-1);
 		textField_GiaNhap.setText("");
+		textField_TrangThai.setText("");
 		textField_SoLuong.setText("");
 		textField_MauSac.setText("");
 		rdbtnNam.setSelected(true);
-		comboBox_NhaCC.setSelectedItem(-1);
+		comboBox_NhaCC.setSelectedIndex(-1);
+		rdbtnNu.setSelected(false);
+		rdbtnNam.setSelected(false);
 		// no idea in image.
 
-//        clearTableData();
-		loadDataToTable();
+		//clearTableData();
+		//loadDataToTable();
 
 	}
 
