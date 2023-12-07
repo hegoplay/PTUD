@@ -111,6 +111,7 @@ public class PnlKhachHang extends JPanel {
         btnLamMoiKH.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearForm();
+				loadDataToTable();
 			}
 		});
         btnLamMoiKH.setBounds(279, 446, 91, 32);
@@ -247,8 +248,8 @@ public class PnlKhachHang extends JPanel {
 		        String maKH = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 0).toString() : "";
 		        String tenKH = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 1).toString() : "";
 		        String diaChi = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 2).toString() : "";
-		        String namSinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
-		        String sdt = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
+		        String sdt = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
+		        String namSinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
 		        String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 5).toString() : "";
 		        
 		        
