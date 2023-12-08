@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
@@ -25,6 +26,7 @@ import dao.LoaiSPDAO;
 import dao.NhaCCDAO;
 import entity.SanPham;
 import entity.NhaCC;
+import entity.KhachHang;
 import entity.LoaiSP;
 import entity.NhaCC;
 
@@ -49,6 +51,7 @@ public class PnLSanPham extends JPanel {
 	private JComboBox<LoaiSP> comboBox_TimSP;
 	private JRadioButton rdbtnNam;
 	private JRadioButton rdbtnNu;
+	private SanPhamDAO sp_dao;
 
 	/**
 	 * Create the panel.
@@ -100,6 +103,7 @@ public class PnLSanPham extends JPanel {
 		btnLamMoiSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearForm();
+				loadDataToTable();
 			}
 		});
 		btnLamMoiSP.setBounds(246, 479, 91, 32);
@@ -244,6 +248,12 @@ public class PnLSanPham extends JPanel {
 		btnTimSP.setBackground(new Color(0, 128, 192));
 		btnTimSP.setBounds(332, 33, 93, 32);
 		panel_1.add(btnTimSP);
+		btnTimSP.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Gọi hàm làm mới ở đây
+            	timSanPham();
+	            }
+	        });
 
 		textField_TimSP = new JTextField();
 		textField_TimSP.setColumns(10);
@@ -356,6 +366,78 @@ public class PnLSanPham extends JPanel {
 		loadDataToTable();
 
 	}
+	protected void timSanPham() {
+		// TODO Auto-generated method stub
+		// Lấy mã SanPham từ text field
+        String maSP = textMaSP.getText();
+
+        // Gọi hàm tìm kiếm từ DAO
+        ArrayList<SanPham> dsSanPham = sp_dao.findSanPhamByMa(maSP);
+
+        // Xóa dữ liệu cũ trong bảng
+        DefaultTableModel tableModel = (DefaultTableModel) table_1.getModel();
+        tableModel.setRowCount(0);
+
+        // Hiển thị thông tin nhân viên tìm được hoặc thông báo không tìm thấy
+        if (!dsSanPham.isEmpty()) {
+            for (int i = 0; i < dsSanPham.size(); i++) {
+                SanPham sp = dsSanPham.get(i);
+                tableModel.addRow(new Object[] {
+                    i + 1,
+                    sp.getMaSP(),
+                    sp.getTenSP(),
+                    sp.getLoaiSP(),
+                    sp.getKichThuoc(),
+                    sp.getGiaNhap(),
+                    sp.getSlTonKho(),
+                    sp.getMauSac(),
+                    sp.getGiaNhap(),
+                    (sp.isNam() ? "Nam" : "Nữ"),
+                    (sp.isConKinhDoanh() ? "Con" : "Khong"),
+                    sp.getNhaCC(),
+                    sp.getHinhAnh(),
+                    // Thêm các trường khác tương ứng
+                });
+            }
+
+            // Nếu danh sách không rỗng, chỉ hiển thị thông tin của nhân viên đầu tiên trong danh sách
+            SanPham sp = dsSanPham.get(0);
+            textMaSP.setText(sp.getMaSP());
+            textField_TenSP.setText(sp.getTenSP());
+            //combobox loai sp
+            //combobox kich thuoc
+            textField_GiaNhap.setText(String.valueOf(sp.getGiaNhap()));
+            textField_SoLuong.setText(String.valueOf(sp.getSlTonKho()));
+            textField_MauSac.setText(sp.getMauSac());
+            // Set giới tính
+            if (sp.isNam()) {
+                rdbtnNam.setSelected(true);
+                rdbtnNu.setSelected(false);
+                
+            } else {
+                rdbtnNu.setSelected(true);
+                rdbtnNam.setSelected(false);
+            }
+            
+            if (sp.isConKinhDoanh()) {
+                textField_TrangThai.setText("Con");
+                
+            } else {
+            	textField_TrangThai.setText("Khong");
+            }
+            
+            //combobox Nhacc
+            
+
+            
+
+        } else {
+            // Nếu không tìm thấy, thông báo hoặc xử lý khác tùy ý
+            JOptionPane.showMessageDialog(this, "Không tìm thấy San Pham với mã: " + maSP, "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+	  
+		
+	}
 	public void themNhaCCToComboBox() {
 		ArrayList<NhaCC> dsNCC = NhaCCDAO.getAllNCC();
 	    for (NhaCC ncc : dsNCC) {
@@ -415,5 +497,7 @@ public class PnLSanPham extends JPanel {
 		//loadDataToTable();
 
 	}
+	
+	
 
 }
