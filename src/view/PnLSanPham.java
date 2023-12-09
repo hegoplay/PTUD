@@ -390,7 +390,6 @@ public class PnLSanPham extends JPanel {
                     sp.getGiaNhap(),
                     sp.getSlTonKho(),
                     sp.getMauSac(),
-                    sp.getGiaNhap(),
                     (sp.isNam() ? "Nam" : "Nữ"),
                     (sp.isConKinhDoanh() ? "Con" : "Khong"),
                     sp.getNhaCC(),
