@@ -340,12 +340,12 @@ public class PnlKhachHang extends JPanel {
             for (int i = 0; i < dsKhachHang.size(); i++) {
                 KhachHang kh = dsKhachHang.get(i);
                 tableModel.addRow(new Object[] {
-                    i + 1,
+                    
                     kh.getMaKH(),
                     kh.getTenKH(),
                     kh.getDiaChi(),
-                    kh.getSdt(),
                     kh.getNamSinh(),
+                    kh.getSdt(),
                     (kh.isGioiTinh() ? "Nam" : "Nữ"),
                     // Thêm các trường khác tương ứng
                 });

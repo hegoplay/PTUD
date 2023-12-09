@@ -369,7 +369,7 @@ public class PnLSanPham extends JPanel {
 	protected void timSanPham() {
 		// TODO Auto-generated method stub
 		// Lấy mã SanPham từ text field
-        String maSP = textMaSP.getText();
+        String maSP = textField_TimSP.getText();
 
         // Gọi hàm tìm kiếm từ DAO
         ArrayList<SanPham> dsSanPham = sp_dao.findSanPhamByMa(maSP);
@@ -383,7 +383,6 @@ public class PnLSanPham extends JPanel {
             for (int i = 0; i < dsSanPham.size(); i++) {
                 SanPham sp = dsSanPham.get(i);
                 tableModel.addRow(new Object[] {
-                    i + 1,
                     sp.getMaSP(),
                     sp.getTenSP(),
                     sp.getLoaiSP(),
