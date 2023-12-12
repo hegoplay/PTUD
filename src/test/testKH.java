@@ -1,4 +1,4 @@
-package view;
+package test;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,11 +30,11 @@ import entity.NhaCC;
 import view.MainFrame;
 import entity.KhachHang;
 
-public class PnlKhachHang extends JPanel {
+public class testKH extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JTextField textMaKH;
-    public JTextField textSDT;
+    private JTextField textSDT;
     private JTextField textTenKH;
     private JTextField textDiaChi;
     private JTextField textNamSinh;
@@ -48,7 +48,7 @@ public class PnlKhachHang extends JPanel {
     /**
      * Create the panel.
      */
-    public PnlKhachHang() {
+    public testKH() {
     	try {
 			ConnectDB.getConection();
 		} catch (Exception e) {
@@ -249,8 +249,8 @@ public class PnlKhachHang extends JPanel {
 		        String maKH = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 0).toString() : "";
 		        String tenKH = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 1).toString() : "";
 		        String diaChi = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 2).toString() : "";
-		        String sdt = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
-		        String namSinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
+		        String namSinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
+		        String sdt = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
 		        String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 5).toString() : "";
 		        
 		        
@@ -259,8 +259,8 @@ public class PnlKhachHang extends JPanel {
 		        textMaKH.setText(maKH);
 		        textTenKH.setText(tenKH);
 		        textDiaChi.setText(diaChi);
-		        textSDT.setText(sdt);
-		        textNamSinh.setText(namSinh);
+		        textSDT.setText(namSinh);
+		        textNamSinh.setText(sdt);
 		        
 		        //set radiobutton
 		        if (gioiTinh.equals("Nam")) {
@@ -298,8 +298,8 @@ public class PnlKhachHang extends JPanel {
                         kh.getMaKH(),
                         kh.getTenKH(),
                         kh.getDiaChi(),
-                        kh.getSdt(),
                         kh.getNamSinh(),
+                        kh.getSdt(),
                         (kh.isGioiTinh() ? "Nam" : "Nữ"),
                         // Thêm các trường khác tương ứng
                 });
@@ -312,7 +312,6 @@ public class PnlKhachHang extends JPanel {
 	}
 	
 	private void clearForm() {
-		textFTimKH.setText("");
         textMaKH.setText("");
         textTenKH.setText("");
         textDiaChi.setText("");
@@ -346,8 +345,8 @@ public class PnlKhachHang extends JPanel {
                     kh.getMaKH(),
                     kh.getTenKH(),
                     kh.getDiaChi(),
-                    kh.getSdt(),
                     kh.getNamSinh(),
+                    kh.getSdt(),
                     (kh.isGioiTinh() ? "Nam" : "Nữ"),
                     // Thêm các trường khác tương ứng
                 });
@@ -358,8 +357,8 @@ public class PnlKhachHang extends JPanel {
             textMaKH.setText(kh.getMaKH());
             textTenKH.setText(kh.getTenKH());
             textDiaChi.setText(kh.getDiaChi());
-            textSDT.setText(kh.getSdt());
-            textNamSinh.setText(String.valueOf(kh.getNamSinh()));
+            textNamSinh.setText(kh.getSdt());
+            textSDT.setText(String.valueOf(kh.getNamSinh()));
 
             // Set giới tính
             if (kh.isGioiTinh()) {
@@ -384,12 +383,12 @@ public class PnlKhachHang extends JPanel {
 		  String maKH = tuPhatSinhMa();
 		  String tenKH = textTenKH.getText();
 		  String diaChi = textDiaChi.getText();
-		  String sdt = textSDT.getText();
+		  String sdt = textNamSinh.getText();
 		  int namSinh = 0;
 		  boolean nam = rdbtnNam.isSelected();
 
 		// Kiểm tra và chuyển đổi giá trị từ textLuong
-          String namSinhStr = textNamSinh.getText();
+          String namSinhStr = textSDT.getText();
           if (!namSinhStr.isEmpty()) {
               int namSinhValue = (int) Double.parseDouble(namSinhStr);
 
@@ -427,8 +426,8 @@ public class PnlKhachHang extends JPanel {
     String maKH = tuPhatSinhMa();
     String tenNV = textTenKH.getText();
     String diaChi = textDiaChi.getText();
-    String sdt = textSDT.getText();
-    int namSinh =(int)Double.parseDouble(textNamSinh.getText());
+    String sdt = textNamSinh.getText();
+    int namSinh =(int)Double.parseDouble(textSDT.getText());
     boolean nam = rdbtnNam.isSelected();
 
         // Tạo đối tượng Khach Hang từ dữ liệu
@@ -442,11 +441,11 @@ public class PnlKhachHang extends JPanel {
         clearForm();
      
     }
-	public String tuPhatSinhMa() {
-		    
-		    String sdt = textSDT.getText();
-		    
-		    // Format the new ID with leading zeros
-		    return "KH" + sdt;
-		}
+public String tuPhatSinhMa() {
+	    
+	    String sdt = textNamSinh.getText();
+	    
+	    // Format the new ID with leading zeros
+	    return "KH" + sdt;
+	}
 }

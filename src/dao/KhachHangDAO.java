@@ -86,27 +86,27 @@ public class KhachHangDAO {
 	public static boolean addKhachHang(KhachHang kh) {
 	    try {
 	        Connection con = ConnectDB.getConection();
-	        String sql = "INSERT INTO KhachHang (maKH, tenKH, diaChi, sdt, namSinh, isGioiTinh) VALUES (?, ?, ?, ?, ?, ?)";
+	        String maKH = kh.getMaKH();
+	        String sql = "INSERT INTO KhachHang (maKH, tenKH, diaChi, sdt, namSinh, gioiTinh) VALUES (?, ?, ?, ?, ?, ?)";
 	        PreparedStatement statement = con.prepareStatement(sql);
-	        statement.setString(1, kh.getMaKH());
+	        statement.setString(1, maKH);
 	        statement.setString(2, kh.getTenKH());
 	        statement.setString(3, kh.getDiaChi());
 	        statement.setString(4, kh.getSdt());
 	        statement.setInt(5, kh.getNamSinh());
 	        statement.setBoolean(6, kh.isGioiTinh());
-
-	        int rowsInserted = statement.executeUpdate();
-	        return rowsInserted > 0;
+	        int rowsAffected = statement.executeUpdate();
+	        con.close();
+	        return rowsAffected > 0;
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        return false;
 	    }
-	    return false;
 	}
-	
 	public static boolean updateKhachHang(KhachHang kh) {
 	    try {
 	        Connection con = ConnectDB.getConection();
-	        String sql = "UPDATE KhachHang SET tenKH = ?, diaChi = ?, sdt = ?, namSinh = ?, isGioiTinh = ? WHERE maNK = ?";
+	        String sql = "UPDATE KhachHang SET tenKH = ?, diaChi = ?, sdt = ?, namSinh = ?, gioiTinh = ? WHERE maKH = ?";
 	        PreparedStatement statement = con.prepareStatement(sql);
 	        statement.setString(1, kh.getTenKH());
 	        statement.setString(2, kh.getDiaChi());
@@ -114,9 +114,9 @@ public class KhachHangDAO {
 	        statement.setInt(4, kh.getNamSinh());
 	        statement.setBoolean(5, kh.isGioiTinh());
 			statement.setString(6, kh.getMaKH());
-			
-	        int rowsUpdated = statement.executeUpdate();
-	        return rowsUpdated > 0;
+	        int rowsAffected = statement.executeUpdate();
+	        con.close();
+	        return rowsAffected > 0;
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -146,14 +146,5 @@ public class KhachHangDAO {
 	    return dsKh;
 	}
 	
-	public String tuPhatSinhMa() {
-	    // Get the current list of suppliers
-	    ArrayList<KhachHang> dsKH = getAllKhachHang();
-	    
-	    // Calculate the new ID
-	    int soLuong = dsKH.size() + 1;
-	    
-	    // Format the new ID with leading zeros
-	    return String.format("KH%08d", soLuong);
-	}
+	
 }

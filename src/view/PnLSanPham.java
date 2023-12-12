@@ -321,7 +321,7 @@ public class PnLSanPham extends JPanel {
 		        String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 7).toString() : "";
 		        String trangThai = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 8).toString() : "";
 		        String nhaCC = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 9).toString() : "";
-		        
+		        System.out.println(loaiSP);
 		        
 		        //Display on Textfield
 		        textField_TimSP.setText(maSP);
