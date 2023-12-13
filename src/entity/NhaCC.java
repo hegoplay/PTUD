@@ -90,8 +90,13 @@ public class NhaCC {
 	    }
 	    this.diaChi = diaChi;
 	}
+	
+//	@Override
+//	public String toString() {
+//		return "NhaCC [maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", diaChi=" + diaChi + ", quocGia=" + quocGia + "]";
+//	}
 	@Override
-	public String toString() {
-		return "NhaCC [maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", diaChi=" + diaChi + ", quocGia=" + quocGia + "]";
-	}
+    public String toString() {
+        return tenNCC; // Trả về tên nhà cung cấp khi gọi toString()
+    }
 }

@@ -1,4 +1,10 @@
 /view/
+<<<<<<< HEAD
 /entity/
 /dao/
+=======
+/dao/
+/entity/
+>>>>>>> hoang1
 /test/
+/controller/
