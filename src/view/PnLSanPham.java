@@ -25,6 +25,7 @@ import dao.SanPhamDAO;
 import dao.LoaiSPDAO;
 import dao.NhaCCDAO;
 import entity.SanPham;
+import view.MainFrame;
 import entity.NhaCC;
 import entity.KhachHang;
 import entity.LoaiSP;
@@ -83,6 +84,12 @@ public class PnLSanPham extends JPanel {
 		btnThemSP.setForeground(new Color(255, 255, 255));
 		btnThemSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					themSanPham();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnThemSP.setBackground(new Color(0, 128, 192));
@@ -268,35 +275,13 @@ public class PnLSanPham extends JPanel {
 		table_1 = new JTable();
 		table_1.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		table_1.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, "", null, null, null },
-						{ null, null, null, null, null, null, null, "", null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null, null, null, null, null }, },
-				new String[] { "M\u00E3 S\u1EA3n Ph\u1EA9m", "T\u00EAn S\u1EA3n Ph\u1EA9m",
-						"Lo\u1EA1i S\u1EA3n Ph\u1EA9m", "K\u00EDch Th\u01B0\u1EDBc", "Gi\u00E1 Nh\u1EADp",
-						"S\u1ED1 L\u01B0\u1EE3ng", "M\u00E0u S\u1EAFc", "Gi\u1EDBi T\u00EDnh", "Tr\u1EA1ng Th\u00E1i",
-						"Nh\u00E0 Cung C\u1EA5p", "H\u00ECnh \u1EA2nh" }));
+			new Object[][] {
+				{null, null, null, null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"M\u00E3 S\u1EA3n Ph\u1EA9m", "T\u00EAn S\u1EA3n Ph\u1EA9m", "Lo\u1EA1i S\u1EA3n Ph\u1EA9m", "K\u00EDch Th\u01B0\u1EDBc", "Gi\u00E1 Nh\u1EADp", "S\u1ED1 L\u01B0\u1EE3ng", "M\u00E0u S\u1EAFc", "Gi\u1EDBi T\u00EDnh", "Tr\u1EA1ng Th\u00E1i", "Nh\u00E0 Cung C\u1EA5p", "H\u00ECnh \u1EA2nh"
+			}
+		));
 		table_1.getColumnModel().getColumn(0).setPreferredWidth(87);
 		table_1.getColumnModel().getColumn(1).setPreferredWidth(79);
 		table_1.getColumnModel().getColumn(2).setPreferredWidth(81);
@@ -365,6 +350,98 @@ public class PnLSanPham extends JPanel {
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
 		loadDataToTable();
 
+	}
+	protected void themSanPham() {
+		try {
+	          // Lấy dữ liệu từ các text fields và combobox
+			  String maSP = tuPhatSinhMa();
+			  String tenSP = textField_TenSP.getText();
+			  String loaiSP = (String) comboBoxLoaiSP.getSelectedItem();
+			  String kichThuoc = (String) comboBoxKichThuoc.getSelectedItem();
+			  double giaNhap = 0;
+			  int soLuong = 0;
+			  String mauSac = textField_MauSac.getText();
+			  boolean nam = rdbtnNam.isSelected();
+			  boolean trangThai = layGiaTriTuTextFieldTrangThai(textField_TrangThai);
+			  String nhaCC = (String) comboBox_NhaCC.getSelectedItem();
+			  
+			// Kiểm tra và chuyển đổi giá trị từ textLuong
+	          String giaNhapStr = textField_GiaNhap.getText();
+	          if (!giaNhapStr.isEmpty()) {
+	              Double giaNhapValue = Double.parseDouble(giaNhapStr);
+
+	              // Kiểm tra nếu giá trị lương lớn hơn 0
+	              if (giaNhapValue > 0) {
+	                  giaNhap = giaNhapValue;
+	              } else {
+	                  throw new Exception("Vui lòng nhập giá nhập lớn hơn 0");
+	              }
+	          } else {
+	              throw new Exception("Vui lòng nhập giá nhập");
+	          }
+	          
+	       // Kiểm tra và chuyển đổi giá trị từ textLuong
+	          String soLuongStr = textField_SoLuong.getText();
+	          if (!soLuongStr.isEmpty()) {
+	              int soLuongValue = (int) Double.parseDouble(soLuongStr);
+
+	              // Kiểm tra nếu giá trị lương lớn hơn 0
+	              if (soLuongValue > 0) {
+	                  soLuong = soLuongValue;
+	              } else {
+	                  throw new Exception("Vui lòng nhập Số Lượng lớn hơn 0");
+	              }
+	          } else {
+	              throw new Exception("Vui lòng nhập số lượng");
+	          }
+
+
+	          // Tạo đối tượng NhanVien từ dữ liệu
+	          SanPham sp = new SanPham(maSP, tenSP, giaNhap, soLuong, kichThuoc, mauSac, trangThai, nam, null, nhaCC, soLuong, null);
+	          
+
+	          // Gọi hàm thêm mới từ DAO
+	          sp_dao.addSanPham(sp);
+
+	          // Làm mới bảng
+	          loadDataToTable();
+	       // Hiển thị thông báo thành công
+		        JOptionPane.showMessageDialog(this, "Thêm mới khách hàng thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	          
+	      } catch (NumberFormatException ex) {
+	          // Xử lý nếu người dùng nhập không phải là số
+	          JOptionPane.showMessageDialog(this, "Vui lòng nhập số năm sinh  hợp lệ", "Lỗi", JOptionPane.INFORMATION_MESSAGE);
+	          ex.printStackTrace();
+	      } catch (Exception e) {
+	          JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.INFORMATION_MESSAGE);
+	          e.printStackTrace();
+	      }
+		
+	}
+	private String tuPhatSinhMa() {
+		ArrayList<SanPham> dsSP = sp_dao.getAllSanPham();
+
+	    // Calculate the new ID
+	    int soLuong = dsSP.size() + 1;
+
+	    // Format the new ID with leading zeros
+	    return String.format("SP%08d", soLuong);
+	}
+	public boolean layGiaTriTuTextFieldTrangThai(JTextField txtTrangThai) {
+	    // Get the value from the JTextField
+	    String trangThai = textField_TrangThai.getText();
+	    
+	    // Check the value and return the corresponding boolean value
+	    if (trangThai.equals("Con")) {
+	        return true;
+	    } else if (trangThai.equals("Khong")) {
+	        return false;
+	    } else {
+	        // Handle the case where the value is neither "Con" nor "Khong"
+	        // This could be throwing an exception, returning a default value, etc.
+	        // Here we throw an exception
+	        throw new IllegalArgumentException("Giá trị không hợp lệ: " + trangThai);
+	    }
 	}
 	protected void timSanPham() {
 		// TODO Auto-generated method stub
