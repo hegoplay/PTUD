@@ -146,12 +146,12 @@ public class NhaCCDAO {
 		String maNCC = null;
         try {
             Connection con = ConnectDB.getConection();
-            String sql = "SELECT MaNCC FROM NhaCC WHERE TenNCC = ?";
+            String sql = "SELECT maNCC FROM NhaCC WHERE tenNCC = ?";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, selectedItem);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                maNCC = rs.getString("MaNCC");
+                maNCC = rs.getString("maNCC");
             }
             con.close();
         } catch (Exception e) {

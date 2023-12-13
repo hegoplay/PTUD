@@ -143,7 +143,7 @@ public class PnlDangNhap extends JFrame {
 		txtTaiKhoan.setBounds(421, 288, 423, 33);
 		contentPane.add(txtTaiKhoan);
 		txtTaiKhoan.setColumns(10);
-		txtTaiKhoan.setText("khoi");
+		txtTaiKhoan.setText("hegoplay");
 
 		textMatKhau = new JPasswordField();
 		textMatKhau.addKeyListener(new KeyAdapter() {

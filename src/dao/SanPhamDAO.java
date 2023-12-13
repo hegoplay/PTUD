@@ -71,6 +71,28 @@ public class SanPhamDAO {
 		return lsp;
 	}
 
+	public static LoaiSP GetLoaiSPByTen(String tenLoai) {
+		LoaiSP lsp = null;
+		try {
+			Connection con = ConnectDB.getConection();
+			String sql = "Select * from LoaiSP where maLoai = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, tenLoai);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				String maLoai = rs.getNString(1);
+				boolean isDoTT = rs.getBoolean(3);
+				lsp = new LoaiSP(maLoai, tenLoai, isDoTT);
+			}
+			con.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lsp;
+	}
+	
 	public static ArrayList<SanPham> getAllSP() {
 		ArrayList<SanPham> lists = new ArrayList<>();
 		try {
@@ -145,18 +167,20 @@ public class SanPhamDAO {
 	    try {
 	        Connection con = ConnectDB.getConection();
 	        String maSP = sp.getMaSP();
-	        String sql = "INSERT INTO SanPham (maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, isNam, ConKinhDoanh, hinhAnh, MaNCC) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        String sql = "INSERT INTO SanPham (maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, isNam, ConKinhDoanh,maLoaiSP, hinhAnh, MaNCC) VALUES (?,? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	        PreparedStatement statement = con.prepareStatement(sql);
-	        statement.setString(1, maSP);
-	        statement.setString(2, sp.getTenSP());
-	        statement.setDouble(3, sp.getGiaNhap());
-	        statement.setInt(4, sp.getSlTonKho());
-	        statement.setString(5, sp.getKichThuoc());
-	        statement.setString(6, sp.getMauSac());
-	        statement.setBoolean(7, sp.isNam());
-	        statement.setBoolean(8, sp.isConKinhDoanh());
-	        statement.setString(9, sp.getHinhAnh());
-	        statement.setString(10, sp.getNhaCC().getMaNCC());
+	        int i = 1;
+	        statement.setString(i++, maSP);
+	        statement.setString(i++, sp.getTenSP());
+	        statement.setDouble(i++, sp.getGiaNhap());
+	        statement.setInt(i++, sp.getSlTonKho());
+	        statement.setString(i++, sp.getKichThuoc());
+	        statement.setString(i++, sp.getMauSac());
+	        statement.setBoolean(i++, sp.isNam());
+	        statement.setBoolean(i++, sp.isConKinhDoanh());
+	        statement.setString(i++, sp.getLoaiSP().getMaLoai());
+	        statement.setString(i++, sp.getHinhAnh());
+	        statement.setString(i++, sp.getNhaCC().getMaNCC());
 	        //statement.setFloat(10,sp.getThue());
 	        //statement.setString(11, sp.getLoaiSP());
 	        int rowsAffected = statement.executeUpdate();
@@ -171,27 +195,28 @@ public class SanPhamDAO {
 	public static boolean updateSanPham(SanPham sp) {
 	    try {
 	        Connection con = ConnectDB.getConection();
-	        String sql = "UPDATE SanPham SET tenSP = ?, giaNhap = ?, slTonKho = ?, kichThuoc = ?, mauSac = ?, conKinhDoanh = ?, isNam = ?, ncc = ?, hinhAnh = ?, thue = ?, lsp = ?, WHERE maSP = ?";
+	        String sql = "UPDATE SanPham SET tenSP = ?, giaNhap = ?, slTonKho = ?, kichThuoc = ?, mauSac = ?,isNam =?, conKinhDoanh = ?, hinhAnh = ?, MaNCC = ? WHERE maSP = ?";
 	        PreparedStatement statement = con.prepareStatement(sql);
 	        statement.setString(1, sp.getTenSP());
 	        statement.setDouble(2, sp.getGiaNhap());
 	        statement.setInt(3, sp.getSlTonKho());
 	        statement.setString(4, sp.getKichThuoc());
 	        statement.setString(5, sp.getMauSac());
-	        statement.setBoolean(6, sp.isConKinhDoanh());
-	        statement.setBoolean(7, sp.isNam());
-	        //statement.setLong(8, sp.getNhaCC());
-	        statement.setString(9, sp.getHinhAnh());
-	        statement.setFloat(10,sp.getThue());
+	        statement.setBoolean(6, sp.isNam());
+	        statement.setBoolean(7, sp.isConKinhDoanh());
+	        statement.setString(8, sp.getHinhAnh());
+	        statement.setString(9, sp.getNhaCC().getMaNCC());
+	        //statement.setFloat(10,sp.getThue());
 	        //statement.setString(11, sp.getLoaiSP());
-			statement.setString(12, sp.getMaSP());
+			statement.setString(10, sp.getMaSP());
 
 	        int rowsUpdated = statement.executeUpdate();
 	        return rowsUpdated > 0;
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        return false;
 	    }
-	    return false;
+	    
 	}
 	
 	public static ArrayList<SanPham> findSanPhamByMa(String maSP) {
