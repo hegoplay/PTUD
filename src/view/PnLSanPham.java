@@ -34,10 +34,10 @@ import entity.NhaCC;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-public class PnLSanPham extends JPanel {
+public class PnLSanPham extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textMaSP;
+	private JTextField txtMaSP;
 	private JTable table;
 	private JTextField textField_TimSP;
 	private JTable table_1;
@@ -53,6 +53,7 @@ public class PnLSanPham extends JPanel {
 	private JRadioButton rdbtnNam;
 	private JRadioButton rdbtnNu;
 	private SanPhamDAO sp_dao;
+	private NhaCCDAO ncc_dao;
 
 	/**
 	 * Create the panel.
@@ -100,8 +101,14 @@ public class PnLSanPham extends JPanel {
 		btnSuaSP.setForeground(new Color(255, 255, 255));
 		btnSuaSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				// no idea in image.
+
+				// Gọi hàm sửa thông tin ở đây
+				try {
+					suaThongTinSanPham();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnSuaSP.setBackground(new Color(0, 128, 192));
@@ -118,11 +125,11 @@ public class PnLSanPham extends JPanel {
 		btnLamMoiSP.setForeground(new Color(255, 255, 255));
 		btnLamMoiSP.setBackground(new Color(0, 128, 192));
 
-		textMaSP = new JTextField();
-		textMaSP.setBounds(143, 66, 132, 28);
-		panel.add(textMaSP);
-		textMaSP.setColumns(10);
-		textMaSP.setEditable(false);
+		txtMaSP = new JTextField();
+		txtMaSP.setBounds(143, 66, 132, 28);
+		panel.add(txtMaSP);
+		txtMaSP.setColumns(10);
+		txtMaSP.setEditable(false);
 
 		rdbtnNam = new JRadioButton("Nam");
 		rdbtnNam.setBounds(172, 338, 67, 31);
@@ -214,18 +221,16 @@ public class PnLSanPham extends JPanel {
 		themLoaiSPToComboBox();
 
 		comboBoxKichThuoc = new JComboBox();
-		comboBoxKichThuoc.setModel(new DefaultComboBoxModel(new String[] {"XS", "S", "M", "L", "XL", "XXL"}));
+		comboBoxKichThuoc.setModel(new DefaultComboBoxModel(new String[] { "XS", "S", "M", "L", "XL", "XXL" }));
 		comboBoxKichThuoc.setBounds(143, 180, 205, 26);
 		panel.add(comboBoxKichThuoc);
 		comboBoxKichThuoc.setSelectedItem(-1);
 
-		
 		comboBox_NhaCC = new JComboBox();
-		comboBox_NhaCC.setModel(new DefaultComboBoxModel(new String[] {"ZARA", "Mando", "An Phước",}));
+		comboBox_NhaCC.setModel(new DefaultComboBoxModel(new String[] { "ZARA", "Mando", "An Phước", }));
 		comboBox_NhaCC.setBounds(143, 415, 205, 26);
 		panel.add(comboBox_NhaCC);
-		themNhaCCToComboBox();
-		
+//		themNhaCCToComboBox();
 
 		JButton btnTaoSP = new JButton("Tạo");
 		btnTaoSP.setForeground(new Color(0, 0, 0));
@@ -256,17 +261,16 @@ public class PnLSanPham extends JPanel {
 		btnTimSP.setBounds(332, 33, 93, 32);
 		panel_1.add(btnTimSP);
 		btnTimSP.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Gọi hàm làm mới ở đây
-            	timSanPham();
-	            }
-	        });
+			public void actionPerformed(ActionEvent e) {
+				// Gọi hàm làm mới ở đây
+				timSanPham();
+			}
+		});
 
 		textField_TimSP = new JTextField();
 		textField_TimSP.setColumns(10);
 		textField_TimSP.setBounds(149, 34, 173, 31);
 		panel_1.add(textField_TimSP);
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 77, 755, 465);
@@ -276,13 +280,11 @@ public class PnLSanPham extends JPanel {
 		table_1.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		table_1.setModel(new DefaultTableModel(
 
-			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"M\u00E3 S\u1EA3n Ph\u1EA9m", "T\u00EAn S\u1EA3n Ph\u1EA9m", "Lo\u1EA1i S\u1EA3n Ph\u1EA9m", "K\u00EDch Th\u01B0\u1EDBc", "Gi\u00E1 Nh\u1EADp", "S\u1ED1 L\u01B0\u1EE3ng", "M\u00E0u S\u1EAFc", "Gi\u1EDBi T\u00EDnh", "Tr\u1EA1ng Th\u00E1i", "Nh\u00E0 Cung C\u1EA5p", "H\u00ECnh \u1EA2nh"
-			}
-		));
+				new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, },
+				new String[] { "M\u00E3 S\u1EA3n Ph\u1EA9m", "T\u00EAn S\u1EA3n Ph\u1EA9m",
+						"Lo\u1EA1i S\u1EA3n Ph\u1EA9m", "K\u00EDch Th\u01B0\u1EDBc", "Gi\u00E1 Nh\u1EADp",
+						"S\u1ED1 L\u01B0\u1EE3ng", "M\u00E0u S\u1EAFc", "Gi\u1EDBi T\u00EDnh", "Tr\u1EA1ng Th\u00E1i",
+						"Nh\u00E0 Cung C\u1EA5p", "H\u00ECnh \u1EA2nh" }));
 		table_1.getColumnModel().getColumn(0).setPreferredWidth(87);
 		table_1.getColumnModel().getColumn(1).setPreferredWidth(79);
 		table_1.getColumnModel().getColumn(2).setPreferredWidth(81);
@@ -293,57 +295,73 @@ public class PnLSanPham extends JPanel {
 		table_1.getColumnModel().getColumn(7).setPreferredWidth(56);
 		scrollPane.setViewportView(table_1);
 		table_1.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseClicked(java.awt.event.MouseEvent evt) {
-		        int selectedRow = table_1.getSelectedRow();
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				int selectedRow = table_1.getSelectedRow();
 
-		        // Check before toString
-		        String maSP = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 0).toString() : "";
-		        String tenSP = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 1).toString() : "";
-		        String loaiSP = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 2).toString() : "";
-		        String kichThuoc = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 3).toString() : "";
-		        String giaNhap = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 4).toString() : "";
-		        String soLuong = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 5).toString() : "";
-		        String mauSac = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 6).toString() : "";
-		        String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 7).toString() : "";
-		        String trangThai = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 8).toString() : "";
-		        String nhaCC = (table_1.getValueAt(selectedRow, 0) != null) ? table_1.getValueAt(selectedRow, 9).toString() : "";
-		        System.out.println(loaiSP);
-		        
-		        //Display on Textfield
-		        textField_TimSP.setText(maSP);
-		        textMaSP.setText(maSP);
-		        textField_TenSP.setText(tenSP);
-		        textField_GiaNhap.setText(giaNhap);
-		        textField_SoLuong.setText(soLuong);
-		        textField_MauSac.setText(mauSac);
-		        textField_TrangThai.setText(trangThai);
-		        
-		        //set radiobutton
-		        if (gioiTinh.equals("Nam")) {
-		        	rdbtnNam.setSelected(true);
-		        	rdbtnNu.setSelected(false);
-                } else {
-                	rdbtnNam.setSelected(false);
-                	rdbtnNu.setSelected(true);
-                }
-		     // set combobox
-		        
+				// Check before toString
+				String maSP = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 0).toString()
+						: "";
+				String tenSP = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 1).toString()
+						: "";
+				String loaiSP = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 2).toString()
+						: "";
+				String kichThuoc = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 3).toString()
+						: "";
+				String giaNhap = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 4).toString()
+						: "";
+				String soLuong = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 5).toString()
+						: "";
+				String mauSac = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 6).toString()
+						: "";
+				String gioiTinh = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 7).toString()
+						: "";
+				String trangThai = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 8).toString()
+						: "";
+				String nhaCC = (table_1.getValueAt(selectedRow, 0) != null)
+						? table_1.getValueAt(selectedRow, 9).toString()
+						: "";
+				System.out.println(loaiSP);
+
+				// Display on Textfield
+				textField_TimSP.setText(maSP);
+				txtMaSP.setText(maSP);
+				textField_TenSP.setText(tenSP);
+				textField_GiaNhap.setText(giaNhap);
+				textField_SoLuong.setText(soLuong);
+				textField_MauSac.setText(mauSac);
+				textField_TrangThai.setText(trangThai);
+
+				// set radiobutton
+				if (gioiTinh.equals("Nam")) {
+					rdbtnNam.setSelected(true);
+					rdbtnNu.setSelected(false);
+				} else {
+					rdbtnNam.setSelected(false);
+					rdbtnNu.setSelected(true);
+				}
+				// set combobox
+
 //		        comboBox_TimSP.setSelectedItem(loaiSP);
-                comboBoxKichThuoc.setSelectedItem(kichThuoc);
-                comboBox_NhaCC.setSelectedItem(nhaCC);
-                comboBoxLoaiSP.setSelectedItem(loaiSP);
-                
-		        
-		    }
-		});
+				comboBoxKichThuoc.setSelectedItem(kichThuoc);
+				comboBox_NhaCC.setSelectedItem(nhaCC);
+				comboBoxLoaiSP.setSelectedItem(loaiSP);
 
+			}
+		});
 
 		JLabel lblTmTheoLoai = new JLabel("Tìm theo loại:");
 		lblTmTheoLoai.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblTmTheoLoai.setBounds(475, 40, 116, 25);
 		panel_1.add(lblTmTheoLoai);
-
-		
 
 		JLabel lblTitle = new JLabel("Quản Lý Sản Phẩm");
 		lblTitle.setBounds(795, 28, 320, 39);
@@ -351,186 +369,242 @@ public class PnLSanPham extends JPanel {
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
 		loadDataToTable();
 
+		btnTaoSP.addActionListener(this);
+
 	}
-	protected void themSanPham() {
-		try {
-	          // Lấy dữ liệu từ các text fields và combobox
-			  String maSP = tuPhatSinhMa();
-			  String tenSP = textField_TenSP.getText();
-//			  System.out.println((String) comboBoxLoaiSP.getSelectedItem());
-			  LoaiSP loaiSP = ((LoaiSP)comboBoxLoaiSP.getSelectedItem());
-			  System.out.println(loaiSP.getTenLoai());
-			  String kichThuoc = (String) comboBoxKichThuoc.getSelectedItem();
-			  double giaNhap = 0;
-			  int soLuong = 0;
-			  String mauSac = textField_MauSac.getText();
-			  boolean nam = rdbtnNam.isSelected();
-			  boolean trangThai = layGiaTriTuTextFieldTrangThai(textField_TrangThai);
-			  String nhaCC = (String) comboBox_NhaCC.getSelectedItem();
-			  
-			// Kiểm tra và chuyển đổi giá trị từ textLuong
-	          String giaNhapStr = textField_GiaNhap.getText();
-	          if (!giaNhapStr.isEmpty()) {
-	              Double giaNhapValue = Double.parseDouble(giaNhapStr);
 
-	              // Kiểm tra nếu giá trị lương lớn hơn 0
-	              if (giaNhapValue > 0) {
-	                  giaNhap = giaNhapValue;
-	              } else {
-	                  throw new Exception("Vui lòng nhập giá nhập lớn hơn 0");
-	              }
-	          } else {
-	              throw new Exception("Vui lòng nhập giá nhập");
-	          }
-	          
-	       // Kiểm tra và chuyển đổi giá trị từ textLuong
-	          String soLuongStr = textField_SoLuong.getText();
-	          if (!soLuongStr.isEmpty()) {
-	              int soLuongValue = (int) Double.parseDouble(soLuongStr);
+	protected void suaThongTinSanPham() throws Exception {
+		// Lấy dữ liệu từ các text fields và combobox
+		String maSP = tuPhatSinhMa();
+		String tenSP = textField_TenSP.getText();
+//		  System.out.println((String) comboBoxLoaiSP.getSelectedItem());
+		System.out.println(comboBoxLoaiSP.getSelectedIndex());
+		LoaiSP loaiSP = ((LoaiSP) comboBoxLoaiSP.getSelectedItem());
+		System.out.println(loaiSP.getTenLoai());
+		String kichThuoc = (String) comboBoxKichThuoc.getSelectedItem();
+		double giaNhap = 0;
+		int soLuong = 0;
+		String mauSac = textField_MauSac.getText();
+		boolean nam = rdbtnNam.isSelected();
+		boolean trangThai = layGiaTriTuTextFieldTrangThai(textField_TrangThai);
+		String nhaCC = (String) comboBox_NhaCC.getSelectedItem();
 
-	              // Kiểm tra nếu giá trị lương lớn hơn 0
-	              if (soLuongValue > 0) {
-	                  soLuong = soLuongValue;
-	              } else {
-	                  throw new Exception("Vui lòng nhập Số Lượng lớn hơn 0");
-	              }
-	          } else {
-	              throw new Exception("Vui lòng nhập số lượng");
-	          }
+		// Lấy mã nhà cung cấp từ tên nhà cung cấp
+		String maNhaCC = NhaCCDAO.getMaNCCFromTenNCC(nhaCC);
 
+		// Kiểm tra và chuyển đổi giá trị từ text giaNhap
+		String giaNhapStr = textField_GiaNhap.getText();
+		if (!giaNhapStr.isEmpty()) {
+			Double giaNhapValue = Double.parseDouble(giaNhapStr);
 
-	          // Tạo đối tượng NhanVien từ dữ liệu
-	          SanPham sp = new SanPham(maSP, tenSP, giaNhap, soLuong, kichThuoc, mauSac, trangThai, nam, null, nhaCC, soLuong, null);
-	          
+			// Kiểm tra nếu giá trị lương lớn hơn 0
+			if (giaNhapValue > 0) {
+				giaNhap = giaNhapValue;
+			} else {
+				throw new Exception("Vui lòng nhập giá nhập lớn hơn 0");
+			}
+		} else {
+			throw new Exception("Vui lòng nhập giá nhập");
+		}
 
-	          // Gọi hàm thêm mới từ DAO
-	          sp_dao.addSanPham(sp);
+		// Kiểm tra và chuyển đổi giá trị từ text So luong
+		String soLuongStr = textField_SoLuong.getText();
+		if (!soLuongStr.isEmpty()) {
+			int soLuongValue = (int) Double.parseDouble(soLuongStr);
 
-	          // Làm mới bảng
-	          loadDataToTable();
-	       // Hiển thị thông báo thành công
-		        JOptionPane.showMessageDialog(this, "Thêm mới khách hàng thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-	          
-	      } catch (NumberFormatException ex) {
-	          // Xử lý nếu người dùng nhập không phải là số
-	          JOptionPane.showMessageDialog(this, "Vui lòng nhập số năm sinh  hợp lệ", "Lỗi", JOptionPane.INFORMATION_MESSAGE);
-	          ex.printStackTrace();
-	      } catch (Exception e) {
-	          JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.INFORMATION_MESSAGE);
-	          e.printStackTrace();
-	      }
-		
+			// Kiểm tra nếu giá trị lương lớn hơn 0
+			if (soLuongValue > 0) {
+				soLuong = soLuongValue;
+			} else {
+				throw new Exception("Vui lòng nhập Số Lượng lớn hơn 0");
+			}
+		} else {
+			throw new Exception("Vui lòng nhập số lượng");
+		}
+
+		// Tạo đối tượng NhaCC từ dữ liệu
+		SanPham sp = new SanPham(maSP, tenSP, giaNhap, soLuong, kichThuoc, mauSac, trangThai, nam,
+				NhaCCDAO.GetNhaCC(maNhaCC), "", 0, loaiSP);
+
+		// Gọi hàm cập nhật từ DAO
+		SanPhamDAO.updateSanPham(sp); // Làm mới bảng
+		loadDataToTable();
+
 	}
+
 	private String tuPhatSinhMa() {
-		ArrayList<SanPham> dsSP = sp_dao.getAllSanPham();
+		ArrayList<SanPham> dsSP = SanPhamDAO.getAllSanPham();
+		// Calculate the new ID
+		int soLuong = dsSP.size();
 
-	    // Calculate the new ID
-	    int soLuong = dsSP.size() + 1;
-
-	    // Format the new ID with leading zeros
-	    return String.format("SP%08d", soLuong);
+		// Format the new ID with leading zeros
+		return String.format("SP%08d", soLuong);
 	}
+
 	public boolean layGiaTriTuTextFieldTrangThai(JTextField txtTrangThai) {
-	    // Get the value from the JTextField
-	    String trangThai = textField_TrangThai.getText();
-	    
-	    // Check the value and return the corresponding boolean value
-	    if (trangThai.equals("Con")) {
-	        return true;
-	    } else if (trangThai.equals("Khong")) {
-	        return false;
-	    } else {
-	        // Handle the case where the value is neither "Con" nor "Khong"
-	        // This could be throwing an exception, returning a default value, etc.
-	        // Here we throw an exception
-	        throw new IllegalArgumentException("Giá trị không hợp lệ: " + trangThai);
-	    }
+		// Get the value from the JTextField
+		String trangThai = textField_TrangThai.getText();
+
+		// Check the value and return the corresponding boolean value
+		if (trangThai.equals("Con")) {
+			return true;
+		} else if (trangThai.equals("Khong")) {
+			return false;
+		} else {
+			// Handle the case where the value is neither "Con" nor "Khong"
+			// This could be throwing an exception, returning a default value, etc.
+			// Here we throw an exception
+			throw new IllegalArgumentException("Giá trị không hợp lệ: " + trangThai);
+		}
 	}
+
 	protected void timSanPham() {
 		// TODO Auto-generated method stub
 		// Lấy mã SanPham từ text field
-        String maSP = textField_TimSP.getText();
+		String maSP = textField_TimSP.getText();
 
-        // Gọi hàm tìm kiếm từ DAO
-        ArrayList<SanPham> dsSanPham = sp_dao.findSanPhamByMa(maSP);
+		// Gọi hàm tìm kiếm từ DAO
+		ArrayList<SanPham> dsSanPham = sp_dao.findSanPhamByMa(maSP);
 
-        // Xóa dữ liệu cũ trong bảng
-        DefaultTableModel tableModel = (DefaultTableModel) table_1.getModel();
-        tableModel.setRowCount(0);
+		// Xóa dữ liệu cũ trong bảng
+		DefaultTableModel tableModel = (DefaultTableModel) table_1.getModel();
+		tableModel.setRowCount(0);
 
-        // Hiển thị thông tin nhân viên tìm được hoặc thông báo không tìm thấy
-        if (!dsSanPham.isEmpty()) {
-            for (int i = 0; i < dsSanPham.size(); i++) {
-                SanPham sp = dsSanPham.get(i);
-                tableModel.addRow(new Object[] {
-                    sp.getMaSP(),
-                    sp.getTenSP(),
-                    sp.getLoaiSP(),
-                    sp.getKichThuoc(),
-                    sp.getGiaNhap(),
-                    sp.getSlTonKho(),
-                    sp.getMauSac(),
-                    (sp.isNam() ? "Nam" : "Nữ"),
-                    (sp.isConKinhDoanh() ? "Con" : "Khong"),
-                    sp.getNhaCC(),
-                    sp.getHinhAnh(),
-                    // Thêm các trường khác tương ứng
-                });
-            }
+		// Hiển thị thông tin nhân viên tìm được hoặc thông báo không tìm thấy
+		if (!dsSanPham.isEmpty()) {
+			for (int i = 0; i < dsSanPham.size(); i++) {
+				SanPham sp = dsSanPham.get(i);
+				tableModel.addRow(new Object[] { sp.getMaSP(), sp.getTenSP(), sp.getLoaiSP(), sp.getKichThuoc(),
+						sp.getGiaNhap(), sp.getSlTonKho(), sp.getMauSac(), (sp.isNam() ? "Nam" : "Nữ"),
+						(sp.isConKinhDoanh() ? "Con" : "Khong"), sp.getNhaCC(), sp.getHinhAnh(),
+						// Thêm các trường khác tương ứng
+				});
+			}
 
-            // Nếu danh sách không rỗng, chỉ hiển thị thông tin của nhân viên đầu tiên trong danh sách
-            SanPham sp = dsSanPham.get(0);
-            textMaSP.setText(sp.getMaSP());
-            textField_TenSP.setText(sp.getTenSP());
-            //combobox loai sp
-            //combobox kich thuoc
-            textField_GiaNhap.setText(String.valueOf(sp.getGiaNhap()));
-            textField_SoLuong.setText(String.valueOf(sp.getSlTonKho()));
-            textField_MauSac.setText(sp.getMauSac());
-            // Set giới tính
-            if (sp.isNam()) {
-                rdbtnNam.setSelected(true);
-                rdbtnNu.setSelected(false);
-                
-            } else {
-                rdbtnNu.setSelected(true);
-                rdbtnNam.setSelected(false);
-            }
-            
-            if (sp.isConKinhDoanh()) {
-                textField_TrangThai.setText("Con");
-                
-            } else {
-            	textField_TrangThai.setText("Khong");
-            }
-            
-            //combobox Nhacc
-            
+			// Nếu danh sách không rỗng, chỉ hiển thị thông tin của nhân viên đầu tiên trong
+			// danh sách
+			SanPham sp = dsSanPham.get(0);
+			txtMaSP.setText(sp.getMaSP());
+			textField_TenSP.setText(sp.getTenSP());
+			// combobox loai sp
+			// combobox kich thuoc
+			textField_GiaNhap.setText(String.valueOf(sp.getGiaNhap()));
+			textField_SoLuong.setText(String.valueOf(sp.getSlTonKho()));
+			textField_MauSac.setText(sp.getMauSac());
+			// Set giới tính
+			if (sp.isNam()) {
+				rdbtnNam.setSelected(true);
+				rdbtnNu.setSelected(false);
 
-            
+			} else {
+				rdbtnNu.setSelected(true);
+				rdbtnNam.setSelected(false);
+			}
 
-        } else {
-            // Nếu không tìm thấy, thông báo hoặc xử lý khác tùy ý
-            JOptionPane.showMessageDialog(this, "Không tìm thấy San Pham với mã: " + maSP, "Thông báo", JOptionPane.WARNING_MESSAGE);
-        }
-	  
-		
+			if (sp.isConKinhDoanh()) {
+				textField_TrangThai.setText("Con");
+
+			} else {
+				textField_TrangThai.setText("Khong");
+			}
+
+			// combobox Nhacc
+
+		} else {
+			// Nếu không tìm thấy, thông báo hoặc xử lý khác tùy ý
+			JOptionPane.showMessageDialog(this, "Không tìm thấy San Pham với mã: " + maSP, "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
+
+	protected void themSanPham() {
+		try {
+			// Lấy dữ liệu từ các text fields và combobox
+			String maSP = tuPhatSinhMa();
+			String tenSP = textField_TenSP.getText();
+//    			  System.out.println((String) comboBoxLoaiSP.getSelectedItem());
+			LoaiSP loaiSP = ((LoaiSP) comboBoxLoaiSP.getSelectedItem());
+//			System.out.println(loaiSP.getTenLoai());
+			String kichThuoc = (String) comboBoxKichThuoc.getSelectedItem();
+			double giaNhap = 0;
+			int soLuong = 0;
+			String mauSac = textField_MauSac.getText();
+			boolean nam = rdbtnNam.isSelected();
+			boolean trangThai = layGiaTriTuTextFieldTrangThai(textField_TrangThai);
+			String nhaCC = (String) comboBox_NhaCC.getSelectedItem();
+
+			// Lấy mã nhà cung cấp từ tên nhà cung cấp
+			String maNhaCC = NhaCCDAO.getMaNCCFromTenNCC(nhaCC);
+
+			// Kiểm tra và chuyển đổi giá trị từ text giaNhap
+			String giaNhapStr = textField_GiaNhap.getText();
+			if (!giaNhapStr.isEmpty()) {
+				Double giaNhapValue = Double.parseDouble(giaNhapStr);
+
+				// Kiểm tra nếu giá trị lương lớn hơn 0
+				if (giaNhapValue > 0) {
+					giaNhap = giaNhapValue;
+				} else {
+					throw new Exception("Vui lòng nhập giá nhập lớn hơn 0");
+				}
+			} else {
+				throw new Exception("Vui lòng nhập giá nhập");
+			}
+
+			// Kiểm tra và chuyển đổi giá trị từ text So luong
+			String soLuongStr = textField_SoLuong.getText();
+			if (!soLuongStr.isEmpty()) {
+				int soLuongValue = (int) Double.parseDouble(soLuongStr);
+
+				// Kiểm tra nếu giá trị lương lớn hơn 0
+				if (soLuongValue > 0) {
+					soLuong = soLuongValue;
+				} else {
+					throw new Exception("Vui lòng nhập Số Lượng lớn hơn 0");
+				}
+			} else {
+				throw new Exception("Vui lòng nhập số lượng");
+			}
+
+			// Tạo đối tượng NhanVien từ dữ liệu
+			SanPham sp = new SanPham(maSP, tenSP, giaNhap, soLuong, kichThuoc, mauSac, trangThai, nam,
+					NhaCCDAO.GetNhaCC(maNhaCC), "", 0, loaiSP);
+
+			// Gọi hàm thêm mới từ DAO
+			SanPhamDAO.addSanPham(sp);
+
+			// Làm mới bảng
+			loadDataToTable();
+			// Hiển thị thông báo thành công
+			JOptionPane.showMessageDialog(this, "Thêm mới Sản Phẩm thành công", "Thông báo",
+					JOptionPane.INFORMATION_MESSAGE);
+
+		} catch (NumberFormatException ex) {
+			// Xử lý nếu người dùng nhập không phải là số
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập số năm sinh  hợp lệ", "Lỗi",
+					JOptionPane.INFORMATION_MESSAGE);
+			ex.printStackTrace();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.INFORMATION_MESSAGE);
+			e.printStackTrace();
+		}
+
+	}
+
 	public void themNhaCCToComboBox() {
 		ArrayList<NhaCC> dsNCC = NhaCCDAO.getAllNCC();
-	    for (NhaCC ncc : dsNCC) {
-	        comboBox_NhaCC.addItem(ncc);
-	    }
+		for (NhaCC ncc : dsNCC) {
+			comboBox_NhaCC.addItem(ncc);
+		}
 	}
-	
+
 	public void themLoaiSPToComboBox() {
 		ArrayList<LoaiSP> dsLSP = LoaiSPDAO.getAllLSP();
-	    for (LoaiSP lsp : dsLSP) {
-	        comboBoxLoaiSP.addItem(lsp);
-	        
-	    }
+		for (LoaiSP lsp : dsLSP) {
+			comboBoxLoaiSP.addItem(lsp);
+
+		}
 	}
-	
 
 	private void loadDataToTable() {
 		try {
@@ -556,7 +630,8 @@ public class PnLSanPham extends JPanel {
 	}
 
 	private void clearForm() {
-		textMaSP.setText("");
+		txtMaSP.setText("");
+		textField_TimSP.setText("");
 		textField_TenSP.setText("");
 		comboBoxLoaiSP.setSelectedIndex(-1);
 		comboBoxKichThuoc.setSelectedIndex(-1);
@@ -570,11 +645,18 @@ public class PnLSanPham extends JPanel {
 		rdbtnNam.setSelected(false);
 		// no idea in image.
 
-		//clearTableData();
-		//loadDataToTable();
+		// clearTableData();
+		// loadDataToTable();
 
 	}
-	
-	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		String name = e.getActionCommand();
+		if (name.compareToIgnoreCase("Tạo") == 0) {
+			txtMaSP.setText(tuPhatSinhMa());
+		}
+	}
 
 }

@@ -34,6 +34,7 @@ public class LoaiSPDAO {
 		}
 		return lsp;
 	}
+	
 	public static ArrayList<LoaiSP> getAllLSP() {
 		ArrayList<LoaiSP> dsLSP = new ArrayList<LoaiSP>();
 		try {
