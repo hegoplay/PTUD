@@ -59,9 +59,9 @@ public class LoaiSP {
 	}
 	
 	@Override
-	public String toString() {
-		return "LoaiSP [maLoai=" + maLoai + ", tenLoai=" + tenLoai + ", isDoTT=" + isDoTT + "]";
-	}
+    public String toString() {
+        return tenLoai; // Trả về tên nhà cung cấp khi gọi toString()
+    }
 	
 	
 }

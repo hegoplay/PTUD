@@ -141,6 +141,32 @@ public class SanPhamDAO {
 		}
 		return lists;
 	}
+	public static boolean addSanPham(SanPham sp) {
+	    try {
+	        Connection con = ConnectDB.getConection();
+	        String maSP = sp.getMaSP();
+	        String sql = "INSERT INTO SanPham (maSP, tenSP, giaNhap, slTonKho, kichThuoc, mauSac, isNam, ConKinhDoanh, hinhAnh, MaNCC) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement statement = con.prepareStatement(sql);
+	        statement.setString(1, maSP);
+	        statement.setString(2, sp.getTenSP());
+	        statement.setDouble(3, sp.getGiaNhap());
+	        statement.setInt(4, sp.getSlTonKho());
+	        statement.setString(5, sp.getKichThuoc());
+	        statement.setString(6, sp.getMauSac());
+	        statement.setBoolean(7, sp.isNam());
+	        statement.setBoolean(8, sp.isConKinhDoanh());
+	        statement.setString(9, sp.getHinhAnh());
+	        statement.setString(10, sp.getNhaCC().getMaNCC());
+	        //statement.setFloat(10,sp.getThue());
+	        //statement.setString(11, sp.getLoaiSP());
+	        int rowsAffected = statement.executeUpdate();
+	        con.close();
+	        return rowsAffected > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 
 	public static boolean updateSanPham(SanPham sp) {
 	    try {
@@ -208,7 +234,7 @@ public class SanPhamDAO {
 	    int soLuong = dsSP.size() + 1;
 
 	    // Format the new ID with leading zeros
-	    return String.format("KH%08d", soLuong);
+	    return String.format("SP%08d", soLuong);
 	}
 	
 }

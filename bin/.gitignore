@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 =======
 /view/
+<<<<<<< HEAD
 /component/
 /connectDB/
 >>>>>>> manh
@@ -12,3 +13,14 @@
 /view/
 =======
 >>>>>>> manh
+=======
+<<<<<<< HEAD
+/entity/
+/dao/
+=======
+/dao/
+/entity/
+>>>>>>> hoang1
+/test/
+/controller/
+>>>>>>> 63cb9f6673a338e071aada73b1962fb03d5703b1
