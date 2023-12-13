@@ -60,6 +60,8 @@ public class MainFrame {
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
 	
+	public static String PdfPath = "";
+	
 	public JFrame frame;
 	private JPanel pnlNhanVien;
 	private JPanel pnlThongKe;
@@ -139,6 +141,7 @@ public class MainFrame {
 	 * @throws Exception 
 	 */
 	private void initialize() throws Exception {
+		
 		
 		
 		frame = new JFrame();
@@ -333,23 +336,34 @@ public class MainFrame {
 		PnlThongKe pnlThongKeContent = new PnlThongKe();
 		pnlContent.add(pnlThongKeContent, "Thong Ke");
 		
+		System.out.println("Thong Ke");
+		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
 		
+		System.out.println("Tra Hang");
+		
 		PnlNhanVien pnlNhanVienContent = new PnlNhanVien();
 		pnlContent.add(pnlNhanVienContent, "Nhan Vien");
-		
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
+		
+		System.out.println("Nha Cung Cap");
 		
 		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 
+		System.out.println("Ban Hang");
+		
 		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
 		pnlContent.add(pnlKhachHangContent, "Khach Hang");
 		
+		System.out.println("Khach Hang");
+		
 		PnLSanPham pnlSanPhamContent = new PnLSanPham();
 		pnlContent.add(pnlSanPhamContent, "San Pham");
+		
+		System.out.println("San Pham");
 		
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
@@ -384,7 +398,18 @@ public class MainFrame {
 		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
+		SetPDFPath();
 		
+	}
+	private void SetPDFPath() {
+		// TODO Auto-generated method stub
+		String path = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    	String []path1 = path.split("/");
+    	String finPath = "";
+    	for (int i = 0 ; i < path1.length - 1; i++) {
+    		finPath += path1[i] + "/";
+    	}
+    	PdfPath = finPath + "/pdf";
 	}
 	// Thêm phương thức kiểm tra quyền truy cập
 	private void checkAccessPermission() {

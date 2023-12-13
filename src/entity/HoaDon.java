@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -36,8 +37,8 @@ public class HoaDon {
 	
 	
 	public HoaDon(String maHD, LocalDateTime ngayLapHD, NhanVien nhanVien, KhachHang khachHang, float khuyenMai,
-			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
-		this.maHD = maHD;
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) throws Exception {
+		this.setMaHD(maHD);
 		try {
 			this.setNgayLapHD(ngayLapHD);
 		} catch (Exception e) {
@@ -50,9 +51,10 @@ public class HoaDon {
 		this.setTienKhachDua(tienKhachDua);
 		this.setDsCTHD(dsCTHD);
 	}
+	
 	public HoaDon(String maHD, LocalDateTime ngayLapHD, NhanVien nhanVien, KhachHang khachHang,
-			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
-		this.maHD = maHD;
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) throws Exception {
+		this.setMaHD(maHD);;
 		try {
 			this.setNgayLapHD(ngayLapHD);
 		} catch (Exception e) {
@@ -66,8 +68,8 @@ public class HoaDon {
 		this.setDsCTHD(dsCTHD);
 	}
 	public HoaDon(String maHD, NhanVien nhanVien, KhachHang khachHang,
-			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) {
-		this.maHD = maHD;
+			double tienKhachDua, ArrayList<ChiTietHoaDon> dsCTHD) throws Exception {
+		this.setMaHD(maHD);;
 		try {
 			this.setNgayLapHD(LocalDateTime.now());
 		} catch (Exception e) {
@@ -101,6 +103,15 @@ public class HoaDon {
 	}
 	public String getMaHD() {
 		return maHD;
+	}
+	private void setMaHD(String maHD) throws Exception {
+		String pattern = "HD[0-9]{8}$";
+		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		boolean check = p.matcher(maHD).find();
+		if (!check)
+			throw new Exception("Mã hóa đơn không đúng định dạng");
+		else
+			this.maHD = maHD;
 	}
 	public LocalDateTime getNgayLapHD() {
 		return ngayLapHD;
@@ -292,7 +303,7 @@ public class HoaDon {
 		threeColTable41.addCell(ToPDFController.getHeaderLeftTextCellValue("Khuyễn mãi:").setTextAlignment(TextAlignment.CENTER));
 		threeColTable41.addCell(
 				ToPDFController.getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format(
-						this.TinhTongKhuyenMai())).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
+						this.TinhGTKhuyenMai())).setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
 		document.add(threeColTable41);
 		
 		Table threeColTable5 = new Table(threeColumnWidth);
@@ -351,7 +362,7 @@ public class HoaDon {
 	}
 	
 	public double TinhTongTien() {
-		return TinhThanhTien() - TinhTongKhuyenMai();
+		return TinhThanhTien() - TinhGTKhuyenMai();
 	}
 	public double TinhThanhTien() {
 		double total = 0;
@@ -360,13 +371,7 @@ public class HoaDon {
 		}
 		return total;
 	}
-	public double TinhTienTraLai(double tienNhap) {
-		//Tiền nhập có cần phải lưu hay không 
-//		Liên quan thiết kế sql nên cần trả lời đúng :v
-//		Nhớ nhắn lên zalo nếu đã đọc đến phần này
-		return 0;
-	}
-	public int soLuongSP() {
+	public int TinhSoLuongSP() {
 		// ? phuong thuc tinh tong so luong san pham cua 1 hoa don
 		int soLuong = 0;
 		for (ChiTietHoaDon x : dsCTHD) {
@@ -374,7 +379,7 @@ public class HoaDon {
 		}
 		return soLuong;
 	}
-	public double TinhTongKhuyenMai() {
+	public double TinhGTKhuyenMai() {
 		//phuong thuc tinh tong khuyen mai
 		return TinhThanhTien() * khuyenMai;
 	}

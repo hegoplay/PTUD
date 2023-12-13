@@ -66,7 +66,7 @@ public class HoaDonDAO {
 	    PreparedStatement statement2 = null;
 
 	    try {
-	        String sql1 = "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon, ghiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	        String sql1 = "INSERT INTO HoaDon (maHD, ngayLapHD, maNV, maKH, coKhuyenMai, tienKhachDua, tongHoaDon) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	        statement1 = con.prepareStatement(sql1);
 	        statement1.setString(1, hdon.getMaHD());
 	        statement1.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
@@ -75,6 +75,7 @@ public class HoaDonDAO {
 	        statement1.setFloat(5, hdon.getKhuyenMai());
 	        statement1.setDouble(6, hdon.getTienKhachDua());
 	        statement1.setDouble(7, hdon.TinhTongTien());
+	        System.out.println(hdon.TinhTongTien());
 	        statement1.executeUpdate();
 	        // Lấy maHD vừa được tạo
 	        String maHD = hdon.getMaHD();
@@ -217,7 +218,7 @@ public class HoaDonDAO {
 	    return new ArrayList<>(mapChiTietHoaDon.values());
 	}
 	
-	public static HoaDon GetHoaDon(String maHD) {
+	public static HoaDon GetHoaDon(String maHD) throws Exception {
 		HoaDon hd = null;
 		try {
 			Connection con = ConnectDB.getConection();
@@ -401,7 +402,7 @@ public class HoaDonDAO {
 				float khuyenMai = rs.getFloat(5);
 				double tienKhachDua = rs.getDouble(6);
 				NhanVien nv = NhanVienDAO.getNhanVien(maNV);
-				KhachHang kh = KhachHangDAO.getKhachHang(maKH);
+				KhachHang kh = new KhachHang(maKH);
 				ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
 				hd = new HoaDon(maHD, ngayLapHD, nv, kh, khuyenMai,tienKhachDua, list);
 				res.add(hd);

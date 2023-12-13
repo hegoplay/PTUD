@@ -94,6 +94,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
     private DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
     private double tienTraLai =0;
     String userLogin = "admin";
+	private float km;
 	/**
 	 * Create the panel.
 	 */
@@ -551,14 +552,14 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		else if(o.equals(btnXuat)) {
 			try {
 				HoaDon hoad = getThongTinCreateHD();
-				hd.ThemHD(hoad);
+				HoaDonDAO.ThemHD(hoad);
 				JOptionPane.showMessageDialog(this, "Lập hóa đơn thành công", "Thông báo thành công",
 						JOptionPane.OK_OPTION);
 				lamMoi();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-	            JOptionPane.showMessageDialog(null, "Lỗi khi thêm và xuất hóa đơn!");
+	           JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		}
 		else if(o.equals(btnLamMoi)) {
@@ -596,14 +597,10 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 
 	private ArrayList<ChiTietHoaDon> taoDSChiTietHD() throws NumberFormatException, Exception {
 		ArrayList<ChiTietHoaDon> ds = new ArrayList<ChiTietHoaDon>();
-		String maHD = txtMaHD.getText();
 		for (int i = 0; i < table.getRowCount(); i++) {
 			String maSP = table.getValueAt(i, 1).toString();
-			String tenSP = table.getValueAt(i, 2).toString();
-			String donGia = table.getValueAt(i, 3).toString();
 			String soLuong = table.getValueAt(i, 4).toString();
-			String thanhTien = table.getValueAt(i, 5).toString();
-			SanPham newSP = sp.GetSanPham(maSP);
+			SanPham newSP = SanPhamDAO.GetSanPham(maSP);
 			ChiTietHoaDon cthd = new ChiTietHoaDon(newSP, Integer.parseInt(soLuong));
 			ds.add(cthd);
 
@@ -617,15 +614,22 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		HoaDon newHoaDon = null;
 	    String maHD = txtMaHD.getText().trim();
 	    
+	    ArrayList<ChiTietHoaDon> dsCTHD =taoDSChiTietHD();
+	    
+	    if (dsCTHD.size()==0) {
+	    	throw new Exception("Hóa đơn không được rỗng");
+	    }
+	    
         LocalDateTime ngayLapHD =LocalDateTime.now();
 
-	    String tenNV = txtNV.getText();    
-	    String maNV = MainFrame.nv.getMaNV();
-	    NhanVien newNv =nv.getNhanVien(maNV); 
 
 	    String sdt = txtTim.getText().trim();
-	    String maKH = kh.getKHBySDT(sdt).getMaKH(); 
-	    KhachHang newKh = kh.getKhachHang(maKH);
+//	    cái này phải tìm thấy số điện thoại của khách hàng
+	    if(sdt.equalsIgnoreCase("")) {
+	    	throw new Exception("Nhân viên phải nhập số điện thoại của khách hàng");
+	    }
+	    String maKH = KhachHangDAO.getKHBySDT(sdt).getMaKH(); 
+	    KhachHang newKh = KhachHangDAO.getKhachHang(maKH);
 
         String tongCongStr = lblTongCongVND.getText();
         String tongCong = tongCongStr.replaceAll("[^0-9]", "");
@@ -634,21 +638,17 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	    String khuyenMaiStr = lblKMVND.getText();
 
         // Loại bỏ các ký tự không phải số từ chuỗi
-        String khuyenMai = khuyenMaiStr.replaceAll("[^0-9]", "");
-        double gtKhuyenMai = Double.parseDouble(khuyenMai);
-        float km = (float) (gtKhuyenMai/gtTongCong);
-        
-
         
 	    String tienDuaStr = txtTienDua.getText();
 
         String td = tienDuaStr.replaceAll("[^0-9]", "");
+        if (td.compareToIgnoreCase("") == 0) {
+        	throw new Exception("Tiền đưa không được rỗng");
+        }
 	    double tienDua = Double.parseDouble( td );
 
-	    String ghiChu = txtGhiChu.getText();
-	    ArrayList<ChiTietHoaDon> dsCTHD =taoDSChiTietHD();
 
-	    newHoaDon = new HoaDon(maHD, ngayLapHD, newNv, newKh, km, tienDua, dsCTHD);
+	    newHoaDon = new HoaDon(maHD, ngayLapHD, MainFrame.nv, newKh, km, tienDua, dsCTHD);
 	    return newHoaDon;
 	}
 
@@ -712,7 +712,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	        return;
 	    }
 
-	    SanPham sanPham = sp.GetSanPham(maSP);
+	    SanPham sanPham = SanPhamDAO.GetSanPham(maSP);
 
 	    if (sanPham != null) {
 	        // Lấy thông tin sản phẩm
@@ -786,10 +786,15 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	private void timSDT() {
 		// TODO Auto-generated method stub
 		String sdt = txtTim.getText().trim();
-		String tenKHTimDuoc = KhachHangDAO.getKHBySDT(sdt).getTenKH();
+		KhachHang kh = KhachHangDAO.getKHBySDT(sdt);
+		if(kh==null) {
+			JOptionPane.showMessageDialog(this, "Khách hàng không tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		String tenKHTimDuoc = kh.getTenKH();
 	    if (tenKHTimDuoc.isEmpty()) {
 	        // Số điện thoại không hợp lệ hoặc không tồn tại 
-	        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ hoặc không tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+	        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ ", "Thông báo", JOptionPane.WARNING_MESSAGE);
 	    } else {
 	        txtKH.setText(tenKHTimDuoc);
 	    }
@@ -810,7 +815,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	        tongCong += thanhTien;
 	    }
 
-	    float km = 0;
+	    km = 0;
 	    double tongTien = tongCong;
 
 	    if (tongCong >= 1500000) {

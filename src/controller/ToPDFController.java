@@ -322,7 +322,7 @@ public class ToPDFController {
 				getHeaderLeftTextCell("Đã bán").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
 		sixColTable1.addCell(
 				getHeaderLeftTextCell("Nhập mới").setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER));
-		sixColTable1.addCell(getHeaderRightTextCell("Doanh Thu").setFontColor(Color.WHITE));
+		sixColTable1.addCell(getHeaderRightTextCell("Còn lại").setFontColor(Color.WHITE));
 
 		document.add(sixColTable1);
 

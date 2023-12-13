@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import component.TblSPTraHang;
 import controller.ToPDFController;
 import dao.HoaDonDAO;
+import dao.SanPhamDAO;
 import dao.TraHangDAO;
 import entity.ChiTietHoaDon;
 import entity.ChiTietTraHang;
@@ -45,6 +46,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -512,8 +514,10 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 					throw new Exception("Chưa có phiếu trả hàng");
 				}
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");
-
+				
+				
 				int userSelection = fileChooser.showSaveDialog(this);
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File fileToSave = fileChooser.getSelectedFile();
@@ -598,7 +602,10 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 
 		for (int i : row) {
 			if (hd.getDsCTHD().get(i).getSoLuong() < slMuonTra) {
-				throw new Exception("Số lượng muốn trả lớn hơn số lượng hóa đơn có");
+				throw new Exception("Số lượng hóa đơn hiện có lớn hơn hoặc bằng số lượng sản phẩm muốn trả về");
+			}
+			if(slMuonTra + hd.getDsCTHD().get(i).getSanPham().getSlTonKho() > 100) {
+				throw new Exception("Số lượng sản phẩm muốn trả về kho bị quá tải");
 			}
 			SanPham sp = new SanPham(hd.getDsCTHD().get(i).getSanPham().getMaSP());
 			// kiem tra xem ctth co chua
@@ -607,8 +614,6 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				ChiTietHoaDon cthd = hd.getDsCTHD().get(i);
 				ChiTietTraHang chiTietTraHang = new ChiTietTraHang(cthd.getSanPham(), slMuonTra);
 				pth.ThemCTTH(chiTietTraHang);
-//				tblCTTTTraHang.addRow(String.format("%03d", tblCTTTTraHang.getModel().getColumnCount()),
-//						cthd.getSanPham().getMaSP(), cthd.getSanPham().getTenSP(), i, slMuonTra, i);
 
 			} else {
 				// tang so luong san pham muon tra
@@ -642,7 +647,7 @@ public class PnlTraHang extends JPanel implements ActionListener, KeyListener {
 				lblNgayHD.setText(hd.getNgayLapHD().format(DateTimeFormatter.ofPattern("dd/MM/yyyyy")));
 				txtMaPhieu.setText("TH" + txtMaHD.getText().substring(2));
 				lblValueTongCong.setText(formatter.format(hd.TinhThanhTien()) + "VNĐ");
-				lblValueKM.setText("-" + formatter.format(hd.TinhTongKhuyenMai()) + "VNĐ");
+				lblValueKM.setText("-" + formatter.format(hd.TinhGTKhuyenMai()) + "VNĐ");
 				lblValueTongTien.setText(formatter.format(hd.TinhTongTien()) + "VNĐ");
 			}
 
