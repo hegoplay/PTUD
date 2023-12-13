@@ -142,7 +142,25 @@ public class NhaCCDAO {
 	    // Format the new ID with leading zeros
 	    return String.format("NCC%07d", soLuong);
 	}
+	public static String getMaNCCFromTenNCC(String selectedItem) {
+		String maNCC = null;
+        try {
+            Connection con = ConnectDB.getConection();
+            String sql = "SELECT MaNCC FROM NhaCC WHERE TenNCC = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, selectedItem);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                maNCC = rs.getString("MaNCC");
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maNCC;
+    }
+	}
 
 
 
-}
+
