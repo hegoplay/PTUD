@@ -176,7 +176,9 @@ public class PnlDangNhap extends JFrame {
 		lblQuenMK.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Vui lòng liên hệ người quản lí để khôi phục lại mật khẩu!\nHotline: 0782505434", "Quên mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+//				System.out.println("1");
+				PnlKhoiPhucMK pnlKhoiPhucMK = new PnlKhoiPhucMK();
+				pnlKhoiPhucMK.setVisible(true);
 			}
 		});
 		

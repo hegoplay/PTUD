@@ -44,5 +44,7 @@
 	<classpathentry kind="lib" path="lib/JavaFx/javafx-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/orsonpdf-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="lib/javax.activation-1.2.0.redhat-00002.jar"/>
+	<classpathentry kind="lib" path="lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
