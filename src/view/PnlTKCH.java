@@ -3,6 +3,7 @@ package view;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
@@ -66,7 +67,6 @@ public class PnlTKCH extends JPanel implements ActionListener {
 	private JPanel pnlTables;
 	private ArrayList<HoaDon> hdList;
 	private ArrayList<PhieuTraHang> pthList;
-	private int type;
 	private JFreeChart lineChart;
 	private ArrayList<Entry<String, Integer>> lists;
 	private JButton btnXBC;
@@ -176,12 +176,10 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		pnlTables.removeAll();
 		startDay = LocalDateTime.now().with(LocalTime.MIDNIGHT);
 		endDay = LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT);
-		type =0;
 		switch ((String) cmbDay.getSelectedItem()) {
 			case "Tháng": {
 				startDay = startDay.withDayOfMonth(1);
 				endDay = startDay.plusMonths(1);
-				type = 1;
 				timeTitle = "Ngày";
 				break;
 			}
@@ -451,6 +449,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 						lineChart, 
 						barChart);
 				}
+				JOptionPane.showMessageDialog(this, "Xuất file thành công");
 			} catch (NumberFormatException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

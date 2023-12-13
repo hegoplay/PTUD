@@ -1,4 +1,7 @@
 /view/
-/entity/
+/component/
+/connectDB/
+/controller/
 /dao/
+/entity/
 /test/
