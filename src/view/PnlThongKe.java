@@ -27,9 +27,8 @@ public class PnlThongKe extends JPanel {
 	
  	/**
 	 * Create the panel.
- 	 * @throws Exception 
 	 */
-	public PnlThongKe() throws Exception {
+	public PnlThongKe() {
 		setBackground(new Color(111, 168, 220));
 		setLayout(new BorderLayout(0, 0));
 		

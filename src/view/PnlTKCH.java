@@ -3,6 +3,7 @@ package view;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
@@ -66,7 +67,6 @@ public class PnlTKCH extends JPanel implements ActionListener {
 	private JPanel pnlTables;
 	private ArrayList<HoaDon> hdList;
 	private ArrayList<PhieuTraHang> pthList;
-	private int type;
 	private JFreeChart lineChart;
 	private ArrayList<Entry<String, Integer>> lists;
 	private JButton btnXBC;
@@ -74,9 +74,8 @@ public class PnlTKCH extends JPanel implements ActionListener {
 
 	/**
 	 * Create the panel.
-	 * @throws Exception 
 	 */
-	public PnlTKCH() throws Exception {
+	public PnlTKCH() {
 		setBackground(MainFrame.clrTheme);
 		setBorder(new EmptyBorder(10, 30, 10, 30));
 		setLayout(new BorderLayout(0, 0));
@@ -172,23 +171,20 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		btnXBC.addActionListener(this);
 	}
 
-	private void LoadData() throws Exception {
+	private void LoadData() {
 		String timeTitle = "Giờ";
 		pnlTables.removeAll();
 		startDay = LocalDateTime.now().with(LocalTime.MIDNIGHT);
 		endDay = LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT);
-		type =0;
 		switch ((String) cmbDay.getSelectedItem()) {
 			case "Tháng": {
 				startDay = startDay.withDayOfMonth(1);
 				endDay = startDay.plusMonths(1);
-				type = 1;
 				timeTitle = "Ngày";
 				break;
 			}
 			case "Kỳ": {
 				startDay = startDay.withDayOfYear(1);
-				System.out.println(startDay);
 				endDay = startDay;
 				while (endDay.isBefore(LocalDateTime.now())) {
 					endDay = endDay.plusMonths(3);
@@ -206,10 +202,10 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		}
 		hdList = HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate());
 		pthList = TraHangDAO.GetPTHInDate(startDay.toLocalDate(), endDay.toLocalDate());
-
 		double tongTongTien = 0;
 		double tongTienHoan = 0;
 		double tongTienGoc = 0;
+		double tongTienSPPTH = 0; //Tổng tiền sản phẩm phải trả
 		for (HoaDon hd : hdList) {
 			tongTongTien += hd.TinhTongTien();
 			tongTienGoc += hd.TinhTongTienGoc();
@@ -217,26 +213,29 @@ public class PnlTKCH extends JPanel implements ActionListener {
 
 		for (PhieuTraHang pth : pthList) {
 			tongTienHoan += pth.TinhTienTra();
+			tongTienSPPTH += pth.TinhTongTienGoc();
 		}
 
-		lblValueDoanhThu.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienHoan));
-		lblValueLoiNhuan.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienGoc - tongTienHoan));
+		lblValueDoanhThu.setText(new DecimalFormat("###,###").format(tongTongTien));
+		lblValueLoiNhuan.setText(new DecimalFormat("###,###").format(tongTongTien - tongTienGoc));
 		lblValueDoanhSo.setText(HoaDonDAO.GetHoaDonInDate(startDay.toLocalDate(), endDay.toLocalDate()).size() + "");
 
 		Map<String,Integer> SPMap = new TreeMap<>();
-
+		
 		
 		for (HoaDon hd : hdList) {
 			for (ChiTietHoaDon cthd : hd.getDsCTHD()) {
-				if (SPMap.containsKey(cthd.getSanPham().getMaSP())) {
-					SPMap.replace(cthd.getSanPham().getMaSP(),
-							SPMap.get(cthd.getSanPham().getMaSP()) + cthd.getSoLuong());
+				Integer cnt = SPMap.get(cthd.getSanPham().getMaSP());
+				if (cnt!=null) {
+					SPMap.put(cthd.getSanPham().getMaSP(),cnt + cthd.getSoLuong());
 				} else {
 					SPMap.put(cthd.getSanPham().getMaSP(), cthd.getSoLuong());
 				}
 				
 			}
 		}
+		
+		
 		
 		lists = new ArrayList<Map.Entry<String, Integer>>();
 		
@@ -253,7 +252,6 @@ public class PnlTKCH extends JPanel implements ActionListener {
 			}
 			
 		});
-		
 
 // Xu ly du lieu tren dataset		
 
@@ -292,7 +290,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 		return dataset;
 	}
 	
-	private XYDataset createLineDataset() throws Exception {
+	private XYDataset createLineDataset() {
 		final String soLuongtxt = "Số lượng";
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries series1 = new XYSeries("");
@@ -307,12 +305,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 				for (HoaDon hd : hdList) {
 					if (hd.getNgayLapHD().isAfter(startDay.plusHours(i)) && 
 							hd.getNgayLapHD().isBefore(startDay.plusHours(i+step))) {
-						try {
-							res += hd.TinhTongTien();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						res += hd.TinhTongTien();
 					}
 				}
 				series1.add(i+step, res);
@@ -321,12 +314,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 					if (hd.getNgayLapHD().isAfter(startDay.minusDays(1).plusHours(i)) && 
 							hd.getNgayLapHD().isBefore(startDay.minusDays(1).plusHours(i+step))) {
 						
-						try {
-							res += hd.TinhTongTien();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						res += hd.TinhTongTien();
 					}
 				}
 				series2.add(i+step, res);
@@ -438,16 +426,12 @@ public class PnlTKCH extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == cmbDay) {
-			try {
-				LoadData();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			LoadData();
 		}
 		if (e.getSource() == btnXBC) {
 			try {
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
 				
 				int userSelection = fileChooser.showSaveDialog(this);
@@ -465,6 +449,7 @@ public class PnlTKCH extends JPanel implements ActionListener {
 						lineChart, 
 						barChart);
 				}
+				JOptionPane.showMessageDialog(this, "Xuất file thành công");
 			} catch (NumberFormatException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

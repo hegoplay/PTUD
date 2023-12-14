@@ -194,4 +194,9 @@ public class NhanVien {
                 + dangLamViec + ", cuaHangQL=" + cuaHangQL + "]";
     }
 
+	public String getMaNhanVien() {
+	    return "NhanVien001";
+	}
+
+
 }

@@ -24,6 +24,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JLabel;
@@ -53,10 +54,12 @@ import dao.KhachHangDAO;
 import dao.NhanVienDAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
+import entity.NhanVien;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
@@ -174,6 +177,7 @@ public class PnlTimHD extends JPanel implements ActionListener{
 		btnLamMoi.setForeground(new Color(255, 255, 255));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBackground(new Color(69, 129, 142));
+		btnLamMoi.setIcon(new ImageIcon(PnlTimHD.class.getResource("/view/icon/refresh_icon.png")));
 		pnlLM.add(btnLamMoi, BorderLayout.CENTER);
 		
 		
@@ -260,6 +264,11 @@ public class PnlTimHD extends JPanel implements ActionListener{
         dateChooser.setDate(null);
         
         btnLamMoi.addActionListener(this);
+        
+
+
+        
+        
  //Xử lý txtMaHD 
 		txtMaHD.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -293,85 +302,96 @@ public class PnlTimHD extends JPanel implements ActionListener{
 
 				// Đặt sorter cho bảng
 				table_1.setRowSorter(sorter);
-			}
-		});
-        
-//Xử lý txtMaKH	
-        txtKH.getDocument().addDocumentListener(new DocumentListener() {
-			
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				findData();
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				findData();
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				findData();
-			}
-
-			private void findData() {
-				String maKH = txtKH.getText().trim();
-				khachHang = new KhachHangDAO();
-				String tenKH = khachHang.getKhachHang(maKH).getTenKH();
-				DefaultTableModel model = (DefaultTableModel) table_1.getModel();
-				// Tạo một bộ lọc để lấy các dòng có giá trị maNV trùng với text
-				RowFilter<Object, Object> filter = RowFilter.regexFilter(tenKH, 2);
-
-				// Tạo một sorter để sắp xếp lại các dòng
-				TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
-				sorter.setRowFilter(filter);
-
-				// Đặt sorter cho bảng
-				table_1.setRowSorter(sorter);
 				
 			}
 		});
-// Xử lí txtNV
+
+// Xử lý txtMaKH
+		txtKH.getDocument().addDocumentListener(new DocumentListener() {
+
+		    @Override
+		    public void removeUpdate(DocumentEvent e) {
+		        findData();
+		    }
+
+		    @Override
+		    public void insertUpdate(DocumentEvent e) {
+		        findData();
+		    }
+
+		    @Override
+		    public void changedUpdate(DocumentEvent e) {
+		        findData();
+		    }
+
+		    private void findData() {
+		        String maKH = txtKH.getText().trim();
+
+		        // Lấy tên khách hàng từ database
+		        String tenKH = KhachHangDAO.getKhachHang(maKH).getTenKH();
+
+		        DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+
+//		        Tìm cột "Tên KH" bằng với tênKH
+		        RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
+		            public boolean include(Entry<? extends Object, ? extends Object> entry) {
+		                String tenKHCot = entry.getStringValue(2); 
+		                return tenKHCot.contains(tenKH);
+		            }
+		        };
+
+		        // Tạo một sorter để sắp xếp lại các dòng
+		        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		        sorter.setRowFilter(filter);
+
+		        // Đặt sorter cho bảng
+		        table_1.setRowSorter(sorter);
+		        
+		    }
+		});
+ 
+// Xử lý txtNV
 		txtNV.getDocument().addDocumentListener(new DocumentListener() {
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				findData();
+		    @Override
+		    public void removeUpdate(DocumentEvent e) {
+		        findData();
+		    }
 
-			}
+		    @Override
+		    public void changedUpdate(DocumentEvent e) {
+		        findData();
+		    }
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				findData();
+		    @Override
+		    public void insertUpdate(DocumentEvent e) {
+		        findData();
+		    }
 
-			}
+		    private void findData() {
+		        String maNV = txtNV.getText().trim();
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			private void findData() {
-				String maNV = txtNV.getText().trim();
-				nhanVien = new NhanVienDAO();
-				String tenNV = nhanVien.getTenNVByMaNV(maNV);
-				DefaultTableModel model = (DefaultTableModel) table_1.getModel();
-				// Tạo một bộ lọc để lấy các dòng có giá trị maNV trùng với text
-				RowFilter<Object, Object> filter = RowFilter.regexFilter(maNV, 3);
+		        // Lấy tên nhân viên từ database
+		        String tenNV = NhanVienDAO.getNhanVien(maNV).getTen();
+		        
+		        DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 
-				// Tạo một sorter để sắp xếp lại các dòng
-				TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
-				sorter.setRowFilter(filter);
+		        // Tìm cột "Tên NV" bằng với tenNV
+		        RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
+		            public boolean include(Entry<? extends Object, ? extends Object> entry) {
+		                String tenNVCot = entry.getStringValue(3); 
+		                return tenNVCot.contains(tenNV);
+		            }
+		        };
+		        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		        sorter.setRowFilter(filter);
+		        table_1.setRowSorter(sorter);
+		        
+		    }
+		});
 
-				// Đặt sorter cho bảng
-				table_1.setRowSorter(sorter);
-			}
-		});   
 		
-//// Xử lý lọc bằng ngày tháng:
+// Xử lý lọc bằng ngày tháng:
 	
 	dateChooser.addPropertyChangeListener(new PropertyChangeListener() {
 	    @Override
@@ -436,6 +456,7 @@ public class PnlTimHD extends JPanel implements ActionListener{
         });
 	}
 	
+	
 // load danh sách hóa đơn lên bảng hóa đơn	
 	private void updateDSHDTable(ArrayList<HoaDon> dsHoaDon) throws Exception {
 	    DefaultTableModel model = (DefaultTableModel) table_1.getModel();
@@ -458,10 +479,9 @@ public class PnlTimHD extends JPanel implements ActionListener{
 	                hd.getKhachHang().getTenKH(),
 	                hd.getNhanVien().getTen(),
 	                formattedNgayLapHD,
-	                decimalFormat.format(hoaDon.getTongTienByMaHD(hd.getMaHD()) + hd.getKhuyenMai()),
-	                decimalFormat.format(hoaDon.getKhuyenMaiByMaHD(hd.getMaHD())),
-	                decimalFormat.format(hoaDon.getTongTienByMaHD(hd.getMaHD())),
-	                hd.getGhiChu()
+	                decimalFormat.format(HoaDonDAO.getTongTienByMaHD(hd.getMaHD()) + HoaDonDAO.getKhuyenMaiByMaHD(hd.getMaHD())),
+	                decimalFormat.format(HoaDonDAO.getKhuyenMaiByMaHD(hd.getMaHD())),
+	                decimalFormat.format(HoaDonDAO.getTongTienByMaHD(hd.getMaHD()))
 	            });
 	        } else {
 	            // hoadon null
@@ -498,17 +518,17 @@ public class PnlTimHD extends JPanel implements ActionListener{
 
 
 //Xử lý btn Làm mới
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        Object o = e.getSource();
-        if(o.equals(btnLamMoi)) {
-            txtMaHD.setText("");
-            txtNV.setText("");
-
-            txtKH.setText("");
-            comboBox.setSelectedItem("");
-            dateChooser.setDate(null);
-        }
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o.equals(btnLamMoi)) {
+                txtMaHD.setText("");
+                txtNV.setText("");
+                txtKH.setText("");
+                comboBox.setSelectedItem("");
+                dateChooser.setDate(null);
+		}
+	}
 
 }
