@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import component.Nav;
 import controller.ChuyenManHinhController;
 
-public class pnlQLBanHang extends JPanel {
+public class PnlQLBanHang extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class pnlQLBanHang extends JPanel {
 	 * Create the panel.
 	 * @throws Exception 
 	 */
-	public pnlQLBanHang() throws Exception {
+	public PnlQLBanHang() throws Exception {
 		setBackground(MainFrame.clrTheme);
 		setLayout(new BorderLayout(0, 0));
 

@@ -320,7 +320,8 @@ public class MainFrame {
 		pnlGDChinhContent = new PnlGDChinh();
 		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
 		
-		pnlQLBanHang pnlBanHangContent = new pnlQLBanHang();
+//		pnlQLBanHang pnlBanHangContent = new pnlQLBanHang();
+		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
 		
 		lblTitle = new JLabel("New label");
