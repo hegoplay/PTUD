@@ -34,7 +34,7 @@ public class NhaCCDAO {
 		}
 		return ncc;
 	}
-	public ArrayList<NhaCC> getAllNCC() {
+	public static ArrayList<NhaCC> getAllNCC() {
 		ArrayList<NhaCC> dsNCC = new ArrayList<NhaCC>();
 		try {
 			Connection con = ConnectDB.getConection();
@@ -43,10 +43,10 @@ public class NhaCCDAO {
 			ResultSet rs = statement.executeQuery();
 			while (rs.next())
 			{
-				String maNCC = rs.getString("maNCC");
-				String tenNCC = rs.getString("tenNCC");
-				String diachi = rs.getString("diaChi");
-				String maQuocGia = rs.getString("maQuocGia");
+				String maNCC = rs.getString(1);
+				String tenNCC = rs.getString(2);
+				String diachi = rs.getString(3);
+				String maQuocGia = rs.getString(4);
 				NhaCC ncc = new NhaCC(maNCC, tenNCC, diachi, maQuocGia);
 				dsNCC.add(ncc);
 
@@ -142,7 +142,25 @@ public class NhaCCDAO {
 	    // Format the new ID with leading zeros
 	    return String.format("NCC%07d", soLuong);
 	}
+	public static String getMaNCCFromTenNCC(String selectedItem) {
+		String maNCC = null;
+        try {
+            Connection con = ConnectDB.getConection();
+            String sql = "SELECT maNCC FROM NhaCC WHERE tenNCC = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, selectedItem);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                maNCC = rs.getString("maNCC");
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maNCC;
+    }
+	}
 
 
 
-}
+

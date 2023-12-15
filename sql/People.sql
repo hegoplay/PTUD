@@ -73,6 +73,10 @@ begin
 end;
 
 
+select * from HoaDon hd 
+		inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon
+		inner join SanPham sp on sp.maSP = ct.maSP
+delete from HoaDon where maHD = 'HD00000006'
 go
 
 DECLARE @startDate datetime = GETDATE() - 3;
@@ -85,3 +89,7 @@ select sum(giaNhap * soLuong) from HoaDon hd
 inner join ChiTietHoaDon ct on hd.maHD = ct.hoaDon
 inner join SanPham sp on sp.maSP = ct.maSP
 where maNV = 'NV00000003'
+
+select * from NhanVien nv 
+inner join TaiKhoan tk on nv.userName = tk.userName
+where tk.userName = 'hegoplay' and password = 'abc'

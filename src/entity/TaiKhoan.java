@@ -44,7 +44,7 @@ public class TaiKhoan {
 		return nhanVien;
 	}
 	private void setUsername(String username) throws Exception {
-		String pattern = "^[A-Za-z]{6,32}$";
+		String pattern = "^[A-Za-z]{1,32}$";
 		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
 		boolean check = p.matcher(username).find();
 		if (!check) {
@@ -53,15 +53,24 @@ public class TaiKhoan {
 		this.username = username;
 	}
 	private void setPassword(String password) throws Exception {
-		String pattern = "^[a-zA-z0-9]*[{}\\[\\]/\\\\+*.0$^|?]+[a-zA-z0-9]*$";
-		Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-		boolean check = p.matcher(password).find();
-		if (!check) {
-			throw new Exception("Mật khẩu thiếu kí tự đặc biệt");
-		}
-		else if(password.length()!=8) {
-			throw new Exception("Mật khẩu phải 8 ký tự");
-		}
+//		Pattern[] inputRegexes = new Pattern[4];
+//		{
+//		    inputRegexes[0] = Pattern.compile(".*[A-Z].*");
+//		    inputRegexes[1] = Pattern.compile(".*[a-z].*");
+//		    inputRegexes[2] = Pattern.compile(".*\\d.*");
+//		    inputRegexes[3] = Pattern.compile("^[a-zA-Z0-9]*$");
+//		}
+//		int i = 0;
+//		for (Pattern pattern : inputRegexes) {
+//			i++;
+//			System.out.println(i);
+//			if (!pattern.matcher(password).matches()) {
+//				throw new Exception("Mật khẩu phải có ký tự hoa, ký tự thường và ký tự số và không ký tự đặc biệt");
+//			}
+//		}
+//		if(password.length()<8) {
+//			throw new Exception("Mật khẩu phải ít nhất 8 ký tự");
+//		}
 		this.password = password;
 	}
 	private void setNgayLapTK(LocalDate ngayLapTK) throws Exception {

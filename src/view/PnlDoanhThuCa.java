@@ -115,6 +115,7 @@ import entity.NhanVien;
 import java.awt.FlowLayout;
 import java.awt.CardLayout;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.BoxLayout;
@@ -132,8 +133,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 	private String maNVLogin = nv.getMaNVbyUserName(currentUsername);
 	private DecimalFormat decimalFormat = new DecimalFormat("###,###,### VNĐ");
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private NhanVien nhanVienLogin = nv.getNhanVien(maNVLogin); 
-	private String maNV = "NV00000003";
+	private String maNV = MainFrame.nv.getMaNV();
 
 	private static final long serialVersionUID = 1L;
 
@@ -215,10 +215,10 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		pnlBnt.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	
 		btnXuat = new JButton("Xuất file");
-//		btnXuat.setForeground(new Color(255, 255, 255));
 		btnXuat.setForeground(MainFrame.clrLblColor);
 		btnXuat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnXuat.setBackground(MainFrame.clrBtn);
+		btnXuat.setIcon(new ImageIcon(PnlDoanhThuCa.class.getResource("/view/icon/print_icon.png")));
 		pnlBnt.add(btnXuat);
 	
 		
@@ -314,9 +314,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		
 		btnXuat.addActionListener(this);
 		
-		String currentUsername = System.getProperty("user.name");
-//		lblTenNV.setText(currentUsername);
-		lblNV.setText("Hoàng Thị Mỹ Linh");
+		lblNV.setText(MainFrame.nv.getTen());
 		
 		loadTable();
 //		double tongDT = hdDAO.getDoanhThuNgayTheoMaNV(maNVLogin);
@@ -335,7 +333,6 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		
 	}
 	public void loadTable() throws Exception {
-//		ArrayList<HoaDon> dsHD = hdDAO.getHoaDonByMaNVinToDay(maNVLogin);
 		ArrayList<HoaDon> dsHD = hdDAO.getHoaDonByMaNVinToDay(maNV);
 		ArrayList<ChiTietHoaDon> cthd = hdDAO.getDSCTHDFromList(dsHD);
 		ArrayList<ChiTietHoaDon > ctSPdaban = hdDAO.processDSCTHD(cthd);
@@ -365,7 +362,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		int soLuong = dsHD.size();
 		return soLuong;
 	}
-	public int getTongSoLuongDaBan() {
+	public int getTongSoLuongDaBan() throws Exception {
 		ArrayList<HoaDon> dsHD = hdDAO.getHoaDonByMaNVinToDay(maNV);
 		ArrayList<ChiTietHoaDon> cthd = hdDAO.getDSCTHDFromList(dsHD);
 		ArrayList<ChiTietHoaDon > ctSPdaban = hdDAO.processDSCTHD(cthd);
@@ -380,37 +377,52 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        if(o.equals(btnXuat)) {
-			try {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");
-				fileChooser.setSelectedFile(new File("PhieuThongKe.pdf"));
-				
-				int userSelection = fileChooser.showSaveDialog(this);
-				
-				if (userSelection == JFileChooser.APPROVE_OPTION) {
-					File fileToSave = fileChooser.getSelectedFile();
-					String dt = lblDTVND.getText();
-					String soHD = lblSoHD.getText();
-					String soSP = lblSoSP.getText();
-					xuatDoanhThuCa(fileToSave.getAbsolutePath(), dt, soHD,  soSP, table);
-					JOptionPane.showMessageDialog(this, "Phiếu thống kê đã được xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        if (o.equals(btnXuat)) {
+            try {
+                JFileChooser fileChooser = new JFileChooser();
 
-					}
-				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-		        JOptionPane.showMessageDialog(this, "Lỗi tạo pdf!!");
-			}
+                // Đặt đường dẫn mặc định cho thư mục làm việc
+                fileChooser.setCurrentDirectory(new File("C:\\Users\\Linh\\Desktop\\dsPDF\\phieuTKDTCa"));
+
+                // Đặt tên file mặc định
+                File defaultFile = new File(fileChooser.getCurrentDirectory(), "PhieuThongKe.pdf");
+                fileChooser.setSelectedFile(defaultFile);
+
+                // Hiển thị hộp thoại lựa chọn vị trí lưu trữ
+                int userSelection = fileChooser.showSaveDialog(this);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile();
+
+                    // Kiểm tra xem file đã tồn tại hay chưa
+                    if (fileToSave.exists()) {
+                        int result = JOptionPane.showConfirmDialog(this, "File đã tồn tại. Bạn có muốn ghi đè lên không?",
+                                "Xác nhận ghi đè", JOptionPane.YES_NO_OPTION);
+                        if (result != JOptionPane.YES_OPTION) {
+                            return; // Người dùng không muốn ghi đè, thoát khỏi phương thức
+                        }
+                    }
+
+                    // Tiếp tục với quá trình xuất PDF
+                    String dt = lblDTVND.getText();
+                    String soHD = lblSoHD.getText();
+                    String soSP = lblSoSP.getText();
+                    xuatDoanhThuCa(fileToSave.getAbsolutePath(), dt, soHD, soSP, table);
+                    JOptionPane.showMessageDialog(this, "Phiếu thống kê đã được xuất thành công!", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi tạo pdf!!");
+            }
         }
-		
 	}
 	public static void xuatDoanhThuCa(String path, String dthu,String sHD, String sSP, JTable tableSP) throws IOException {
 		PdfWriter pdfWriter = new PdfWriter(path);
 		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 		pdfDocument.setDefaultPageSize(PageSize.A4);
-		NhanVien nvLogin= MainFrame.getNhanVienLogin();
+		NhanVien nvLogin= MainFrame.nv;
 
 		Document document = new Document(pdfDocument);
 		ImageData imageData = ImageDataFactory.create(MainFrame.class.getResource("/view/icon/shop_logo.png"));
@@ -430,7 +442,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		Border gb = new SolidBorder(Color.GRAY, 2f);
 
 		Table header = new Table(ToPDFController.twoColumnWidth2p1);
-		header.addCell(new Cell().add("PHIẾU THỐNG KÊ DOANH THU TRONG CA LÀM").setFont(ToPDFController.font).setFontSize(20).setBold()
+		header.addCell(new Cell().add("PHIẾU THỐNG KÊ DOANH THU TRONG CA LÀM").setFont(ToPDFController.getFont()).setFontSize(20).setBold()
 				.setBorder(Border.NO_BORDER));
 		Table timeCreate = new Table(ToPDFController.twoColumnWidth);
 		timeCreate
@@ -452,8 +464,8 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		Table twoColTable = new Table(ToPDFController.twoColumnWidth);
 		twoColTable.addCell(ToPDFController.getHeaderLeftTextCell("Tênnhân viên"));		
 		twoColTable.addCell(ToPDFController.getHeaderRightTextCell("Mã nhân viên"));	
-		twoColTable.addCell(ToPDFController.getHeaderLeftTextCellValue(nvLogin.getTen()));
-		twoColTable.addCell(ToPDFController.getHeaderRightTextCellValue(nvLogin.getMaNV()));
+		twoColTable.addCell(ToPDFController.getHeaderLeftTextCellValue(MainFrame.nv.getTen()));
+		twoColTable.addCell(ToPDFController.getHeaderRightTextCellValue(MainFrame.nv.getMaNV()));
 		// hàng 2
 		twoColTable.addCell(ToPDFController.getHeaderLeftTextCell("Doanh thu trong ca:"));
 		twoColTable.addCell(ToPDFController.getHeaderRightTextCell(dthu));

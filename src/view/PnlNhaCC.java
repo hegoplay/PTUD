@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -54,9 +56,9 @@ public class PnlNhaCC extends JPanel {
 		setLayout(null);
 		
 		JLabel lblTitle = new JLabel("NHÀ CUNG CẤP");
-		lblTitle.setBounds(420, 11, 248, 39);
+		lblTitle.setBounds(420, 15, 280, 28);
 		add(lblTitle);
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 32));
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 28));
 		
 		JLabel lblMaNhaCC = new JLabel("Mã Nhà cung cấp:");
 		lblMaNhaCC.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -87,6 +89,14 @@ public class PnlNhaCC extends JPanel {
 		
 		
 		textTenNhaCC = new JTextField();
+		textTenNhaCC.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textDiaChi.requestFocus();
+                }
+			}
+		});
 		textTenNhaCC.setColumns(10);
 		textTenNhaCC.setBounds(766, 56, 263, 29);
 		add(textTenNhaCC);
@@ -97,6 +107,17 @@ public class PnlNhaCC extends JPanel {
 		add(lblDiaChi);
 		
 		textDiaChi = new JTextField();
+		textDiaChi.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textTenNhaCC.requestFocus();
+                }
+				else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textTimNhaCC.requestFocus();
+                }
+			}
+		});
 		textDiaChi.setColumns(10);
 		textDiaChi.setBounds(766, 99, 263, 29);
 		add(textDiaChi);
@@ -119,6 +140,14 @@ public class PnlNhaCC extends JPanel {
 		panel.add(lblTimNCC);
 		
 		textTimNhaCC = new JTextField();
+		textTimNhaCC.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textDiaChi.requestFocus();
+                }
+			}
+		});
 		textTimNhaCC.setColumns(10);
 		textTimNhaCC.setBounds(235, 37, 524, 29);
 		panel.add(textTimNhaCC);
@@ -283,7 +312,7 @@ public class PnlNhaCC extends JPanel {
 		        JOptionPane.showMessageDialog(this, "Thêm mới Nhà cung cấp thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		    } catch (Exception ex) {
 		        // Hiển thị thông báo lỗi
-		        JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+		        JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.INFORMATION_MESSAGE);
 		    }
 		}
 

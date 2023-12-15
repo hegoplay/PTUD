@@ -62,6 +62,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -232,7 +234,6 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		btnTim.addActionListener(this);
 //		JPanel panel = new JPanel();
 //		pnlTitle.add(panel, BorderLayout.CENTER);
-		
 	}
 
 	private void LoadTable() {
@@ -240,19 +241,31 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 		pnlContent.removeAll();
 		pnlContent.repaint();
 		ArrayList<NhanVien> lists = NhanVienDAO.getAllNhanVien();
-		startDay = LocalDate.now();
-		endDay = LocalDate.now().plusDays(1);
-
+		
+		//Tính khoảng ngày cần xử lý
+		startDay = LocalDateTime.now().with(LocalTime.MIDNIGHT).toLocalDate();
+		endDay = LocalDateTime.now().plusDays(1).with(LocalTime.MIDNIGHT).toLocalDate();
 		switch ((String) cmbTKTheo.getSelectedItem()) {
-		case "Tháng": {
-			startDay = startDay.minusMonths(1);
-		}
-		case "Kỳ": {
-			startDay = startDay.minusMonths(3);
-		}
-		case "Năm": {
-			startDay = startDay.minusYears(1);
-		}
+			case "Tháng": {
+				startDay = startDay.withDayOfMonth(1);
+				endDay = startDay.plusMonths(1);
+				break;
+			}
+			case "Kỳ": {
+				startDay = startDay.withDayOfYear(1);
+				System.out.println(startDay);
+				endDay = startDay;
+				while (endDay.isBefore(LocalDate.now())) {
+					endDay = endDay.plusMonths(3);
+				}
+				startDay = endDay.minusMonths(3);
+				break;
+			}
+			case "Năm": {
+				startDay = startDay.withDayOfYear(1);
+				endDay = startDay.plusYears(1);
+				break;
+			}
 		}
 		for (int i = 0; i < lists.size(); i++) {
 			NhanVien nv = lists.get(i);
@@ -300,7 +313,7 @@ public class PnlTKDoanhThu extends JPanel implements ActionListener {
 			try {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Chọn vị trí muốn lưu");   
-				
+				fileChooser.setCurrentDirectory(new File(MainFrame.PdfPath));
 				int userSelection = fileChooser.showSaveDialog(this);
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File fileToSave = fileChooser.getSelectedFile();

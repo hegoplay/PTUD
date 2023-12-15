@@ -30,12 +30,13 @@ import java.awt.Graphics;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.CardLayout;
-import javax.swing.JButton;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class MainFrame {
-	
+//	test
 	
 	public static final Color clrCyan4 = new Color(69, 129, 142);
 	public static final Color clrCyan3 = new Color(118,165,175);
@@ -54,9 +55,12 @@ public class MainFrame {
 	public static final Color clrPnlDTCa = new Color(252, 223, 135);
 	public static final Color clrTableCT = new Color(201, 228, 228);
 	public static final Color clrLblColor = Color.white;
-	public static final Color clrBlack = Color.BLACK;
+	public static final Color clrBlack = Color.BLACK; 
+
 	public static final DateTimeFormatter timeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	public static final DecimalFormat moneyFormatter = new DecimalFormat("###,##0.00");
+	public static final DecimalFormat moneyFormatter =new DecimalFormat("###,###,###");
+	
+	public static String PdfPath = "";
 	
 	public JFrame frame;
 	private JPanel pnlNhanVien;
@@ -68,10 +72,10 @@ public class MainFrame {
 	private JLabel lblThngK;
 	private JLabel lblNhanVien;
 	private JLabel lblNhaCungCap;
+	private JLabel lblKM;
 	private JPanel pnlContent;
 	private JLabel lblTitle;
 	private JLabel lblGDChinh;
-	private JLabel lblBanHang;
 	public static NguoiQuanLy nql;
     public static NhanVien nv;
     PnlGDChinh pnlGDChinhContent;
@@ -80,10 +84,13 @@ public class MainFrame {
 	private JPanel pnlSanPham;
 	private JLabel lblSanPham;
 	private JPanel pnlHoTro;
-	private JLabel lblUser;
-	private JPanel pnlDX;
-	private JPanel pnlBanHang;
+	private JPanel pnlKM;
 	private JButton btnDangXuat;
+	private JPanel pnlBanHang;
+	private JLabel lblBanHang;
+	private JPanel pnlDX;
+//	private final JLabel lblNewLabel;
+	private JLabel lblUser;
 
 	/**
 	 * Launch the application.
@@ -92,17 +99,31 @@ public class MainFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-//                    PnlDangNhap frame = new PnlDangNhap();
-//                    frame.setVisible(true);
+//                    PnlThongKe frame = new PnlThongKe();
+                    PnlDangNhap frame = new PnlDangNhap();
+                    frame.setVisible(true);
 //                    checkAccessPermission();
-                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
-                	window.frame.setVisible(true);
+//                	MainFrame window = new MainFrame(NhanVienDAO.getNhanVien("NV00000001"));
+//                	window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MainFrame window = new MainFrame(null);
+//					
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
@@ -111,7 +132,7 @@ public class MainFrame {
 	 */
 	public MainFrame(NhanVien nv) throws Exception {
 //		nql = (NguoiQuanLy) NhanVienDAO.getNguoiQuanLy("NV00000000");
-		this.nv = nv;
+		MainFrame.nv = nv;
 		
 		initialize();
 		checkAccessPermission();
@@ -122,6 +143,7 @@ public class MainFrame {
 	 * @throws Exception 
 	 */
 	private void initialize() throws Exception {
+		
 		
 		
 		frame = new JFrame();
@@ -140,12 +162,21 @@ public class MainFrame {
 		JPanel pnlLogo = new JPanel();
 		pnlLogo.setBorder(null);
 		pnlLogo.setPreferredSize(new Dimension(173, 64));
+		pnlLogo.setBackground(new Color(58,90,64));
 		pnlNavBar.add(pnlLogo,BorderLayout.NORTH);
 		
-		ImageIcon logo = new ImageIcon(MainFrame.class.getResource("/view/icon/logo.png"));
+		
+		ImageIcon logo = new ImageIcon(MainFrame.class.getResource("/view/icon/logoAM_xoaPhong.png"));//Đừng xóa phần này/ Sửa lại logo Xóa Phong rồi
+		Image originalImage1 = logo.getImage();
+		Image scaledImage1 = originalImage1.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
+		
 		pnlLogo.setLayout(new BorderLayout(0, 0));
-		JLabel lblLogo = new JLabel(logo,JLabel.CENTER);
+		JLabel lblLogo = new JLabel(scaledIcon1,JLabel.CENTER);
 		lblLogo.setLabelFor(pnlLogo);
+		lblLogo.setBackground(new Color(58,90,64));
+//		
+//		
 		pnlLogo.add(lblLogo);
 		
 		
@@ -153,9 +184,10 @@ public class MainFrame {
 		pnlNavLists.setBackground(new Color(58,90,64));
 		pnlNavLists.setBorder(new EmptyBorder(16, 0, 0, 0));
 		pnlNavBar.add(pnlNavLists, BorderLayout.CENTER);
-		pnlNavLists.setLayout(new GridLayout(9, 1, 0, 15));
+		pnlNavLists.setLayout(null);
 		
 		pnlBanHang = new JPanel();
+		pnlBanHang.setBounds(0, 17, 203, 43);
 		pnlBanHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlBanHang);
 		pnlBanHang.setLayout(new BorderLayout(0, 0));
@@ -169,6 +201,7 @@ public class MainFrame {
 		pnlBanHang.add(lblBanHang);
 		
 		pnlKhachHang = new JPanel();
+		pnlKhachHang.setBounds(0, 75, 203, 43);
 		pnlKhachHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlKhachHang);
 		pnlKhachHang.setLayout(new BorderLayout(0, 0));
@@ -182,6 +215,7 @@ public class MainFrame {
 		pnlKhachHang.add(lblKhachHang);
 		
 		pnlSanPham = new JPanel();
+		pnlSanPham.setBounds(0, 133, 203, 43);
 		pnlSanPham.setBackground(clrTheme);
 		pnlNavLists.add(pnlSanPham);
 		pnlSanPham.setLayout(new BorderLayout(0, 0));
@@ -195,6 +229,7 @@ public class MainFrame {
 		pnlSanPham.add(lblSanPham);
 		
 		pnlNhaCungCap = new JPanel();
+		pnlNhaCungCap.setBounds(0, 191, 203, 43);
 		pnlNhaCungCap.setBackground(clrTheme);
 		pnlNavLists.add(pnlNhaCungCap);
 		pnlNhaCungCap.setLayout(new BorderLayout(0, 0));
@@ -208,6 +243,7 @@ public class MainFrame {
 		pnlNhaCungCap.add(lblNhaCungCap);
 		
 		pnlNhanVien = new JPanel();
+		pnlNhanVien.setBounds(0, 249, 203, 43);
 		pnlNhanVien.setBackground(clrTheme);
 		pnlNavLists.add(pnlNhanVien);
 		pnlNhanVien.setLayout(new BorderLayout(0, 0));
@@ -221,6 +257,7 @@ public class MainFrame {
 		pnlNhanVien.add(lblNhanVien);
 		
 		pnlThongKe = new JPanel();
+		pnlThongKe.setBounds(0, 307, 203, 43);
 		pnlThongKe.setBackground(clrTheme);
 		pnlNavLists.add(pnlThongKe);
 		pnlThongKe.setLayout(new BorderLayout(0, 0));
@@ -234,6 +271,7 @@ public class MainFrame {
 		pnlThongKe.add(lblThngK);
 		
 		pnlTraHang = new JPanel();
+		pnlTraHang.setBounds(0, 365, 203, 43);
 		pnlTraHang.setBackground(clrTheme);
 		pnlNavLists.add(pnlTraHang);
 		pnlTraHang.setLayout(new BorderLayout(0, 0));
@@ -246,7 +284,33 @@ public class MainFrame {
 		lblTraHang.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pnlTraHang.add(lblTraHang);
 		
+		pnlKM = new JPanel();
+		pnlKM.setBounds(0, 423, 203, 43);
+		pnlKM.setBackground(clrTheme);
+		pnlNavLists.add(pnlKM);
+		pnlKM.setLayout(new BorderLayout(0, 0));
+		
+		lblKM = new JLabel("Khuyến Mãi");
+		lblKM.setLabelFor(pnlHoTro);
+		lblKM.setHorizontalAlignment(SwingConstants.CENTER);
+		lblKM.setForeground(Color.DARK_GRAY);
+		lblKM.setFont(new Font("Tahoma", Font.BOLD, 18));
+		
+		
+		ImageIcon originalIcon = new ImageIcon(PnlThongKe.class.getResource("/view/icon/icons8-sale-80.png"));//Gắn icon cho btn KM
+		Image originalImage = originalIcon.getImage();
+		Image scaledImage = originalImage.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon = new ImageIcon(scaledImage);
+		lblKM.setIcon(scaledIcon);
+		
+		
+		
+		
+		
+		pnlKM.add(lblKM);
+		
 		pnlHoTro = new JPanel();
+		pnlHoTro.setBounds(0, 481, 203, 43);
 		pnlHoTro.setBackground(clrTheme);
 		pnlNavLists.add(pnlHoTro);
 		pnlHoTro.setLayout(new BorderLayout(0, 0));
@@ -258,6 +322,12 @@ public class MainFrame {
 		lblHoTro.setForeground(Color.DARK_GRAY);
 		lblHoTro.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pnlHoTro.add(lblHoTro);
+		
+//		lblUser.setForeground(new Color(255, 255, 255));
+//		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/profile-user.png")));
+//		lblUser.setFont(new Font("Tahoma", Font.BOLD, 17));
+//		lblUser.setBounds(21, 546, 159, 41);
+//		pnlNavLists.add(lblUser);
 		
 
 		Image imgBG = Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/view/icon/background_img.png"));
@@ -281,25 +351,11 @@ public class MainFrame {
 		pnlNavBar.add(pnlLogout, BorderLayout.SOUTH);
 		pnlLogout.setLayout(new GridLayout(0, 1, 0, 5));
 		
-		lblUser = new JLabel("acc");
+		lblUser = new JLabel(nv.getTen());
 		lblUser.setForeground(new Color(255, 255, 255));
 		lblUser.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/user_circle_M.png")));
 		lblUser.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		pnlLogout.add(lblUser);
-		
-		pnlDX = new JPanel();
-		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
-		pnlLogout.add(pnlDX);
-		pnlDX.setLayout(new BorderLayout(0, 0));
-		pnlDX.setBackground(new Color(58,90,64));
-		
-		btnDangXuat = new JButton("Đăng Xuất");
-		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
-		btnDangXuat.setForeground(new Color(255, 255, 255));
-		btnDangXuat.setBackground(clrRed);
-		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
-		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
-		pnlDX.add(btnDangXuat);
 		
 		pnlContent = new JPanel();
 		pnlCenter.add(pnlContent, BorderLayout.CENTER);
@@ -308,21 +364,38 @@ public class MainFrame {
 		PnlThongKe pnlThongKeContent = new PnlThongKe();
 		pnlContent.add(pnlThongKeContent, "Thong Ke");
 		
+		System.out.println("Thong Ke");
+		
 		PnlTraHang pnlTraHangContent = new PnlTraHang();
 		pnlContent.add(pnlTraHangContent, "Tra Hang");
 		
+		System.out.println("Tra Hang");
+		
 		PnlNhanVien pnlNhanVienContent = new PnlNhanVien();
 		pnlContent.add(pnlNhanVienContent, "Nhan Vien");
-		
 		PnlNhaCC pnlNhaCungCapContent = new PnlNhaCC();
 		pnlContent.add(pnlNhaCungCapContent,"Nha Cung Cap");
 		
-		pnlGDChinhContent = new PnlGDChinh();
-		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
+		System.out.println("Nha Cung Cap");
 		
-//		pnlQLBanHang pnlBanHangContent = new pnlQLBanHang();
 		PnlQLBanHang pnlBanHangContent = new PnlQLBanHang();
 		pnlContent.add(pnlBanHangContent,"Ban Hang");
+
+		System.out.println("Ban Hang");
+		
+		PnlKhachHang pnlKhachHangContent = new PnlKhachHang();
+		pnlContent.add(pnlKhachHangContent, "Khach Hang");
+		
+		System.out.println("Khach Hang");
+		
+		PnLSanPham pnlSanPhamContent = new PnLSanPham();
+		pnlContent.add(pnlSanPhamContent, "San Pham");
+		System.out.println("san pham");
+		PnlKhuyenMai pnlKMContent = new PnlKhuyenMai();
+		pnlContent.add(pnlKMContent,"Khuyen Mai");
+		System.out.println("khuyen mai");
+		pnlGDChinhContent = new PnlGDChinh();
+		pnlContent.add(pnlGDChinhContent,"Giao Dien Chinh");
 		
 		lblTitle = new JLabel("New label");
 		lblTitle.setForeground(Color.WHITE);
@@ -330,10 +403,42 @@ public class MainFrame {
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 60));
 		pnlCenter.add(lblTitle, BorderLayout.NORTH);
 		
+		pnlDX = new JPanel();
+		pnlDX.setBorder(new EmptyBorder(0, 20, 0, 20));
+		pnlLogout.add(pnlDX);
+		pnlDX.setLayout(new BorderLayout(0, 0));
+		pnlDX.setBackground(new Color(58,90,64));
+		
+		btnDangXuat = new JButton("Đăng Xuất");
+		btnDangXuat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.dispose();
+				PnlDangNhap frame = new PnlDangNhap();
+                frame.setVisible(true);
+			}
+		});
+		btnDangXuat.setHorizontalAlignment(SwingConstants.LEFT);
+		btnDangXuat.setForeground(new Color(255, 255, 255));
+		btnDangXuat.setBackground(clrRed);
+		btnDangXuat.setIcon(new ImageIcon(MainFrame.class.getResource("/view/icon/log_out_icon.png")));
+		btnDangXuat.setFont(new Font("Tahoma", Font.BOLD, 17));
+		pnlDX.add(btnDangXuat);
+		
 		lblGDChinh = new JLabel("Giao Diện Chính");
 		
-
+		SetPDFPath();
 		
+	}
+	private void SetPDFPath() {
+		// TODO Auto-generated method stub
+		String path = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    	String []path1 = path.split("/");
+    	String finPath = "";
+    	for (int i = 0 ; i < path1.length - 1; i++) {
+    		finPath += path1[i] + "/";
+    	}
+    	PdfPath = finPath + "/pdf";
 	}
 	// Thêm phương thức kiểm tra quyền truy cập
 	private void checkAccessPermission() {
@@ -350,31 +455,21 @@ public class MainFrame {
 		listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
 		listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
 		listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
-		
 		controller.setEvent(listItem);
-//		
-//	    if (nv != null && nv instanceof NguoiQuanLy) {
-//	        // Hiển thị tất cả chức năng đối với Người Quản Lý
-//	    	listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
-//			listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
-//			listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
-//			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
-//			listItem.add(new Nav("Ho Tro",pnlHoTro,lblHoTro));
-//			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
-//			listItem.add(new Nav("San Pham",pnlSanPham,lblSanPham));
-//			listItem.add(new Nav("Ban Hang", pnlBanHang, lblBanHang));
-//			controller.setEvent(listItem);
-//
-//	        // ...
-//	    }
-	}
+		lblUser.setText(nv.getTen());
+		
+	    if (nv != null && nv instanceof NguoiQuanLy) {
+	        // Hiển thị tất cả chức năng đối với Người Quản Lý
+	    	listItem.add(new Nav("Thong Ke",pnlThongKe,lblThngK));
+			listItem.add(new Nav("Tra Hang",pnlTraHang,lblTraHang));
+			listItem.add(new Nav("Nhan Vien", pnlNhanVien, lblNhanVien));
+			listItem.add(new Nav("Nha Cung Cap",pnlNhaCungCap,lblNhaCungCap));
+			listItem.add(new Nav("Khach Hang",pnlKhachHang,lblKhachHang));
+			listItem.add(new Nav("Khuyen Mai", pnlKM, lblKM));
+			controller.setEvent(listItem);
 
-	public static NguoiQuanLy getNguoiQuanLy() {
-		// TODO Auto-generated method stub
-		return NhanVienDAO.getNguoiQuanLy("NV00000000");
+	        // ...
+	    }
 	}
-	public static NhanVien getNhanVienLogin() {
-		String maNV =  NhanVienDAO.getMaNVbyUserName("linh");
-		return NhanVienDAO.getNhanVien("NV00000003");
-	}
+	
 }

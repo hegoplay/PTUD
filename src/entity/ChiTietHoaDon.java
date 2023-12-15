@@ -28,7 +28,7 @@ public class ChiTietHoaDon {
 		this.soLuong = soLuong;
 	}
 	public double TinhThanhTien() {
-		return sanPham.TinhGiaBan()*soLuong;
+		return this.sanPham.TinhGiaBan()*soLuong;
 	}
 	
 	public double TinhTongThue() {
@@ -63,7 +63,5 @@ public class ChiTietHoaDon {
 	public double TinhTienGoc() {
 		return sanPham.getGiaNhap() * soLuong;
 	}
-	public int setTangSLView(int soLuong) {
-		return soLuong;
-	}
+	
 }
