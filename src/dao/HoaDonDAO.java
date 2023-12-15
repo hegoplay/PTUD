@@ -44,6 +44,7 @@ public class HoaDonDAO {
         	            float khuyenMai = rs.getFloat("coKhuyenMai");
         	            double tienKhachDua = rs.getDouble("tienKhachDua");
         	            double tongHoaDon = rs.getDouble("tongHoaDon");
+
         	            NhanVien nv = NhanVienDAO.getNhanVien(mNV);
         	            KhachHang kh = KhachHangDAO.getKhachHang(maKH);
         	            ArrayList<ChiTietHoaDon> list = HoaDonDAO.GetDSCTHD(maHD);
@@ -75,6 +76,7 @@ public class HoaDonDAO {
 	        statement1.setFloat(5,(float) PnlLHD.getTongKM());
 	        statement1.setDouble(6, hdon.getTienKhachDua());
 	        statement1.setDouble(7, PnlLHD.getTongTien());
+
 	        statement1.executeUpdate();
 	        // Lấy maHD vừa được tạo
 	        String maHD = hdon.getMaHD();
@@ -196,6 +198,7 @@ public class HoaDonDAO {
         }
 
         return km;
+
     }
 	
 	public static ArrayList<ChiTietHoaDon> processDSCTHD(ArrayList<ChiTietHoaDon> listDSCTHD) throws Exception {
@@ -440,7 +443,6 @@ public class HoaDonDAO {
 	    }
 	    return res;
 	}
-
 	
 	public static ArrayList<HoaDon> getAllHoaDon() throws Exception {
 	    ArrayList<HoaDon> dsHoaDon = new ArrayList<>();
@@ -473,6 +475,7 @@ public class HoaDonDAO {
 	}
 	
 //Tạo mã HĐ	
+
 	public static String taoMaHD() {
 	    try (Connection con = ConnectDB.getConection();
 	         PreparedStatement stGetNumCount = con.prepareStatement("SELECT count(*) FROM HoaDon");
@@ -482,6 +485,7 @@ public class HoaDonDAO {
 	        
 	        if (rs.next() && rs.getInt(1) < 1e8) {	
 	        	return maHD + String.format("%08d", rs.getInt(1) + 1);
+
 
 	        }
 	        else {
@@ -528,4 +532,5 @@ public class HoaDonDAO {
 	    }
 	    return true;
 	}	
+
 }

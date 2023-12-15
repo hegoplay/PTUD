@@ -3,28 +3,17 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
+import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -43,10 +32,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
@@ -55,7 +40,6 @@ import com.toedter.calendar.JDateChooser;
 import component.TableEditor;
 import dao.CthdDAO;
 import dao.HoaDonDAO;
-import dao.HoaDonDAO;
 import dao.KhachHangDAO;
 import dao.KhuyenMaiDAO;
 import dao.NhanVienDAO;
@@ -63,7 +47,6 @@ import dao.SanPhamDAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
-import entity.NhanVien;
 import entity.SanPham;
 
 public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
@@ -79,21 +62,15 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	private JDateChooser dateChooser;
 	private DefaultTableModel model;
 	private JTextField txtTienDua;
-	private JLabel lblTraLaiVND, lblTongTienVND, lblTongCongVND, lblKMVND, lblNgay;
+
+	private JLabel lblTraLaiVND, lblTongTienVND,lblTongCongVND, lblKMVND, lblNgay;
 	private JButton btnLamMoi, btnXuat, btnThem, btnXoa, btnTao, btnTim;
 	private JPanel pnlTimHD;
 	private JPanel pnlTongHopDT;
-
+	
 	private JLabel lblGhiChu;
 	private JTextArea txtGhiChu;
-
-	private KhachHangDAO kh;
-	private HoaDonDAO hd;
-	private SanPhamDAO sp;
-	private NhanVienDAO nv;
-	private ChiTietHoaDon cthd;
-	private HoaDon hoaDonv;
-	private CthdDAO ctHD;
+	
 	private DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 	private double tienTraLai = 0;
 	String userLogin = "admin";
@@ -135,13 +112,14 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		pnlSDT.setBackground(MainFrame.clrTheme);
 		pnlInfo1.add(pnlSDT);
 		pnlSDT.setLayout(null);
-
+		
 		JLabel lblSDT = new JLabel("Nhập SĐT Khách hàng:");
 		lblSDT.setBackground(MainFrame.clrTheme);
 		lblSDT.setBounds(0, 0, 173, 19);
 		lblSDT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnlSDT.add(lblSDT);
 
+		
 		txtTim = new JTextField("");
 		txtTim.setBounds(180, 0, 180, 27);
 		txtTim.setColumns(10);
@@ -165,11 +143,13 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		lblMaHD.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnlMaHD.add(lblMaHD);
 
+
 		txtMaHD = new JTextField("HDxxxxxxxx");
 		txtMaHD.setEditable(false);
 		txtMaHD.setBounds(172, 0, 230, 25);
 		txtMaHD.setColumns(10);
 		pnlMaHD.add(txtMaHD);
+
 
 		btnTao = new JButton("Tạo");
 		btnTao.setBounds(410, 0, 80, 27);
@@ -193,11 +173,11 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		lblKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnlKH.add(lblKH);
 
+
 		txtKH = new JTextField();
 		txtKH.setEditable(false);
 		txtKH.setColumns(10);
 		pnlKH.add(txtKH);
-
 		JPanel pnlNV = new JPanel();
 		pnlNV.setLayout(null);
 		pnlNV.setBackground(MainFrame.clrTheme);
@@ -227,6 +207,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		lblDate.setFont(new Font("Tahoma", Font.BOLD, 15));
 		pnlNgayL.add(lblDate);
 
+
 		lblNgay = new JLabel("");
 		lblNgay.setBounds(185, 0, 150, 19);
 		lblNgay.setBackground(MainFrame.clrTheme);
@@ -249,14 +230,17 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		pnlMainContent.add(pnlCTHD, BorderLayout.CENTER);
 		pnlCTHD.setLayout(new BorderLayout());
 
+
 		JPanel pnlTopCTHD = new JPanel();
 //		pnlTopCTHD.setLayout(new GridLayout(1, 2, 10 ,10));
 		pnlTopCTHD.setLayout(new BorderLayout());
 		pnlTopCTHD.setBackground(new Color(241, 231, 190));
 		pnlTopCTHD.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+
 		pnlCTHD.add(pnlTopCTHD, BorderLayout.NORTH);
 
 		JPanel pnlSP = new JPanel();
+
 		pnlSP.setLayout(null);
 		pnlSP.setBackground(new Color(241, 231, 190));
 		pnlSP.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
@@ -276,6 +260,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		btnThem.setForeground(new Color(255, 255, 255));
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnThem.setBackground(new Color(69, 129, 142));
+
 		btnThem.setBounds(365, 0, 80, 27);
 		pnlSP.add(btnThem);
 
@@ -288,6 +273,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		btnXoa.setIcon(new ImageIcon(PnlTraHang.class.getResource("/view/icon/gabage_icon.png")));
 		
 		pnlTopCTHD.add(btnXoa, BorderLayout.EAST);
+
 
 //table Sản phẩm
 		JPanel pnlMainCTHD = new JPanel();
@@ -335,6 +321,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		pnlTinhToan.setBackground(MainFrame.clrTheme);
 		pnlTinhToan.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 0));
 		pnlButtom.add(pnlTinhToan, BorderLayout.CENTER);
+
 
 		JPanel pnlTC = new JPanel();
 		pnlTC.setLayout(new BorderLayout());
@@ -408,6 +395,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		lblTienTra.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
 		pnlTTL.add(lblTienTra, BorderLayout.WEST);
 
+
 		lblTraLaiVND = new JLabel("0 VNĐ");
 		lblTraLaiVND.setForeground(new Color(215, 0, 0));
 		lblTraLaiVND.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -444,6 +432,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		btnXuat.setIcon(new ImageIcon(PnlLHD.class.getResource("/view/icon/print_icon.png")));
 		pnlAc1.add(btnXuat);
 
+
 		btnLamMoi = new JButton("Làm mới");
 		btnLamMoi.setForeground(new Color(255, 255, 255));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -453,11 +442,13 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 
 		txtNV.setText(MainFrame.nv.getTen());
 
+
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // Định dạng ngày tháng
 		Date ngayHienHanh = new Date(System.currentTimeMillis()); // Lấy ngày hiện hành
 		String ngayHienHanhFormatted = dateFormat.format(ngayHienHanh); // Định dạng ngày hiện hành
 
 		lblNgay.setText(ngayHienHanhFormatted);
+
 
 		btnLamMoi.addActionListener(this);
 		btnTao.addActionListener(this);
@@ -483,11 +474,11 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 						}
 					}
 				}
-
 			}
 		});
 
 	}
+
 
 
 	private void tinhTienTraLai() {
@@ -565,7 +556,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 							}
 						}
 
-						getThongTinCreateHD().XuatHoaDon(fileToSave.getAbsolutePath(), getThongTinCreateHD());
+						getThongTinCreateHD().XuatHoaDon(fileToSave.getAbsolutePath());
 						JOptionPane.showMessageDialog(this, "Hóa đơn đã được xuất thành công!", "Thông báo",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -583,6 +574,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	}
 
 //Tạo chi tiết hóa đơn trong table CTHD
+
 	private ArrayList<ChiTietHoaDon> taoDSChiTietHD() throws NumberFormatException, Exception {
 		ArrayList<ChiTietHoaDon> ds = new ArrayList<ChiTietHoaDon>();
 		for (int i = 0; i < table.getRowCount(); i++) {
@@ -642,6 +634,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	private void tao() {
 		// TODO Auto-generated method stub
 		String maHD = null;
+
 		try {
 			maHD = HoaDonDAO.taoMaHD();
 		} catch (Exception e1) {
@@ -655,6 +648,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		}
 
 	}
+
 
 	private void lamMoi() {
 		// TODO Auto-generated method stub
@@ -699,6 +693,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	public static double gomKM = 0.0;
 	public static double  tongCongTruSAlE =0.0;
 
+
 	private void themSP() {
 	    String maSP = txtMaSP.getText().trim();
 	    if (maSP.isEmpty()) {
@@ -710,10 +705,11 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 
 	    if (SanPhamDAO.GetSanPham(maSP)!= null) {
 	        // Lấy thông tin sản phẩm
-	        String maSanPham = SanPhamDAO.GetSanPham(maSP).getMaSP();
-	        String tenSanPham = SanPhamDAO.GetSanPham(maSP).getTenSP();
-	        double donGia = SanPhamDAO.GetSanPham(maSP).TinhGiaBan();
-	        int soLuongTon = SanPhamDAO.GetSanPham(maSP).getSlTonKho(); 
+	        String maSanPham = sanPham.getMaSP();
+	        String tenSanPham = sanPham.getTenSP();
+	        double donGia = sanPham.TinhGiaBan();
+	        int soLuongTon = sanPham.getSlTonKho(); 
+
 
 	        // Kiểm tra số lượng tồn
 	        if (soLuongTon <= 0) {
@@ -762,6 +758,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 		                }
 	                
 	                
+
 	                break;
 	            }
 	        }
@@ -809,6 +806,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	                }
 	            
 	            
+
 	        }
 
 	        // Tính tổng cộng sau khi thêm sản phẩm
@@ -833,6 +831,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	        // Số điện thoại không tồn tại 
 	        JOptionPane.showMessageDialog(this, "Số điện thoại không tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
 
+
 	    } else {
 	        txtKH.setText(tenKHTimDuoc);
 	    }
@@ -848,6 +847,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 
 		 double tongCong1 = 0.0;
 
+
 	    for (int row = 0; row < model.getRowCount(); row++) {
 	        // Lấy giá trị dạng String từ cột donGia và thanhTien
 	        String strDonGia = (String) model.getValueAt(row, 3);
@@ -856,6 +856,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	        // Chuyển đổi thành kiểu double
 	        double donGia = Double.parseDouble(strDonGia.replace(" VNĐ", "").replace(",", ""));
 	        double thanhTien = Double.parseDouble(strThanhTien.replace(" VNĐ", "").replace(",", ""));
+
 
 	        tongCong1 += thanhTien;
 	    }
@@ -877,6 +878,7 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	    String formattedKM = MainFrame.moneyFormatter.format(kM*tongCongTruSAlE + gomKM);
 	    String formattedTongTien = MainFrame.moneyFormatter.format(tongTien);
 	    
+
 	    lblTongCongVND.setText(formattedTongCong + " VNĐ");
 	    lblKMVND.setText(formattedKM + " VNĐ");
 	    lblTongTienVND.setText(formattedTongTien + " VNĐ");
@@ -888,12 +890,15 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 
 	}
 
+
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
 		tinhTienTraLai();
 
+
 	}
+
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
@@ -911,4 +916,5 @@ public class PnlLHD extends JPanel implements ActionListener, DocumentListener {
 	public static double getTongTien() {
         return tongTien;
     }
+
 }

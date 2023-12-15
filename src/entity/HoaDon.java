@@ -31,6 +31,7 @@ import dao.NhanVienDAO;
 import view.MainFrame;
 import view.PnlLHD;
 
+
 public class HoaDon {
 	private String maHD;
 	private LocalDateTime ngayLapHD;
@@ -178,7 +179,10 @@ public class HoaDon {
 				+ "]";
 	}
 	
-	public void XuatHoaDon(String path, HoaDon hd) throws Exception {
+//<<<<<<< HEAD
+//	public void XuatHoaDon(String path, HoaDon hd) throws Exception {
+//=======
+	public void XuatHoaDon(String path) throws Exception {
 		PdfWriter pdfWriter = new PdfWriter(path);
 		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 		pdfDocument.setDefaultPageSize(PageSize.A4);
@@ -197,11 +201,14 @@ public class HoaDon {
 		
 		float threecol = 190f;
 		float fourcol = 142f;
+
 		float twocol = 285f;
 		float twocol150 = twocol + 150f; 
 		float twocolumnWidth[] = {twocol150,twocol};
 		float threeColumnWidth[] = {threecol,threecol,threecol};
+
 		float fourColumnWidth[] = {fourcol,fourcol,fourcol, fourcol};
+
 		float fullWidth[] = {threecol*3};
 		Paragraph onesp = new Paragraph("\n");
 		Table table = new Table(twocolumnWidth);
@@ -215,6 +222,7 @@ public class HoaDon {
 		nestedTable.addCell(ToPDFController.getHeaderLeftTextCell("Ngày Lập hóa đơn"));
 		nestedTable.addCell(ToPDFController.getHeaderLeftTextCellValue(
 		LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")).toString()));
+
 		table.addCell(new Cell().add(nestedTable).setBorder(Border.NO_BORDER));
 		
 		Border gb = new SolidBorder(Color.GRAY, 2f);
@@ -243,6 +251,7 @@ public class HoaDon {
 		twoColTable3.addCell(ToPDFController.getCell10fLeft("Tên Nhân Viên", true));
 		twoColTable3.addCell(ToPDFController.getCell10fLeft(KhachHangDAO.getKhachHang(this.getKhachHang().getMaKH()).getTenKH(), false));
 		twoColTable3.addCell(ToPDFController.getCell10fLeft(NhanVienDAO.getNhanVien(this.getNhanVien().getMaNV()).getTen(), false));
+
 		document.add(twoColTable3);
 		
 		
@@ -264,7 +273,7 @@ public class HoaDon {
 		document.add(fourColTable1);
 		Table fourColTable2 = new Table(fourColumnWidth);
 		double totalSum = 0f;
-		for (ChiTietHoaDon ct : hd.dsCTHD) {
+		for (ChiTietHoaDon ct : this.dsCTHD) {
 		    if (ct.getSanPham() != null) {
 		        totalSum += ct.getSoLuong() * ct.getSanPham().TinhGiaBan();
 		        
@@ -276,6 +285,7 @@ public class HoaDon {
 		        fourColTable2.addCell(
 		                ToPDFController.getHeaderLeftTextCellValue(MainFrame.moneyFormatter.format(
 		                        ct.TinhThanhTien())+" VNĐ").setTextAlignment(TextAlignment.RIGHT).setMarginRight(15f));
+
 		    } else {
 		        System.out.println("Lỗi dữ liệu!");
 		    }
@@ -284,6 +294,7 @@ public class HoaDon {
 		
 		document.add(fourColTable2.setMarginBottom(20f));
 		
+
 		float onetwo[] = {threecol + 125,threecol *2};
 		Table threeColTable4 = new Table(onetwo);
 		threeColTable4.addCell(new Cell().add("").setBorder(Border.NO_BORDER));
@@ -315,6 +326,7 @@ public class HoaDon {
 		table2.addCell(new Cell().add(nestedTable2).setBorder(Border.NO_BORDER));
 		document.add(table2);
 
+
 		document.add(tableDivider2);
 		document.add(new Paragraph("\n"));
 		document.add(divider.setBorder(new SolidBorder(Color.GRAY,1))).setBottomMargin(15f);
@@ -328,17 +340,18 @@ public class HoaDon {
 		TncList.add("4. Mang theo hóa đơn này khi muốn trả hàng");
 		TncList.add("5. Giảm 5% cho hóa đơn từ 1.500.000 VNĐ và 10% cho hóa đơn trên 4.000.000 VNĐ");
 		TncList.add("6. Tiền khuyến mãi đã bao gồm khấu trừ giảm giá chương trình SALE (nếu có).");
+
 		for(String tnc: TncList) {
 			tb.addCell(ToPDFController.getHeaderLeftTextCellValue(tnc));
 		}
 		
 		Table tb2 = new Table(fullWidth);
 		tb2.addCell(ToPDFController.getHeaderRightTextCell("CẢM ƠN QUÝ KHÁCH! \n  HẸN GẶP LẠI!").setTextAlignment(TextAlignment.CENTER));
+
 		
 
 		
 		document.add(tb);
-		document.add(tb2);
 		document.close();
 //		System.out.println("Generated");
 	}

@@ -116,6 +116,7 @@ import java.awt.FlowLayout;
 import java.awt.CardLayout;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+
 import javax.swing.GroupLayout.Alignment;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.BoxLayout;
@@ -134,6 +135,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 	private DecimalFormat decimalFormat = new DecimalFormat("###,###,### VNĐ");
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private String maNV = MainFrame.nv.getMaNV();
+
 
 	private static final long serialVersionUID = 1L;
 
@@ -219,6 +221,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		btnXuat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnXuat.setBackground(MainFrame.clrBtn);
 		btnXuat.setIcon(new ImageIcon(PnlDoanhThuCa.class.getResource("/view/icon/print_icon.png")));
+
 		pnlBnt.add(btnXuat);
 	
 		
@@ -314,7 +317,9 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		
 		btnXuat.addActionListener(this);
 		
+
 		lblNV.setText(MainFrame.nv.getTen());
+
 		
 		loadTable();
 //		double tongDT = hdDAO.getDoanhThuNgayTheoMaNV(maNVLogin);
@@ -333,6 +338,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		
 	}
 	public void loadTable() throws Exception {
+
 		ArrayList<HoaDon> dsHD = hdDAO.getHoaDonByMaNVinToDay(maNV);
 		ArrayList<ChiTietHoaDon> cthd = hdDAO.getDSCTHDFromList(dsHD);
 		ArrayList<ChiTietHoaDon > ctSPdaban = hdDAO.processDSCTHD(cthd);
@@ -417,6 +423,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
                 JOptionPane.showMessageDialog(this, "Lỗi tạo pdf!!");
             }
         }
+
 	}
 	public static void xuatDoanhThuCa(String path, String dthu,String sHD, String sSP, JTable tableSP) throws IOException {
 		PdfWriter pdfWriter = new PdfWriter(path);
@@ -466,6 +473,7 @@ public class PnlDoanhThuCa extends JPanel implements ActionListener{
 		twoColTable.addCell(ToPDFController.getHeaderRightTextCell("Mã nhân viên"));	
 		twoColTable.addCell(ToPDFController.getHeaderLeftTextCellValue(MainFrame.nv.getTen()));
 		twoColTable.addCell(ToPDFController.getHeaderRightTextCellValue(MainFrame.nv.getMaNV()));
+
 		// hàng 2
 		twoColTable.addCell(ToPDFController.getHeaderLeftTextCell("Doanh thu trong ca:"));
 		twoColTable.addCell(ToPDFController.getHeaderRightTextCell(dthu));

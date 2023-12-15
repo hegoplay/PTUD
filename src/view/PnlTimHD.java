@@ -264,11 +264,7 @@ public class PnlTimHD extends JPanel implements ActionListener{
         dateChooser.setDate(null);
         
         btnLamMoi.addActionListener(this);
-        
 
-
-        
-        
  //Xử lý txtMaHD 
 		txtMaHD.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -392,7 +388,85 @@ public class PnlTimHD extends JPanel implements ActionListener{
 
 		
 // Xử lý lọc bằng ngày tháng:
-	
+        
+//Xử lý txtMaKH	
+        txtKH.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				findData();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				findData();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				findData();
+			}
+
+			private void findData() {
+				String maKH = txtKH.getText().trim();
+//				khachHang = new KhachHangDAO();
+				String tenKH = KhachHangDAO.getKhachHang(maKH).getTenKH();
+				DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+				// Tạo một bộ lọc để lấy các dòng có giá trị maNV trùng với text
+				RowFilter<Object, Object> filter = RowFilter.regexFilter(tenKH, 2);
+
+				// Tạo một sorter để sắp xếp lại các dòng
+				TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
+				sorter.setRowFilter(filter);
+
+				// Đặt sorter cho bảng
+				table_1.setRowSorter(sorter);
+				
+			}
+		});
+// Xử lí txtNV
+		txtNV.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				findData();
+
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				findData();
+
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			private void findData() {
+				String maNV = txtNV.getText().trim();
+//				nhanVien = new NhanVienDAO();
+//				String tenNV = nhanVien.getTenNVByMaNV(maNV);
+				NhanVien nvien = nhanVien.getNhanVien(maNV);
+				String tenNV= nvien.getTen();
+				DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+				// Tạo một bộ lọc để lấy các dòng có giá trị maNV trùng với text
+				RowFilter<Object, Object> filter = RowFilter.regexFilter(maNV, 3);
+
+				// Tạo một sorter để sắp xếp lại các dòng
+				TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
+				sorter.setRowFilter(filter);
+
+				// Đặt sorter cho bảng
+				table_1.setRowSorter(sorter);
+			}
+		});   
+		
+//// Xử lý lọc bằng ngày tháng:
 	dateChooser.addPropertyChangeListener(new PropertyChangeListener() {
 	    @Override
 	    public void propertyChange(PropertyChangeEvent evt) {
@@ -456,7 +530,6 @@ public class PnlTimHD extends JPanel implements ActionListener{
         });
 	}
 	
-	
 // load danh sách hóa đơn lên bảng hóa đơn	
 	private void updateDSHDTable(ArrayList<HoaDon> dsHoaDon) throws Exception {
 	    DefaultTableModel model = (DefaultTableModel) table_1.getModel();
@@ -479,9 +552,11 @@ public class PnlTimHD extends JPanel implements ActionListener{
 	                hd.getKhachHang().getTenKH(),
 	                hd.getNhanVien().getTen(),
 	                formattedNgayLapHD,
+
 	                decimalFormat.format(HoaDonDAO.getTongTienByMaHD(hd.getMaHD()) + HoaDonDAO.getKhuyenMaiByMaHD(hd.getMaHD())),
 	                decimalFormat.format(HoaDonDAO.getKhuyenMaiByMaHD(hd.getMaHD())),
 	                decimalFormat.format(HoaDonDAO.getTongTienByMaHD(hd.getMaHD()))
+
 	            });
 	        } else {
 	            // hoadon null
@@ -530,5 +605,4 @@ public class PnlTimHD extends JPanel implements ActionListener{
                 dateChooser.setDate(null);
 		}
 	}
-
 }
