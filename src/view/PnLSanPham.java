@@ -429,6 +429,7 @@ public class PnLSanPham extends JPanel implements ActionListener {
 		// Gọi hàm cập nhật từ DAO
 		SanPhamDAO.updateSanPham(sp); // Làm mới bảng
 		loadDataToTable();
+		clearForm();
 
 	}
 
